@@ -3,6 +3,7 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("com.squareup.sqldelight")
+    id("kotlinx-serialization")
 }
 
 group = "com.github.tyngstast"
@@ -14,6 +15,9 @@ kotlin {
     iosArm64()
     //iosSimulatorArm64() sure all ios dependencies support this target
 
+    val coroutinesVersion: String by project
+    val serializationVersion = "1.3.2"
+    val ktorVersion = "1.6.7"
     val sqlDelightVersion: String by project
 
     cocoapods {
@@ -29,6 +33,11 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
             }
         }
@@ -41,6 +50,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
         val androidTest by getting {
@@ -60,6 +70,7 @@ kotlin {
 
             dependencies {
                 implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
         }
         val iosX64Test by getting
