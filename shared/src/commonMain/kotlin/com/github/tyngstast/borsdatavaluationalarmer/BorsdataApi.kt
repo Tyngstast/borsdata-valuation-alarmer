@@ -1,5 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
+import com.liftric.kvault.KVault
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.features.*
@@ -10,9 +11,9 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 
 
-class BorsdataApi {
+class BorsdataApi(private val kVaultImpl: KVaultImpl) {
     companion object {
-        private const val BASE_URL = "https://apiservice.borsdata.se/v1"
+        private const val BD_HOST = "apiservice.borsdata.se/v1"
         private const val AUTH_PARAM = "authKey"
     }
 
@@ -37,17 +38,20 @@ class BorsdataApi {
             requestTimeoutMillis = timeout
             socketTimeoutMillis = timeout
         }
+        defaultRequest {
+            host = BD_HOST
+            url {
+                protocol = URLProtocol.HTTPS
+            }
+            parameter(AUTH_PARAM, kVaultImpl.getApiKey())
+        }
     }.also { initLogger() }
 
-    suspend fun getLatestValue(insId: Long, kpiId: Long, authKey: String): InsKpiResponse {
-        return httpClient.get {
-            insKpi(insId, kpiId)
-            parameter(AUTH_PARAM, authKey)
-        }
+    suspend fun getLatestValue(insId: Long, kpiId: Long): InsKpiResponse {
+        return httpClient.get { insKpi(insId, kpiId) }
     }
 
     private fun HttpRequestBuilder.insKpi(insId: Long, kpiId: Long) = url {
-        takeFrom(BASE_URL)
-        encodedPath += "/instruments/$insId/kpis/$kpiId/last/latest"
+        encodedPath += "instruments/$insId/kpis/$kpiId/last/latest"
     }
 }

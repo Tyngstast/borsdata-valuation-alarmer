@@ -2,63 +2,75 @@ package com.github.tyngstast.borsdatavaluationalarmer.android
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.github.tyngstast.borsdatavaluationalarmer.BorsdataApi
+import androidx.activity.ComponentActivity
+import androidx.work.*
 import com.github.tyngstast.borsdatavaluationalarmer.Dao
 import com.github.tyngstast.borsdatavaluationalarmer.DatabaseDriverFactory
-import com.github.tyngstast.db.Alarm
+import com.github.tyngstast.borsdatavaluationalarmer.KVaultFactory
+import com.github.tyngstast.borsdatavaluationalarmer.KVaultImpl
+import com.github.tyngstast.borsdatavaluationalarmer.android.worker.ValuationAlarmDataFetcherWorker
+import com.github.tyngstast.borsdatavaluationalarmer.android.worker.ValuationAlarmNotificationWorker
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import java.util.logging.Logger
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     companion object {
-        private val log = Logger.getLogger("main")
+        private const val TAG = "MainActivity";
+        private const val VALUATION_SYNC_WORK = "valuation_sync_work";
     }
 
     private val mainScope = MainScope()
-
+    private val workManager = WorkManager.getInstance(this)
     private val dao = Dao(DatabaseDriverFactory(this))
-    private val borsdataApi: BorsdataApi = BorsdataApi()
+    private val lazyKVaultImpl = lazy {
+        KVaultImpl(KVaultFactory(this))
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        this.initData()
+
         val tv: TextView = findViewById(R.id.text_view)
         tv.text = "Loading..."
 
-        // lookup from borsdata API
-        mainScope.launch {
-            kotlin.runCatching {
-                val alarms = dao.getAllAlarms()
-                log.info("alarms: $alarms")
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
 
-                val first: Alarm
+        val workerRequest = OneTimeWorkRequestBuilder<ValuationAlarmDataFetcherWorker>()
+            .setConstraints(constraints)
+            .build()
 
-                if (alarms.isEmpty()) {
-                    dao.insertAlarm(750, "Evolution", 2, 40.0)
-                    first = dao.getAllAlarms()[0]
-                } else {
-                    first = alarms[0]
-                }
+        workManager.beginUniqueWork(
+            VALUATION_SYNC_WORK,
+            ExistingWorkPolicy.KEEP,
+            workerRequest
+        )
+        .then(OneTimeWorkRequest.from(ValuationAlarmNotificationWorker::class.java))
+        .enqueue()
+    }
 
-                log.info("first: $first")
+    private fun initData() {
+        val apiKey = lazyKVaultImpl.value.getApiKey()
+        Log.i(TAG, "key: $apiKey")
 
-                val response = borsdataApi.getLatestValue(first.insId, first.kpiId, "redacted")
-                log.info("response from bd: $response")
-
-                first to response
-            }.onSuccess { (alarm, kpi) ->
-                tv.text = "${alarm.insName} current P/E: ${kpi.value.n}"
-            }.onFailure {
-                tv.text = "Integration error: $it"
-            }
+        if (apiKey.isNullOrBlank()) {
+            lazyKVaultImpl.value.setApiKey("redacted")
         }
+
+        val alarms = dao.getAllAlarms()
+        if (alarms.isEmpty()) {
+            dao.insertAlarm(750, "Evolution", 2, "P/E", 40.0, "lte")
+            dao.insertAlarm(408, "Kambi", 2, "P/E", 30.0, "lte")
+        }
+
+        Log.i(TAG, "alarms: ${dao.getAllAlarms()}")
     }
 
     override fun onDestroy() {
