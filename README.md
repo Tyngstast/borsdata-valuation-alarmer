@@ -2,12 +2,16 @@
 
 ## About
   * Uses Börsdata API.
-  * Requires using your personal API key from Pro membership.
-  * Börsdata's API data is only updated once per day at 21:00 CET.
-  * Only provides API data for nordic companies unfortunately.  
-  * Alarm will schedule update and provide notification for alarms before market open every weekday.
+  * Requires personal API key from Pro membership.
+
+### Data Updates and Alarm Triggers
+  * BD only provides API data for nordic companies unfortunately.
+  * Data is also only updated once per day at 21:00 CET.
+  * Alarm will therefore schedule update and provide notification for alarms before market open every weekday, and saturday morning.
 
 ## Tech
   * KMM project.
     * Ktor
     * Sql Delight
+    * KVault
+    * WorkManager
