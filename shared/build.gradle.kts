@@ -19,6 +19,7 @@ kotlin {
     val serializationVersion = "1.3.2"
     val ktorVersion = "1.6.7"
     val sqlDelightVersion: String by project
+    val napierVersion = "2.3.0"
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -39,6 +40,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+                implementation("io.github.aakira:napier:$napierVersion")
             }
         }
         val commonTest by getting {

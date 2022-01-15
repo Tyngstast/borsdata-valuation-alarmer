@@ -1,7 +1,3 @@
-CREATE TABLE Cache (
-    apiKey TEXT UNIQUE
-);
-
 CREATE TABLE Alarm (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 --     name TEXT NOT NULL,
@@ -12,13 +8,6 @@ CREATE TABLE Alarm (
     value REAL NOT NULL
 --     operation TEXT NOT NULL
 );
-
-getApiKey:
-SELECT apiKey FROM Cache;
-
-upsertApiKey:
-INSERT OR REPLACE INTO Cache(apiKey)
-VALUES (?);
 
 selectAllAlarms:
 SELECT * FROM Alarm;

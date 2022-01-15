@@ -1,5 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
+import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -23,8 +24,12 @@ class BorsdataApi {
             serializer = KotlinxSerializer(json)
         }
         install(Logging) {
-            logger = Logger.DEFAULT
             level = LogLevel.INFO
+            logger = object: Logger {
+                override fun log(message: String) {
+                    Napier.i(tag = "BorsdataAPI", message = message)
+                }
+            }
         }
         install(HttpTimeout) {
             val timeout = 15000L
@@ -32,7 +37,7 @@ class BorsdataApi {
             requestTimeoutMillis = timeout
             socketTimeoutMillis = timeout
         }
-    }
+    }.also { initLogger() }
 
     suspend fun getLatestValue(insId: Long, kpiId: Long, authKey: String): InsKpiResponse {
         return httpClient.get {
