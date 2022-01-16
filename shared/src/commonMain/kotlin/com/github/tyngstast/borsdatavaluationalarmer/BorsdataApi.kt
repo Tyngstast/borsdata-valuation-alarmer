@@ -1,6 +1,5 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
-import com.liftric.kvault.KVault
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.features.*
@@ -11,7 +10,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 
 
-class BorsdataApi(private val kVaultImpl: KVaultImpl) {
+class BorsdataApi(kVaultImpl: KVaultImpl) {
     companion object {
         private const val BD_HOST = "apiservice.borsdata.se/v1"
         private const val AUTH_PARAM = "authKey"
@@ -47,6 +46,7 @@ class BorsdataApi(private val kVaultImpl: KVaultImpl) {
         }
     }.also { initLogger() }
 
+    @Throws(Exception::class)
     suspend fun getLatestValue(insId: Long, kpiId: Long): InsKpiResponse {
         return httpClient.get { insKpi(insId, kpiId) }
     }
