@@ -7,7 +7,6 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.github.tyngstast.borsdatavaluationalarmer.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.BorsdataApi
-import com.github.tyngstast.borsdatavaluationalarmer.evaluate
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -38,7 +37,7 @@ class ValuationAlarmDataFetcherWorker(
                     val kpiValue = response.value.n
                     it to kpiValue
                 }
-                .filter { (alarm, kpiValue) -> alarm.evaluate(kpiValue)}
+                .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
                 .map { (alarm, kpiValue) ->
                     Log.i(TAG, "Triggered alarm: ${alarm.insName} KPI ${alarm.kpiId}")
                     alarm.id.toString() to kpiValue

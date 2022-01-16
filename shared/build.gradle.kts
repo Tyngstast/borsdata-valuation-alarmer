@@ -42,6 +42,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+                implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
                 implementation("io.github.aakira:napier:$napierVersion")
                 implementation("com.liftric:kvault:$kVaultVersion")
                 implementation("io.insert-koin:koin-core:$koinVersion")
