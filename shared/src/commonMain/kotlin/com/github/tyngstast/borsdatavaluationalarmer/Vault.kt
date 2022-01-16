@@ -1,18 +1,20 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
-class KVaultImpl(kVaultFactory: KVaultFactory) {
+import com.liftric.kvault.KVault
+
+class Vault(kVault: KVault) {
 
     companion object {
         private const val AUTH_KEY = "AUTH_KEY";
     }
 
-    private val store = kVaultFactory.store()
+    private val vault = kVault
 
     fun setApiKey(key: String) {
-        store.set(AUTH_KEY, key)
+        vault.set(AUTH_KEY, key)
     }
 
     fun getApiKey(): String? {
-        return store.string(AUTH_KEY)
+        return vault.string(AUTH_KEY)
     }
 }

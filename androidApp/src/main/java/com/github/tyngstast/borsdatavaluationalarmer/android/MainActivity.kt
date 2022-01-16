@@ -6,17 +6,17 @@ import android.util.Log
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.work.*
-import com.github.tyngstast.borsdatavaluationalarmer.Dao
-import com.github.tyngstast.borsdatavaluationalarmer.DatabaseDriverFactory
-import com.github.tyngstast.borsdatavaluationalarmer.KVaultFactory
-import com.github.tyngstast.borsdatavaluationalarmer.KVaultImpl
+import com.github.tyngstast.borsdatavaluationalarmer.AlarmDao
+import com.github.tyngstast.borsdatavaluationalarmer.Vault
 import com.github.tyngstast.borsdatavaluationalarmer.android.worker.ValuationAlarmDataFetcherWorker
 import com.github.tyngstast.borsdatavaluationalarmer.android.worker.ValuationAlarmNotificationWorker
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), KoinComponent {
     companion object {
         private const val TAG = "MainActivity";
         private const val VALUATION_SYNC_WORK = "valuation_sync_work";
@@ -24,10 +24,8 @@ class MainActivity : ComponentActivity() {
 
     private val mainScope = MainScope()
     private val workManager = WorkManager.getInstance(this)
-    private val dao = Dao(DatabaseDriverFactory(this))
-    private val lazyKVaultImpl = lazy {
-        KVaultImpl(KVaultFactory(this))
-    }
+    private val alarmDao: AlarmDao by inject()
+    private val vault: Vault by inject()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,20 +55,20 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initData() {
-        val apiKey = lazyKVaultImpl.value.getApiKey()
+        val apiKey = vault.getApiKey()
         Log.i(TAG, "key: $apiKey")
 
         if (apiKey.isNullOrBlank()) {
-            lazyKVaultImpl.value.setApiKey("redacted")
+            vault.setApiKey("redacted")
         }
 
-        val alarms = dao.getAllAlarms()
+        val alarms = alarmDao.getAllAlarms()
         if (alarms.isEmpty()) {
-            dao.insertAlarm(750, "Evolution", 2, "P/E", 40.0, "lte")
-            dao.insertAlarm(408, "Kambi", 2, "P/E", 30.0, "lte")
+            alarmDao.insertAlarm(750, "Evolution", 2, "P/E", 40.0, "lte")
+            alarmDao.insertAlarm(408, "Kambi", 2, "P/E", 30.0, "lte")
         }
 
-        Log.i(TAG, "alarms: ${dao.getAllAlarms()}")
+        Log.i(TAG, "alarms: ${alarmDao.getAllAlarms()}")
     }
 
     override fun onDestroy() {

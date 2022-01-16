@@ -12,14 +12,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.github.tyngstast.borsdatavaluationalarmer.Dao
-import com.github.tyngstast.borsdatavaluationalarmer.DatabaseDriverFactory
+import com.github.tyngstast.borsdatavaluationalarmer.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class ValuationAlarmNotificationWorker(
     context: Context,
     params: WorkerParameters
-) : CoroutineWorker(context, params) {
+) : CoroutineWorker(context, params), KoinComponent {
 
     companion object {
         private const val TAG = "ValuationAlarmNotificationWorker"
@@ -31,7 +32,7 @@ class ValuationAlarmNotificationWorker(
         private const val NOTIFICATION_TITLE = "Alarm triggered!"
     }
 
-    private val dao = Dao(DatabaseDriverFactory(applicationContext))
+    private val alarmDao: AlarmDao by inject()
 
     override suspend fun doWork(): Result {
         Log.i(TAG, "doWork")
@@ -46,7 +47,7 @@ class ValuationAlarmNotificationWorker(
                     alarmId to kpiValue.toString()
                 }
                 .map { (id, kpiValue) ->
-                    val alarm = dao.getAlarm(id.toLong())
+                    val alarm = alarmDao.getAlarm(id.toLong())
                     if (alarm == null) {
                         Log.e(TAG, "Failed to find alarm with ID: $id")
                         return Result.failure()

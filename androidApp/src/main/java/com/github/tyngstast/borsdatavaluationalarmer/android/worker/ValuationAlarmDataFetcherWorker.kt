@@ -5,25 +5,29 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.github.tyngstast.borsdatavaluationalarmer.*
+import com.github.tyngstast.borsdatavaluationalarmer.AlarmDao
+import com.github.tyngstast.borsdatavaluationalarmer.BorsdataApi
+import com.github.tyngstast.borsdatavaluationalarmer.evaluate
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class ValuationAlarmDataFetcherWorker(
     context: Context,
     params: WorkerParameters
-) : CoroutineWorker(context, params) {
+) : CoroutineWorker(context, params), KoinComponent {
 
     companion object {
         private const val TAG = "ValuationAlarmDataFetcherWorker"
     }
 
-    private val dao = Dao(DatabaseDriverFactory(applicationContext))
-    private val borsdataApi = BorsdataApi(KVaultImpl(KVaultFactory(applicationContext)))
+    private val alarmDao: AlarmDao by inject()
+    private val borsdataApi: BorsdataApi by inject()
 
     override suspend fun doWork(): Result {
         Log.i(TAG, "doWork")
 
         return try {
-            val alarms = dao.getAllAlarms()
+            val alarms = alarmDao.getAllAlarms()
 
             Log.i(TAG, "Alarms: $alarms")
 

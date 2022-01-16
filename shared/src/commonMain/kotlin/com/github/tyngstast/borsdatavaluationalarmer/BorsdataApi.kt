@@ -8,9 +8,10 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.serialization.Serializable
 
 
-class BorsdataApi(kVaultImpl: KVaultImpl) {
+class BorsdataApi(vault: Vault) {
     companion object {
         private const val BD_HOST = "apiservice.borsdata.se/v1"
         private const val AUTH_PARAM = "authKey"
@@ -42,7 +43,7 @@ class BorsdataApi(kVaultImpl: KVaultImpl) {
             url {
                 protocol = URLProtocol.HTTPS
             }
-            parameter(AUTH_PARAM, kVaultImpl.getApiKey())
+            parameter(AUTH_PARAM, vault.getApiKey())
         }
     }.also { initLogger() }
 
@@ -55,3 +56,21 @@ class BorsdataApi(kVaultImpl: KVaultImpl) {
         encodedPath += "instruments/$insId/kpis/$kpiId/last/latest"
     }
 }
+
+@Serializable
+data class InsKpiResponse(
+    val kpiId: Long,
+    val group: String,
+    val calculation: String,
+    val value: Value
+)
+
+@Serializable
+data class Value(
+    // Instrument ID, echoed back
+    val i: Long,
+    // Number value when KPI is of that type
+    val n: Double,
+    // String value when KPI is of that type
+    val s: String? = null
+)

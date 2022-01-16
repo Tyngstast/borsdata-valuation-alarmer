@@ -20,6 +20,7 @@ kotlin {
     val ktorVersion = "1.6.7"
     val sqlDelightVersion: String by project
     val napierVersion = "2.3.0"
+    val koinVersion: String by project
     val kVaultVersion = "1.7.0"
 
     cocoapods {
@@ -43,6 +44,7 @@ kotlin {
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("io.github.aakira:napier:$napierVersion")
                 implementation("com.liftric:kvault:$kVaultVersion")
+                implementation("io.insert-koin:koin-core:$koinVersion")
             }
         }
         val commonTest by getting {

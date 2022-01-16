@@ -3,9 +3,10 @@ package com.github.tyngstast.borsdatavaluationalarmer
 import com.github.tyngstast.db.Alarm
 import com.github.tyngstast.db.ValueAlarmerDb
 import com.github.tyngstast.db.ValueAlarmerDbQueries
+import com.squareup.sqldelight.db.SqlDriver
 
-class Dao(databaseDriverFactory: DatabaseDriverFactory) {
-    private val database = ValueAlarmerDb(databaseDriverFactory.createDriver())
+class AlarmDao(sqlDriver: SqlDriver) {
+    private val database = ValueAlarmerDb(sqlDriver)
     private val dbQuery: ValueAlarmerDbQueries = database.valueAlarmerDbQueries
 
     fun getAllAlarms(): List<Alarm> {
