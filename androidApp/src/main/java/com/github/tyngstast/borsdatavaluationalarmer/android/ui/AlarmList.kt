@@ -15,12 +15,9 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.github.tyngstast.borsdatavaluationalarmer.android.AlarmViewModel
 import org.koin.androidx.compose.getViewModel
-
-const val alarmListTag = "alarmList"
 
 @Composable
 fun AlarmList(
@@ -43,9 +40,7 @@ fun AlarmList(
     ) {
         LazyColumn(
             contentPadding = paddingValues,
-            modifier = Modifier
-                .padding(vertical = 2.dp)
-                .testTag(alarmListTag)
+            modifier = Modifier.padding(vertical = 2.dp)
         ) {
             items(alarms.value) { alarm ->
                 AlarmView(alarm)

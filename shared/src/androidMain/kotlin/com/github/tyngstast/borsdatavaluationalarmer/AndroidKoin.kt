@@ -2,6 +2,8 @@ package com.github.tyngstast.borsdatavaluationalarmer
 
 import com.github.tyngstast.db.ValueAlarmerDb
 import com.liftric.kvault.KVault
+import com.russhwolf.settings.AndroidSettings
+import com.russhwolf.settings.Settings
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 import org.koin.core.module.Module
@@ -15,7 +17,6 @@ actual val platformModule: Module = module {
             "ValueAlarmerDb"
         )
     }
-    single {
-        Vault(KVault(get()))
-    }
+    single { Vault(KVault(get())) }
+    single<Settings> { AndroidSettings(get()) }
 }

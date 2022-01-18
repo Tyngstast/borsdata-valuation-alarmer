@@ -12,8 +12,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.github.tyngstast.borsdatavaluationalarmer.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
+import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

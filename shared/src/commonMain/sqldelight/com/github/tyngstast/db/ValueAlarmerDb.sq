@@ -8,6 +8,21 @@ CREATE TABLE Alarm (
     operation TEXT NOT NULL
 );
 
+CREATE TABLE Instrument (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    insId INTEGER NOT NULL,
+    yahooId TEXT NOT NULL,
+    name TEXT NOT NULL,
+    ticker TEXT NOT NULL
+);
+
+CREATE TABLE Kpi (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    kpidId INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    format TEXT
+);
+
 selectAllAlarms:
 SELECT * FROM Alarm;
 
@@ -23,3 +38,30 @@ deleteAlarm:
 DELETE FROM Alarm
 WHERE id = ?;
 
+selctAllInstruments:
+SELECT * FROM Instrument;
+
+selectInstrument:
+SELECT * FROM Instrument
+WHERE name LIKE ?;
+
+insertInstrument:
+INSERT INTO Instrument(id, insId, yahooId, name, ticker)
+VALUES (?, ?, ?, ?, ?);
+
+deleteAllInstruments:
+DELETE FROM Instrument;
+
+selctAllKpis:
+SELECT * FROM Instrument;
+
+selectKpi:
+SELECT * FROM Instrument
+WHERE name LIKE ?;
+
+insertKpi:
+INSERT INTO Kpi(id, kpidId, name, format)
+VALUES (?, ?, ?, ?);
+
+deleteAllKpis:
+DELETE FROM Kpi;

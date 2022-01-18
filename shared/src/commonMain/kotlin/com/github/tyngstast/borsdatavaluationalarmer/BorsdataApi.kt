@@ -26,7 +26,7 @@ class BorsdataApi(vault: Vault) {
         }
         install(Logging) {
             level = LogLevel.INFO
-            logger = object: Logger {
+            logger = object : Logger {
                 override fun log(message: String) {
                     Napier.i(tag = "BorsdataAPI", message = message)
                 }
@@ -48,14 +48,55 @@ class BorsdataApi(vault: Vault) {
     }.also { initLogger() }
 
     @Throws(Exception::class)
-    suspend fun getLatestValue(insId: Long, kpiId: Long): InsKpiResponse {
-        return httpClient.get { insKpi(insId, kpiId) }
+    suspend fun getLatestValue(insId: Long, kpiId: Long): InsKpiResponse = httpClient.get {
+        url {
+            encodedPath += "instruments/$insId/kpis/$kpiId/last/latest"
+        }
     }
 
-    private fun HttpRequestBuilder.insKpi(insId: Long, kpiId: Long) = url {
-        encodedPath += "instruments/$insId/kpis/$kpiId/last/latest"
+    @Throws(Exception::class)
+    suspend fun getInstruments(): List<InstrumentDto> {
+        val response = httpClient.get<InstrumentResponse> {
+            url {
+                encodedPath += "instruments"
+            }
+        }
+
+        return response.instruments
+    }
+
+    @Throws(Exception::class)
+    suspend fun getKpis(): List<KpiDto> {
+        val response = httpClient.get<KpiResponse> {
+            url {
+                encodedPath += "instruments/kpis/metadata"
+            }
+        }
+
+        return response.kpiHistoryMetadatas
     }
 }
+
+@Serializable
+data class InstrumentResponse(val instruments: List<InstrumentDto>)
+
+@Serializable
+data class InstrumentDto(
+    val insId: Long,
+    val name: String,
+    val ticker: String,
+    val yahoo: String
+)
+
+@Serializable
+data class KpiResponse(val kpiHistoryMetadatas: List<KpiDto>)
+
+@Serializable
+data class KpiDto(
+    val kpiId: Long,
+    val nameSv: String,
+    val format: String? = null
+)
 
 @Serializable
 data class InsKpiResponse(

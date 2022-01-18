@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.github.tyngstast.borsdatavaluationalarmer.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.BorsdataApi
+import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

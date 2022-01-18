@@ -2,6 +2,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import com.github.tyngstast.borsdatavaluationalarmer.initKoin
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -18,6 +19,9 @@ class MainApp : Application() {
             module {
                 viewModel { AlarmViewModel() }
                 single<Context> { this@MainApp }
+                single<SharedPreferences> {
+                    get<Context>().getSharedPreferences("VALUATION_ALARMER_SETTINGS", Context.MODE_PRIVATE)
+                }
             }
         )
 

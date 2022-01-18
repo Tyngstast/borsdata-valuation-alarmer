@@ -22,6 +22,8 @@ kotlin {
     val napierVersion = "2.3.0"
     val koinVersion: String by project
     val kVaultVersion = "1.7.0"
+    val settingsVersion = "0.8.1"
+    val datetimeVersion = "0.3.2"
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -38,6 +40,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
@@ -46,6 +49,7 @@ kotlin {
                 implementation("io.github.aakira:napier:$napierVersion")
                 implementation("com.liftric:kvault:$kVaultVersion")
                 implementation("io.insert-koin:koin-core:$koinVersion")
+                implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
             }
         }
         val commonTest by getting {
