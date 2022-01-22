@@ -2,7 +2,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.tyngstast.borsdatavaluationalarmer.AlarmModel
+import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -16,7 +16,7 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
     }
 
     private val alarmDao: AlarmDao by inject()
-    private val alarmModel = AlarmModel()
+    private val sharedModel = SharedModel()
 
     val alarms = alarmDao.getAllAlarmsAsFlow()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())

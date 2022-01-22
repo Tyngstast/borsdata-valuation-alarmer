@@ -12,7 +12,7 @@ import kotlinx.datetime.Clock
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class AlarmModel : KoinComponent {
+class SharedModel : KoinComponent {
     companion object {
         private const val TAG = "AlarmModel"
         private const val DB_STOCK_DATA_TIMESTAMP_KEY = ""
