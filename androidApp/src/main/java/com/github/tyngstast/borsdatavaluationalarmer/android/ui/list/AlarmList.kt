@@ -56,7 +56,7 @@ fun AlarmList(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Active Alarms") })
+            TopAppBar(title = { Text("Aktiva alarm") })
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAdd) {
@@ -84,7 +84,7 @@ fun AlarmList(
                             clip = true
                         )
                         .animateItemPlacement()
-                        .padding(vertical = 3.dp, horizontal = 4.dp),
+                        .padding(vertical = 3.dp),
                     directions = setOf(DismissDirection.EndToStart),
                     dismissThresholds = {
                         FractionalThreshold(0.33f)

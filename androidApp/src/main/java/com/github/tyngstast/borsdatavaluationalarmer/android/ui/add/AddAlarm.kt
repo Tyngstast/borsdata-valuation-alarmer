@@ -63,14 +63,14 @@ fun AddAlarm(
 
     val addAlarm = {
         viewModel.addAlarm()
-        Toast.makeText(context, "Added Alarm", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Sparade nytt alarm", Toast.LENGTH_SHORT).show()
         popBack()
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add New Alarm") },
+                title = { Text("Lägg till alarm") },
                 navigationIcon = {
                     IconButton(onClick = { popBack() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
