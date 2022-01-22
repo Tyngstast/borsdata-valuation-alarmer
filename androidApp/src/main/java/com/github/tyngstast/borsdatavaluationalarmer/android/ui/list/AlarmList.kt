@@ -1,6 +1,5 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,17 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.tyngstast.borsdatavaluationalarmer.android.AlarmViewModel
+import com.github.tyngstast.borsdatavaluationalarmer.android.AlarmListViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AlarmList(
     paddingValues: PaddingValues = PaddingValues(),
     onAdd: () -> Unit,
-    alarmViewModel: AlarmViewModel = getViewModel()
+    alarmListViewModel: AlarmListViewModel = getViewModel()
 ) {
-    val alarms = alarmViewModel.alarms.collectAsState()
-    Log.i("ALARM_LIST", alarms.value.toString())
+    val alarms = alarmListViewModel.alarms.collectAsState()
 
     Scaffold(
         topBar = {

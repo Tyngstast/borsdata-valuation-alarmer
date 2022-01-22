@@ -6,9 +6,11 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarm
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 sealed class Screen(val title: String) {
     object AlarmList : Screen("AlarmList")
@@ -16,6 +18,7 @@ sealed class Screen(val title: String) {
     object EditAlarm : Screen("EditAlarm")
 }
 
+@ExperimentalCoroutinesApi
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainLayout() {

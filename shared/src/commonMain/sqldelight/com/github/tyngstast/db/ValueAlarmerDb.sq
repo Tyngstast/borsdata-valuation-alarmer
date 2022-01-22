@@ -38,7 +38,7 @@ deleteAlarm:
 DELETE FROM Alarm
 WHERE id = ?;
 
-selctAllInstruments:
+selectAllInstruments:
 SELECT * FROM Instrument;
 
 selectInstrument:
@@ -52,11 +52,11 @@ VALUES (?, ?, ?, ?, ?);
 deleteAllInstruments:
 DELETE FROM Instrument;
 
-selctAllKpis:
-SELECT * FROM Instrument;
+selectAllKpis:
+SELECT * FROM Kpi;
 
 selectKpi:
-SELECT * FROM Instrument
+SELECT * FROM Kpi
 WHERE name LIKE ?;
 
 insertKpi:

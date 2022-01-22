@@ -48,7 +48,7 @@ class AlarmModel : KoinComponent {
         // Default to 0 to fetch if key is missing
         val latestFetch = settings.getLong(DB_STOCK_DATA_TIMESTAMP_KEY, 0)
         val oneWeekInMillis = 7 * 24 * 60 * 60 * 1000
-        val stale = latestFetch < currentTimeInMillis
+        val stale = latestFetch + oneWeekInMillis < currentTimeInMillis
 
         if (!stale) {
             return@coroutineScope
