@@ -4,13 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
-@ExperimentalCoroutinesApi
 class MainActivity : ComponentActivity() {
 
     private val scope = MainScope()

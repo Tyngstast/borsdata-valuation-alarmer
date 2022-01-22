@@ -41,9 +41,10 @@ WHERE id = ?;
 selectAllInstruments:
 SELECT * FROM Instrument;
 
-selectInstrument:
+selectInstruments:
 SELECT * FROM Instrument
-WHERE name LIKE ?;
+WHERE name LIKE ('%' || :name || '%')
+    OR ticker LIKE ('%' || :name || '%');
 
 insertInstrument:
 INSERT INTO Instrument(id, insId, yahooId, name, ticker)
@@ -55,9 +56,9 @@ DELETE FROM Instrument;
 selectAllKpis:
 SELECT * FROM Kpi;
 
-selectKpi:
+selectKpis:
 SELECT * FROM Kpi
-WHERE name LIKE ?;
+WHERE name LIKE ('%' || :name || '%');
 
 insertKpi:
 INSERT INTO Kpi(id, kpidId, name, format)

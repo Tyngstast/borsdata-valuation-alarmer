@@ -15,7 +15,7 @@ import org.koin.core.component.inject
 class SharedModel : KoinComponent {
     companion object {
         private const val TAG = "AlarmModel"
-        private const val DB_STOCK_DATA_TIMESTAMP_KEY = ""
+        private const val DB_STOCK_DATA_TIMESTAMP_KEY = "DbStockDataTimestampKey"
     }
 
     private val instrumentDao: InstrumentDao by inject()
