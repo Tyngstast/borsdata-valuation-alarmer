@@ -28,10 +28,7 @@ fun MainLayout() {
                 exitTransition = { slideOutHorizontally() },
                 popEnterTransition = { slideInHorizontally() }
             ) {
-                AlarmList(
-                    paddingValues = paddingValues,
-                    onAdd = { navController.navigate(Screen.AddAlarm.title) }
-                )
+                AlarmList(onAdd = { navController.navigate(Screen.AddAlarm.title) })
             }
             composable(
                 route = Screen.AddAlarm.title,
