@@ -2,11 +2,15 @@ package com.github.tyngstast.borsdatavaluationalarmer.db
 
 import com.github.tyngstast.borsdatavaluationalarmer.KpiDto
 import com.squareup.sqldelight.db.SqlDriver
+import kotlinx.coroutines.CoroutineDispatcher
 
-class KpiDao(sqlDriver: SqlDriver) : Dao(sqlDriver) {
+class KpiDao(
+    sqlDriver: SqlDriver,
+    private val backgroundDispatcher: CoroutineDispatcher
+) : Dao(sqlDriver) {
 
-    fun resetKpis(kpis: List<KpiDto>) {
-        dbQuery.transaction {
+    suspend fun resetKpis(kpis: List<KpiDto>) {
+        dbQuery.transactionWithContext(backgroundDispatcher) {
             dbQuery.deleteAllKpis()
             kpis.forEach {
                 dbQuery.insertKpi(

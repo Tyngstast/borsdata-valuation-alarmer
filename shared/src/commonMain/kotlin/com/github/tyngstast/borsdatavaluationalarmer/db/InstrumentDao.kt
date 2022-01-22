@@ -2,11 +2,15 @@ package com.github.tyngstast.borsdatavaluationalarmer.db
 
 import com.github.tyngstast.borsdatavaluationalarmer.InstrumentDto
 import com.squareup.sqldelight.db.SqlDriver
+import kotlinx.coroutines.CoroutineDispatcher
 
-class InstrumentDao(sqlDriver: SqlDriver) : Dao(sqlDriver) {
+class InstrumentDao(
+    sqlDriver: SqlDriver,
+    private val backgroundDispatcher: CoroutineDispatcher
+) : Dao(sqlDriver) {
 
-    fun resetInstruments(instruments: List<InstrumentDto>) {
-        dbQuery.transaction {
+    suspend fun resetInstruments(instruments: List<InstrumentDto>) {
+        dbQuery.transactionWithContext(backgroundDispatcher) {
             dbQuery.deleteAllInstruments()
             instruments.forEach {
                 dbQuery.insertInstrument(
