@@ -39,7 +39,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -215,7 +214,6 @@ private fun InputField(
         .fillMaxWidth()
         .onFocusChanged(onFocusChange)
         .focusRequester(focusRequester),
-    textStyle = TextStyle(fontSize = 20.sp),
     label = { Text(label, fontSize = 16.sp) },
     onValueChange = onValueChange,
     keyboardActions = keyboardActions,

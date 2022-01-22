@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.AppTheme
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -23,7 +24,9 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            MainLayout()
+            AppTheme {
+                MainLayout()
+            }
         }
     }
 

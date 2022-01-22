@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,11 +40,11 @@ fun AlarmView(alarm: Alarm) {
                 Column {
                     Text(
                         text = "Bolag",
-                        style = TextStyle(fontSize = 12.sp, color = Color.DarkGray)
+                        style = LocalTextStyle.current.copy(fontSize = 12.sp, color = Color.DarkGray)
                     )
                 }
                 Column {
-                    Text(text = alarm.insName, style = TextStyle(fontSize = 20.sp))
+                    Text(text = alarm.insName)
                 }
             }
             Row(horizontalArrangement = Arrangement.End) {
@@ -52,22 +52,22 @@ fun AlarmView(alarm: Alarm) {
                     Column {
                         Text(
                             text = "Nyckeltal",
-                            style = TextStyle(fontSize = 12.sp, color = Color.DarkGray)
+                            style = LocalTextStyle.current.copy(fontSize = 12.sp, color = Color.DarkGray)
                         )
                     }
                     Column {
-                        Text(text = alarm.kpiName, style = TextStyle(fontSize = 20.sp))
+                        Text(text = alarm.kpiName)
                     }
                 }
                 Column(Modifier.padding(12.dp)) {
                     Column {
                         Text(
                             text = "Värde",
-                            style = TextStyle(fontSize = 12.sp, color = Color.DarkGray)
+                            style = LocalTextStyle.current.copy(fontSize = 12.sp, color = Color.DarkGray)
                         )
                     }
                     Column {
-                        Text(text = alarm.kpiValue.toString(), style = TextStyle(fontSize = 20.sp))
+                        Text(text = alarm.kpiValue.toString())
                     }
                 }
             }
