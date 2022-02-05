@@ -52,13 +52,13 @@ class ValuationAlarmWorker(
             }
 
             Result.success()
+        }.onSuccess {
+            // Trigger from self instead of periodic to enable a more tailored schedule
+            WorkerFactory(context).enqueueNextReplace()
         }.onFailure {
             log.e(it) { it.message.toString() }
             Result.failure()
         }
-
-        // Trigger from self instead of periodic to enable a more tailored schedule
-        WorkerFactory(context).enqueueNextReplace()
 
         return result.getOrDefault(Result.failure())
     }
