@@ -7,11 +7,12 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 
-class BorsdataApi(vault: Vault) {
+class BorsdataApi(private val vault: Vault) {
     companion object {
         private const val BD_HOST = "apiservice.borsdata.se/v1"
         private const val AUTH_PARAM = "authKey"
@@ -33,7 +34,7 @@ class BorsdataApi(vault: Vault) {
             }
         }
         install(HttpTimeout) {
-            val timeout = 15000L
+            val timeout = 5000L
             connectTimeoutMillis = timeout
             requestTimeoutMillis = timeout
             socketTimeoutMillis = timeout
@@ -74,6 +75,21 @@ class BorsdataApi(vault: Vault) {
         }
 
         return response.kpiHistoryMetadatas
+    }
+
+    @Throws(Exception::class)
+    suspend fun verifyKey(key: String): Boolean {
+        try {
+            val response: HttpResponse = httpClient.get("instruments/kpis/updated?$AUTH_PARAM=$key")
+            return response.status.isSuccess()
+        } catch (e : ClientRequestException) {
+            if (e.response.status.value == 401) {
+                return false;
+            }
+            throw e
+        } catch (e: Throwable) {
+            throw e
+        }
     }
 }
 

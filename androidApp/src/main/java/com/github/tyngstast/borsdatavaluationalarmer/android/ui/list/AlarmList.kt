@@ -1,4 +1,4 @@
-package com.github.tyngstast.borsdatavaluationalarmer.android.ui
+package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
@@ -37,7 +37,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.flowWithLifecycle
-import com.github.tyngstast.borsdatavaluationalarmer.android.AlarmListViewModel
 import com.github.tyngstast.db.Alarm
 import org.koin.androidx.compose.getViewModel
 

@@ -1,4 +1,4 @@
-package com.github.tyngstast.borsdatavaluationalarmer.android.ui
+package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

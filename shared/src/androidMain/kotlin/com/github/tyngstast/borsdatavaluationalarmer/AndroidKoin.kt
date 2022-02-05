@@ -17,6 +17,6 @@ actual val platformModule: Module = module {
             "ValueAlarmerDb"
         )
     }
-    single { Vault(KVault(get())) }
     single<Settings> { AndroidSettings(get()) }
+    single { Vault(KVault(get())) }
 }
