@@ -31,17 +31,20 @@ class SharedModel : KoinComponent {
         return 30 * 1000L
     }
 
-    suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> {
+    suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> = coroutineScope {
         val alarms = alarmDao.getAllAlarms()
 
-        log.i {"Alarms: ${alarms.size}" }
+        log.i { "Alarms: ${alarms.size}" }
 
         val triggeredAlarms = alarms
             .map {
-                val response = borsdataApi.getLatestValue(it.insId, it.kpiId)
-                val kpiValue = response.value.n
+                val kpiValue = async {
+                    val response = borsdataApi.getLatestValue(it.insId, it.kpiId)
+                    response.value.n
+                }
                 it to kpiValue
             }
+            .map { (alarm, kpiValueDeferred) -> alarm to kpiValueDeferred.await() }
             .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
             .map { (alarm, kpiValue) -> alarm to kpiValue }
 
@@ -49,7 +52,7 @@ class SharedModel : KoinComponent {
             log.i { "No triggered Alarms" }
         }
 
-        return triggeredAlarms
+        triggeredAlarms
     }
 
     suspend fun updateInstrumentsAndKpisIfStale() = coroutineScope {

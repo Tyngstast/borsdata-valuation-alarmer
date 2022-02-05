@@ -38,7 +38,7 @@ class ValuationAlarmWorker(
         log.i { "doWork" }
         val context = applicationContext
 
-        return try {
+        val result: kotlin.Result<Result> = kotlin.runCatching {
             val triggeredAlarms = sharedModel.triggeredAlarms()
             log.i { "triggered alarms: ${triggeredAlarms.map { it.first.insName }}" }
 
@@ -51,14 +51,16 @@ class ValuationAlarmWorker(
                 makeStatusNotification(message, context)
             }
 
-            // Trigger from self instead of periodic to enable a more tailored schedule
-            WorkerFactory(applicationContext).enqueueNextReplace()
-
             Result.success()
-        } catch (e: Throwable) {
-            log.e(e) { e.message.toString() }
+        }.onFailure {
+            log.e(it) { it.message.toString() }
             Result.failure()
         }
+
+        // Trigger from self instead of periodic to enable a more tailored schedule
+        WorkerFactory(context).enqueueNextReplace()
+
+        return result.getOrDefault(Result.failure())
     }
 
     private fun makeStatusNotification(message: String, context: Context) {
