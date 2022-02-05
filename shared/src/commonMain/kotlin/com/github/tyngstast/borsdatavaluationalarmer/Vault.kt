@@ -17,4 +17,8 @@ class Vault(kVault: KVault) {
     fun getApiKey(): String? {
         return vault.string(AUTH_KEY)
     }
+
+    fun clearApiKey() {
+        vault.deleteObject(AUTH_KEY)
+    }
 }

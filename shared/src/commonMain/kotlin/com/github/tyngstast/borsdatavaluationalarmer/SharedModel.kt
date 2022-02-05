@@ -6,6 +6,8 @@ import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
 import com.github.tyngstast.db.Alarm
 import com.russhwolf.settings.Settings
+import io.ktor.client.features.*
+import io.ktor.http.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -24,6 +26,7 @@ class SharedModel : KoinComponent {
     private val alarmDao: AlarmDao by inject()
     private val borsdataApi: BorsdataApi by inject()
     private val settings: Settings by inject()
+    private val vault: Vault by inject()
     private val clock: Clock by inject()
 
     fun getNextAlarmTriggerWorkInitialDelay(): Long {
@@ -44,7 +47,16 @@ class SharedModel : KoinComponent {
                 }
                 it to kpiValue
             }
-            .map { (alarm, kpiValueDeferred) -> alarm to kpiValueDeferred.await() }
+            .map { (alarm, kpiValueDeferred) ->
+                try {
+                    alarm to kpiValueDeferred.await()
+                } catch (e: Throwable) {
+                    if (e is ClientRequestException && e.response.status == HttpStatusCode.Unauthorized) {
+                        vault.clearApiKey()
+                    }
+                    throw e
+                }
+            }
             .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
             .map { (alarm, kpiValue) -> alarm to kpiValue }
 
