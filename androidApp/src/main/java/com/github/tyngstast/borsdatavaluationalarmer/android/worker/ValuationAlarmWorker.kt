@@ -5,20 +5,19 @@ import android.app.NotificationManager
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.RingtoneManager
-import android.media.RingtoneManager.getDefaultUri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import co.touchlab.kermit.Logger
+import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
-import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import java.util.concurrent.atomic.AtomicInteger
 
-class ValuationAlarmNotificationWorker(
+class ValuationAlarmWorker(
     context: Context,
     params: WorkerParameters
 ) : CoroutineWorker(context, params), KoinComponent {
@@ -28,46 +27,34 @@ class ValuationAlarmNotificationWorker(
         private const val CHANNEL_NAME = "Valuation Alarmer WorkManager Alarm Notifications"
         private const val CHANNEL_DESCRIPTION =
             "Show notification whenever valuation alarm condition is triggered"
-        private const val NOTIFICATION_ID = 1
-        private const val NOTIFICATION_TITLE = "Alarm triggered!"
+        private const val NOTIFICATION_TITLE = "Värderingslarm triggades!"
+        private val notificationId = AtomicInteger(0)
     }
 
-    private val log: Logger by injectLogger("ValuationAlarmNotificationWorker")
-    private val alarmDao: AlarmDao by inject()
+    private val log: Logger by injectLogger("ValuationAlarmWorker")
+    private val sharedModel = SharedModel()
 
     override suspend fun doWork(): Result {
         log.i { "doWork" }
         val context = applicationContext
 
-        sleep()
-        log.i { "Done sleeping" }
-
         return try {
-            inputData.keyValueMap
-                .map { (alarmId, kpiValue) ->
-                    alarmId to kpiValue.toString()
-                }
-                .map { (id, kpiValue) ->
-                    val alarm = alarmDao.getAlarm(id.toLong())
-                    if (alarm == null) {
-                        log.e { "Failed to find alarm with ID: $id"}
-                        return Result.failure()
-                    }
+            val triggeredAlarms = sharedModel.triggeredAlarms()
+            log.i { "triggered alarms: ${triggeredAlarms.map { it.first.insName }}" }
 
-                    alarm to kpiValue
-                }
-                .forEach {
-                    val alarm = it.first
+            triggeredAlarms.forEach {
+                val alarm = it.first
+                val kpiValue = String.format("%.1f", it.second)
 
-                    val message =
-                        "Alarm triggered from ${alarm.insName}: ${alarm.kpiName} ${alarm.operation} ${alarm.kpiValue}"
-                    makeStatusNotification(message, context)
+                val message =
+                    "Alarm triggades för ${alarm.insName}: ${alarm.kpiName} $kpiValue under ${alarm.kpiValue}"
+                makeStatusNotification(message, context)
+            }
 
-                    log.i { "Cleaning up triggered alarm: $alarm" }
-//                    dao.deleteAlarm(alarm.id)
-                }
+            // Trigger from self instead of periodic to enable a more tailored schedule
+            WorkerFactory(applicationContext).enqueueNextReplace()
 
-            return Result.success()
+            Result.success()
         } catch (e: Throwable) {
             log.e(e) { e.message.toString() }
             Result.failure()
@@ -79,14 +66,17 @@ class ValuationAlarmNotificationWorker(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library
-            val channel =
-                NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            )
             channel.description = CHANNEL_DESCRIPTION
             channel.enableVibration(true)
             channel.enableLights(true)
-            channel.vibrationPattern = longArrayOf(200, 200, 200)
+            channel.vibrationPattern = longArrayOf(200)
 
-            val ringtoneManager = getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val ringtoneManager = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val audioAttributes = AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -107,17 +97,12 @@ class ValuationAlarmNotificationWorker(
             .setContentTitle(NOTIFICATION_TITLE)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setVibrate(longArrayOf(200, 200, 200))
+            .setVibrate(longArrayOf(200))
 
         // Show the notification
-        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
-    }
-
-    private fun sleep() {
-        try {
-            Thread.sleep(4000, 0)
-        } catch (e: InterruptedException) {
-            log.e { e.message.toString() }
-        }
+        NotificationManagerCompat.from(context).notify(
+            notificationId.getAndIncrement(),
+            builder.build()
+        )
     }
 }

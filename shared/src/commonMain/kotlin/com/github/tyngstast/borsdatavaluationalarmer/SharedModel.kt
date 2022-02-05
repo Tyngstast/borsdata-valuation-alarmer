@@ -4,6 +4,7 @@ import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
+import com.github.tyngstast.db.Alarm
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -23,8 +24,33 @@ class SharedModel : KoinComponent {
     private val alarmDao: AlarmDao by inject()
     private val borsdataApi: BorsdataApi by inject()
     private val settings: Settings by inject()
-    private val vault: Vault by inject()
     private val clock: Clock by inject()
+
+    fun getNextAlarmTriggerWorkInitialDelay(): Long {
+        // TODO
+        return 30 * 1000L
+    }
+
+    suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> {
+        val alarms = alarmDao.getAllAlarms()
+
+        log.i {"Alarms: ${alarms.size}" }
+
+        val triggeredAlarms = alarms
+            .map {
+                val response = borsdataApi.getLatestValue(it.insId, it.kpiId)
+                val kpiValue = response.value.n
+                it to kpiValue
+            }
+            .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
+            .map { (alarm, kpiValue) -> alarm to kpiValue }
+
+        if (triggeredAlarms.isEmpty()) {
+            log.i { "No triggered Alarms" }
+        }
+
+        return triggeredAlarms
+    }
 
     suspend fun updateInstrumentsAndKpisIfStale() = coroutineScope {
         val currentTimeInMillis = clock.now().toEpochMilliseconds()

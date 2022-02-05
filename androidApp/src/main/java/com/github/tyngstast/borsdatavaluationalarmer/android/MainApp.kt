@@ -13,10 +13,6 @@ import org.koin.dsl.module
 
 class MainApp : Application() {
 
-    companion object {
-        private const val VALUATION_SYNC_WORK = "valuation_sync_work";
-    }
-
     override fun onCreate() {
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(
@@ -50,24 +46,5 @@ class MainApp : Application() {
                 }
             }
         )
-
-        /**
-        val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
-        .build()
-
-        val workerRequest = OneTimeWorkRequestBuilder<ValuationAlarmDataFetcherWorker>()
-        .setConstraints(constraints)
-        .build()
-
-        WorkManager.getInstance(this)
-        .beginUniqueWork(
-        VALUATION_SYNC_WORK,
-        ExistingWorkPolicy.KEEP,
-        workerRequest
-        )
-        .then(OneTimeWorkRequest.from(ValuationAlarmNotificationWorker::class.java))
-        .enqueue()
-         */
     }
 }

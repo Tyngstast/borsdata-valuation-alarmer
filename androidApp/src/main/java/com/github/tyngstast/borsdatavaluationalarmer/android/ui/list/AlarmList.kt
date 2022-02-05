@@ -1,6 +1,7 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -37,8 +39,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.flowWithLifecycle
+import com.github.tyngstast.borsdatavaluationalarmer.android.worker.WorkerFactory
 import com.github.tyngstast.db.Alarm
 import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.inject
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -46,6 +50,12 @@ fun AlarmList(
     onAdd: () -> Unit,
     viewModel: AlarmListViewModel = getViewModel()
 ) {
+    val mainContext: Context by inject()
+
+    LaunchedEffect(Unit) {
+        WorkerFactory(mainContext).enqueueNextKeep()
+    }
+
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleAwareAlarmsFlow = remember(viewModel.alarms, lifecycleOwner) {
         viewModel.alarms.flowWithLifecycle(lifecycleOwner.lifecycle)
