@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -49,6 +50,7 @@ fun Login(
     if (!state.loading && state.apiKey.isNotBlank() && !successCalled) {
         // Safe guard for multiple pop backs. Find a better way to do this
         successCalled = true
+        LocalFocusManager.current.clearFocus()
         onSuccess()
     }
 
