@@ -3,8 +3,6 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.worker
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.media.AudioAttributes
-import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -76,15 +74,7 @@ class ValuationAlarmWorker(
             channel.description = CHANNEL_DESCRIPTION
             channel.enableVibration(true)
             channel.enableLights(true)
-            channel.vibrationPattern = longArrayOf(200)
-
-            val ringtoneManager = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            val audioAttributes = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build()
-
-            channel.setSound(ringtoneManager, audioAttributes)
+            channel.vibrationPattern = longArrayOf(300)
 
             // Add the channel
             val notificationManager =
@@ -99,7 +89,7 @@ class ValuationAlarmWorker(
             .setContentTitle(NOTIFICATION_TITLE)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setVibrate(longArrayOf(200))
+            .setVibrate(longArrayOf(300))
 
         // Show the notification
         NotificationManagerCompat.from(context).notify(
