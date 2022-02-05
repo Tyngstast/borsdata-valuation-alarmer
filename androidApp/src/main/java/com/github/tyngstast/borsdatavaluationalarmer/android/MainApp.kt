@@ -18,20 +18,24 @@ class MainApp : Application() {
     }
 
     override fun onCreate() {
-        StrictMode.setThreadPolicy(
-            StrictMode.ThreadPolicy.Builder()
-                .detectNetwork()
-                .penaltyLog()
-                .build()
-        )
-        StrictMode.setVmPolicy(
-            StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects()
-                .detectLeakedClosableObjects()
-                .penaltyLog()
-                .build()
-        )
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder()
+                    .detectNetwork()
+                    .penaltyLog()
+                    .build()
+            )
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .build()
+            )
+        }
+
         super.onCreate()
+
         initKoin(
             module {
                 single<Context> { this@MainApp }

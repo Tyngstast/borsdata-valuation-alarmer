@@ -6,6 +6,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Borsdata_ValuationAlarmer"
+rootProject.name = "BorsdataValuationAlarmer"
 include(":androidApp")
 include(":shared")

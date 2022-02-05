@@ -24,6 +24,7 @@ kotlin {
     val kVaultVersion = "1.7.0"
     val settingsVersion = "0.8.1"
     val datetimeVersion = "0.3.2"
+    val kermitVersion: String by project
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -50,6 +51,7 @@ kotlin {
                 implementation("com.liftric:kvault:$kVaultVersion")
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
+                implementation("co.touchlab:kermit:$kermitVersion")
             }
         }
         val commonTest by getting {

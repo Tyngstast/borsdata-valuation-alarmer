@@ -1,12 +1,13 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.worker
 
 import android.content.Context
-import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.BorsdataApi
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
+import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -15,42 +16,39 @@ class ValuationAlarmDataFetcherWorker(
     params: WorkerParameters
 ) : CoroutineWorker(context, params), KoinComponent {
 
-    companion object {
-        private const val TAG = "ValuationAlarmDataFetcherWorker"
-    }
-
+    private val log: Logger by injectLogger("ValuationAlarmDataFetcherWorker")
     private val alarmDao: AlarmDao by inject()
     private val borsdataApi: BorsdataApi by inject()
 
     override suspend fun doWork(): Result {
-        Log.i(TAG, "doWork")
+        log.i { "doWork" }
 
         return try {
             val alarms = alarmDao.getAllAlarms()
 
-            Log.i(TAG, "Alarms: $alarms")
+            log.i {"Alarms: $alarms" }
 
             val triggeredAlarms = alarms
                 .map {
-                    Log.i(TAG, "Fecthing data for ${it.insName} KPI ${it.kpiId}")
+                    log.i { "Fecthing data for ${it.insName} KPI ${it.kpiId}" }
                     val response = borsdataApi.getLatestValue(it.insId, it.kpiId)
                     val kpiValue = response.value.n
                     it to kpiValue
                 }
                 .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
                 .map { (alarm, kpiValue) ->
-                    Log.i(TAG, "Triggered alarm: ${alarm.insName} KPI ${alarm.kpiId}")
+                    log.i { "Triggered alarm: ${alarm.insName} KPI ${alarm.kpiId}" }
                     alarm.id.toString() to kpiValue
                 }
                 .toTypedArray()
 
             if (triggeredAlarms.isEmpty()) {
-                Log.i(TAG, "No triggered Alarms")
+                log.i { "No triggered Alarms" }
             }
 
             Result.success(workDataOf(*triggeredAlarms))
         } catch (e: Throwable) {
-            Log.e(TAG, e.message, e)
+            log.e(e) { e.message.toString() }
             Result.failure()
         }
     }

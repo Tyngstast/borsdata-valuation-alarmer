@@ -21,7 +21,6 @@ sealed class Screen(val title: String) {
     object Login : Screen("Login")
     object AlarmList : Screen("AlarmList")
     object AddAlarm : Screen("AddAlarm")
-    object EditAlarm : Screen("EditAlarm")
 }
 
 @OptIn(ExperimentalAnimationApi::class)

@@ -32,6 +32,7 @@ android {
 
 dependencies {
     val coroutinesVersion: String by project
+    val kermitVersion: String by project
     val koinVersion: String by project
     val workVersion: String by project
     val lifecycleVersion = "2.4.0"
@@ -60,4 +61,5 @@ dependencies {
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.navigation:navigation-compose:$navComposeVersion")
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
+    implementation("co.touchlab:kermit:$kermitVersion")
 }

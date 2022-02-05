@@ -7,13 +7,14 @@ import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.media.RingtoneManager.getDefaultUri
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
+import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -23,7 +24,6 @@ class ValuationAlarmNotificationWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
 
     companion object {
-        private const val TAG = "ValuationAlarmNotificationWorker"
         private const val CHANNEL_ID = "VALUATION_ALARMER_ALARM_TRIGGER_NOTIFICATION"
         private const val CHANNEL_NAME = "Valuation Alarmer WorkManager Alarm Notifications"
         private const val CHANNEL_DESCRIPTION =
@@ -32,14 +32,15 @@ class ValuationAlarmNotificationWorker(
         private const val NOTIFICATION_TITLE = "Alarm triggered!"
     }
 
+    private val log: Logger by injectLogger("ValuationAlarmNotificationWorker")
     private val alarmDao: AlarmDao by inject()
 
     override suspend fun doWork(): Result {
-        Log.i(TAG, "doWork")
+        log.i { "doWork" }
         val context = applicationContext
 
         sleep()
-        Log.i(TAG, "Done sleeping")
+        log.i { "Done sleeping" }
 
         return try {
             inputData.keyValueMap
@@ -49,7 +50,7 @@ class ValuationAlarmNotificationWorker(
                 .map { (id, kpiValue) ->
                     val alarm = alarmDao.getAlarm(id.toLong())
                     if (alarm == null) {
-                        Log.e(TAG, "Failed to find alarm with ID: $id")
+                        log.e { "Failed to find alarm with ID: $id"}
                         return Result.failure()
                     }
 
@@ -58,16 +59,17 @@ class ValuationAlarmNotificationWorker(
                 .forEach {
                     val alarm = it.first
 
-                    val message = "Alarm triggered from ${alarm.insName}: ${alarm.kpiName} ${alarm.operation} ${alarm.kpiValue}"
+                    val message =
+                        "Alarm triggered from ${alarm.insName}: ${alarm.kpiName} ${alarm.operation} ${alarm.kpiValue}"
                     makeStatusNotification(message, context)
 
-                    Log.i(TAG, "Cleaning up triggered alarm: $alarm")
+                    log.i { "Cleaning up triggered alarm: $alarm" }
 //                    dao.deleteAlarm(alarm.id)
                 }
 
             return Result.success()
         } catch (e: Throwable) {
-            Log.e(TAG, e.message, e)
+            log.e(e) { e.message.toString() }
             Result.failure()
         }
     }
@@ -115,7 +117,7 @@ class ValuationAlarmNotificationWorker(
         try {
             Thread.sleep(4000, 0)
         } catch (e: InterruptedException) {
-            Log.e(TAG, e.message.toString())
+            log.e { e.message.toString() }
         }
     }
 }

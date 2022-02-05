@@ -15,3 +15,9 @@
     * Sql Delight
     * KVault
     * WorkManager
+    
+## TODO 
+  * Implement Yahoo Finance for prices
+      * Probably won't do for all KPIs
+      * Maybe show an info graphic when value is calculated daily (manually) or not
+  * Scheduled alarm trigger fetch in background

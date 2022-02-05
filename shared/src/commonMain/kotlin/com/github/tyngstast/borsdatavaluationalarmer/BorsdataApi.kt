@@ -1,18 +1,20 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
-import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.features.*
-import io.ktor.client.features.json.*
+import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import co.touchlab.kermit.Logger as KermitLogger
+import io.ktor.client.features.logging.Logger as KtorLogger
 
 
-class BorsdataApi(private val vault: Vault) {
+class BorsdataApi(private val vault: Vault, private val log: KermitLogger) {
     companion object {
         private const val BD_HOST = "apiservice.borsdata.se/v1"
         private const val AUTH_PARAM = "authKey"
@@ -20,16 +22,16 @@ class BorsdataApi(private val vault: Vault) {
 
     private val httpClient = HttpClient {
         install(JsonFeature) {
-            val json = kotlinx.serialization.json.Json {
+            val json = Json {
                 ignoreUnknownKeys = true
             }
             serializer = KotlinxSerializer(json)
         }
         install(Logging) {
             level = LogLevel.INFO
-            logger = object : Logger {
+            logger = object : KtorLogger {
                 override fun log(message: String) {
-                    Napier.i(tag = "BorsdataAPI", message = message)
+                    log.v { message }
                 }
             }
         }
