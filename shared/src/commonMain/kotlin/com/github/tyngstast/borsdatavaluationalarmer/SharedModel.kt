@@ -12,6 +12,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -30,8 +34,28 @@ class SharedModel : KoinComponent {
     private val clock: Clock by inject()
 
     fun getNextAlarmTriggerWorkInitialDelay(): Long {
-        // TODO
-        return 30 * 1000L
+        val tz = TimeZone.currentSystemDefault()
+        val now = clock.now()
+        val nowLdt = now.toLocalDateTime(tz)
+        log.i { "current dateTime: $nowLdt" }
+        val (day, hour) = when {
+            // Disable for testing 2022-02-05 - 2022-05-06
+//            // Don't run on sundays
+//            nowLdt.dayOfWeek == DayOfWeek.SUNDAY -> nowLdt.dayOfMonth + 1 to 8
+//            // We only want to run once at 8 on saturdays, so after 8 -> monday morning
+//            nowLdt.dayOfWeek == DayOfWeek.SATURDAY && nowLdt.hour > 8 -> nowLdt.dayOfMonth + 2 to 8
+            // run next day at 8
+            nowLdt.hour > 18 -> nowLdt.dayOfMonth + 1 to 8
+            // run at 8
+            nowLdt.hour <= 8 -> nowLdt.dayOfMonth to 8
+            // run next hour full hour
+            else -> nowLdt.dayOfMonth to nowLdt.hour + 1
+        }
+
+        val next = LocalDateTime(nowLdt.year, nowLdt.monthNumber, day, hour, 0, 0)
+        log.i { "next alarm trigger: $next" }
+
+        return next.toInstant(tz).toEpochMilliseconds() - now.toEpochMilliseconds()
     }
 
     suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> = coroutineScope {
