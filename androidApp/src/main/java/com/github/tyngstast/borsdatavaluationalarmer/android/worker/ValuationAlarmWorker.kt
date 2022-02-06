@@ -71,8 +71,8 @@ class ValuationAlarmWorker(
                 NotificationManager.IMPORTANCE_HIGH
             )
             channel.description = CHANNEL_DESCRIPTION
-            channel.enableVibration(true)
             channel.enableLights(true)
+            channel.enableVibration(true)
             channel.vibrationPattern = longArrayOf(300)
 
             // Add the channel
