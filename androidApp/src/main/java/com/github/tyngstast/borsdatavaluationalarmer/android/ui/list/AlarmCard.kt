@@ -105,9 +105,9 @@ fun AlarmView(alarm: Alarm) {
 fun AlarmViewPreview() {
     MaterialTheme {
         Column {
-            AlarmView(alarm = Alarm(1, 2, "Evolution Gaming", 2, "P/E", 40.0, "lte"))
-            AlarmView(alarm = Alarm(1, 2, "Kambi", 2, "EV/EBITDA", 100.0, "lte"))
-            AlarmView(alarm = Alarm(1, 2, "Brdr. A&O Johansen", 2, "Direktavkastning", 20.0, "lte"))
+            AlarmView(alarm = Alarm(1, 2, "Evolution Gaming", "", 2, "P/E", 40.0, "lte"))
+            AlarmView(alarm = Alarm(1, 2, "Kambi", "", 2, "EV/EBITDA", 100.0, "lte"))
+            AlarmView(alarm = Alarm(1, 2, "Brdr. A&O Johansen", "", 2, "Direktavkastning", 20.0, "lte"))
         }
     }
 }

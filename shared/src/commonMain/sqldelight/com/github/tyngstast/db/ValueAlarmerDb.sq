@@ -2,6 +2,7 @@ CREATE TABLE Alarm (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     insId INTEGER NOT NULL,
     insName TEXT NOT NULL,
+    yahooId TEXT NOT NULL,
     kpiId INTEGER NOT NULL,
     kpiName TEXT NOT NULL,
     kpiValue REAL NOT NULL,
@@ -31,8 +32,8 @@ SELECT * FROM Alarm
 WHERE id = ?;
 
 insertAlarm:
-INSERT OR IGNORE INTO Alarm(id, insId, insName, kpiId, kpiName, kpiValue, operation)
-VALUES (?, ?, ?, ?, ?, ?, ?);
+INSERT OR IGNORE INTO Alarm(id, insId, insName, yahooId, kpiId, kpiName, kpiValue, operation)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteAlarm:
 DELETE FROM Alarm

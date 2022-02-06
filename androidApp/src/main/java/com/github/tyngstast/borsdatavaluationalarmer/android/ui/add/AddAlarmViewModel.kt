@@ -48,7 +48,7 @@ class AddAlarmViewModel : ViewModel(), KoinComponent {
                 }
                 .sortedByDescending { it.ticker.equals(_insName, ignoreCase = true) }
                 .take(3)
-                .map { Item(it.insId, it.name) }
+                .map { Item(it.insId, it.name, it.yahooId) }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -63,10 +63,10 @@ class AddAlarmViewModel : ViewModel(), KoinComponent {
 
     fun addAlarm() {
         // First should always be closest, or exact, match after sorting.
-        val (insId, insName) = instruments.value.first()
+        val (insId, insName, yahooId) = instruments.value.first()
         val (kpiId, kpiName) = kpis.value.first()
-        alarmDao.insertAlarm(insId, insName, kpiId, kpiName, kpiValue.value.toDouble(), "lte")
+        alarmDao.insertAlarm(insId, insName, yahooId!!, kpiId, kpiName, kpiValue.value.toDouble(), "lte")
     }
 }
 
-data class Item(val id: Long, val name: String)
+data class Item(val id: Long, val name: String, val yahooId: String? = null)

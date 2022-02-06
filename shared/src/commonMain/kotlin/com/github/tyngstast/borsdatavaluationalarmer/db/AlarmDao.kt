@@ -26,12 +26,13 @@ class AlarmDao(
     fun insertAlarm(
         insId: Long,
         insName: String,
+        yahooId: String,
         kpiId: Long,
         kpiName: String,
         kpiValue: Double,
         operation: String
     ) {
-        dbQuery.insertAlarm(null, insId, insName, kpiId, kpiName, kpiValue, operation)
+        dbQuery.insertAlarm(null, insId, insName, yahooId, kpiId, kpiName, kpiValue, operation)
     }
 
     fun deleteAlarm(id: Long) {

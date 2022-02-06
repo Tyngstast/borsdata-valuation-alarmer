@@ -5,7 +5,6 @@ import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.serialization.Serializable
 import co.touchlab.kermit.Logger as KermitLogger
 
 
@@ -18,10 +17,13 @@ class BorsdataClient(vault: Vault, log: KermitLogger) :
     }
 
     @Throws(Exception::class)
-    suspend fun getLatestValue(insId: Long, kpiId: Long): InsKpiResponse = httpClient.get {
-        url {
-            encodedPath += "instruments/$insId/kpis/$kpiId/last/latest"
+    suspend fun getLatestValue(insId: Long, kpiId: Long): Double {
+        val data = httpClient.get<InsKpiResponse> {
+            url {
+                encodedPath += "instruments/$insId/kpis/$kpiId/last/latest"
+            }
         }
+        return data.value.n
     }
 
     @Throws(Exception::class)
@@ -62,41 +64,3 @@ class BorsdataClient(vault: Vault, log: KermitLogger) :
     }
 }
 
-@Serializable
-data class InstrumentResponse(val instruments: List<InstrumentDto>)
-
-@Serializable
-data class InstrumentDto(
-    val insId: Long,
-    val name: String,
-    val ticker: String,
-    val yahoo: String
-)
-
-@Serializable
-data class KpiResponse(val kpiHistoryMetadatas: List<KpiDto>)
-
-@Serializable
-data class KpiDto(
-    val kpiId: Long,
-    val nameSv: String,
-    val format: String? = null
-)
-
-@Serializable
-data class InsKpiResponse(
-    val kpiId: Long,
-    val group: String,
-    val calculation: String,
-    val value: Value
-)
-
-@Serializable
-data class Value(
-    // Instrument ID, echoed back
-    val i: Long,
-    // Number value when KPI is of that type
-    val n: Double,
-    // String value when KPI is of that type
-    val s: String? = null
-)

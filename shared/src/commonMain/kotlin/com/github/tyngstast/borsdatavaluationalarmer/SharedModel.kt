@@ -3,6 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer
 import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
 import com.github.tyngstast.borsdatavaluationalarmer.client.InstrumentDto
+import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
@@ -33,6 +34,7 @@ class SharedModel : KoinComponent {
     private val kpiDao: KpiDao by inject()
     private val alarmDao: AlarmDao by inject()
     private val borsdataClient: BorsdataClient by inject()
+    private val yahooClient: YahooClient by inject()
     private val settings: Settings by inject()
     private val vault: Vault by inject()
     private val clock: Clock by inject()
@@ -70,8 +72,7 @@ class SharedModel : KoinComponent {
         val triggeredAlarms = alarms
             .map {
                 val kpiValue = async {
-                    val response = borsdataClient.getLatestValue(it.insId, it.kpiId)
-                    response.value.n
+                    calcOrGetKpiValue(it.kpiId, it.kpiName, it.insId, it.yahooId)
                 }
                 it to kpiValue
             }
@@ -132,6 +133,47 @@ class SharedModel : KoinComponent {
 
         log.i { "Reset Instruments and KPIs. Inserted ${instruments.size} Instruments and ${kpis.size} KPIs" }
         log.i { "Latest reset epoch: $currentTimeInMillis" }
+    }
+
+    private suspend fun calcOrGetKpiValue(
+        kpiId: Long,
+        kpiName: String,
+        insId: Long,
+        yahooId: String
+    ): Double {
+        val price = yahooClient.getLatestPrice(yahooId)
+
+        suspend fun ev(): Double = coroutineScope {
+            val (shares, netDebt) = awaitAll(
+                async { borsdataClient.getLatestValue(insId, 61) },
+                async { borsdataClient.getLatestValue(insId, 60) }
+            )
+            ((price * shares) + netDebt)
+        }
+
+        return when (kpiName) {
+            "P/E" -> {
+                val eps = borsdataClient.getLatestValue(insId, 6)
+                price / eps
+            }
+            "EV/EBIT" -> {
+                val ebit = borsdataClient.getLatestValue(insId, 55)
+                ev() / ebit
+            }
+            "EV/EBITDA" -> {
+                val ebitda = borsdataClient.getLatestValue(insId, 54)
+                ev() / ebitda
+            }
+            "EV/S" -> {
+                val sales = borsdataClient.getLatestValue(insId, 53)
+                ev() / sales
+            }
+            "EV/FCF" -> {
+                val fcf = borsdataClient.getLatestValue(insId, 63)
+                ev() / fcf
+            }
+            else -> borsdataClient.getLatestValue(insId, kpiId)
+        }
     }
 
     fun scheduleNext(): Boolean {

@@ -18,7 +18,5 @@
     
 ## TODO 
   * iOS...
-  * Implement Yahoo Finance for prices
-      * Probably won't do for all KPIs
-      * Maybe show an info graphic when value is calculated daily (manually) or not
+  * Show some info graphic and indication when kpi is calculated on the fly (manually)
 
