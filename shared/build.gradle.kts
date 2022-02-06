@@ -19,7 +19,6 @@ kotlin {
     val serializationVersion = "1.3.2"
     val ktorVersion = "1.6.7"
     val sqlDelightVersion: String by project
-    val napierVersion = "2.3.0"
     val koinVersion: String by project
     val kVaultVersion = "1.7.0"
     val settingsVersion = "0.8.1"
@@ -47,7 +46,6 @@ kotlin {
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
-                implementation("io.github.aakira:napier:$napierVersion")
                 implementation("com.liftric:kvault:$kVaultVersion")
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
