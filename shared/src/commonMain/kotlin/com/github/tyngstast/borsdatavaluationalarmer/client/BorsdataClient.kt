@@ -1,56 +1,21 @@
 package com.github.tyngstast.borsdatavaluationalarmer.client
 
 import com.github.tyngstast.borsdatavaluationalarmer.Vault
-import com.github.tyngstast.borsdatavaluationalarmer.initLogger
-import io.ktor.client.*
 import io.ktor.client.features.*
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import co.touchlab.kermit.Logger as KermitLogger
-import io.ktor.client.features.logging.Logger as KtorLogger
 
 
-class BorsdataClient(private val vault: Vault, private val log: KermitLogger) {
+class BorsdataClient(vault: Vault, log: KermitLogger) :
+    Client(BD_HOST, log, AUTH_PARAM to { vault.getApiKey() }) {
+
     companion object {
         private const val BD_HOST = "apiservice.borsdata.se/v1"
         private const val AUTH_PARAM = "authKey"
     }
-
-    private val httpClient = HttpClient {
-        install(JsonFeature) {
-            val json = Json {
-                ignoreUnknownKeys = true
-            }
-            serializer = KotlinxSerializer(json)
-        }
-        install(Logging) {
-            level = LogLevel.INFO
-            logger = object : KtorLogger {
-                override fun log(message: String) {
-                    log.v { message }
-                }
-            }
-        }
-        install(HttpTimeout) {
-            val timeout = 5000L
-            connectTimeoutMillis = timeout
-            requestTimeoutMillis = timeout
-            socketTimeoutMillis = timeout
-        }
-        defaultRequest {
-            host = BD_HOST
-            url {
-                protocol = URLProtocol.HTTPS
-            }
-            parameter(AUTH_PARAM, vault.getApiKey())
-        }
-    }.also { initLogger() }
 
     @Throws(Exception::class)
     suspend fun getLatestValue(insId: Long, kpiId: Long): InsKpiResponse = httpClient.get {
@@ -86,7 +51,7 @@ class BorsdataClient(private val vault: Vault, private val log: KermitLogger) {
         try {
             val response: HttpResponse = httpClient.get("instruments/kpis/updated?$AUTH_PARAM=$key")
             return response.status.isSuccess()
-        } catch (e : ClientRequestException) {
+        } catch (e: ClientRequestException) {
             if (e.response.status.value == 401) {
                 return false;
             }
