@@ -33,6 +33,19 @@ fun MainLayout(
     val apiKeyState by remember(viewModel) { viewModel.apiKeyState }.collectAsState()
     val start = if (apiKeyState.apiKey.isNotBlank()) Screen.AlarmList.title else Screen.Login.title
 
+    val loginSuccess = {
+        navController.popBackStack(Screen.Login.title, true)
+        navController.graph.setStartDestination(Screen.AlarmList.title)
+        navController.navigate(Screen.AlarmList.title)
+    }
+
+    val resetKey = {
+        viewModel.clearKey()
+        navController.popBackStack(Screen.AlarmList.title, true)
+        navController.graph.setStartDestination(Screen.Login.title)
+        navController.navigate(Screen.Login.title)
+    }
+
     Scaffold {
         AnimatedNavHost(navController, startDestination = start) {
             composable(
@@ -40,18 +53,17 @@ fun MainLayout(
                 exitTransition = { slideOutHorizontally() },
                 popEnterTransition = { slideInHorizontally() }
             ) {
-                Login(onSuccess = {
-                    navController.popBackStack(Screen.Login.title, true)
-                    navController.graph.setStartDestination(Screen.AlarmList.title)
-                    navController.navigate(Screen.AlarmList.title)
-                })
+                Login(onSuccess = loginSuccess)
             }
             composable(
                 route = Screen.AlarmList.title,
                 exitTransition = { slideOutHorizontally() },
                 popEnterTransition = { slideInHorizontally() }
             ) {
-                AlarmList(onAdd = { navController.navigate(Screen.AddAlarm.title) })
+                AlarmList(
+                    onAdd = { navController.navigate(Screen.AddAlarm.title) },
+                    onResetKey = resetKey
+                )
             }
             composable(
                 route = Screen.AddAlarm.title,

@@ -48,6 +48,7 @@ import org.koin.androidx.compose.inject
 @Composable
 fun AlarmList(
     onAdd: () -> Unit,
+    onResetKey: () -> Unit,
     viewModel: AlarmListViewModel = getViewModel()
 ) {
     val mainContext: Context by inject()
@@ -60,12 +61,16 @@ fun AlarmList(
     val lifecycleAwareAlarmsFlow = remember(viewModel.alarms, lifecycleOwner) {
         viewModel.alarms.flowWithLifecycle(lifecycleOwner.lifecycle)
     }
+
     @SuppressLint("StateFlowValueCalledInComposition")
     val alarms by lifecycleAwareAlarmsFlow.collectAsState(viewModel.alarms.value)
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Aktiva alarm") })
+            TopAppBar(
+                title = { Text("Aktiva alarm") },
+                actions = { Menu(onResetKey) }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAdd) {

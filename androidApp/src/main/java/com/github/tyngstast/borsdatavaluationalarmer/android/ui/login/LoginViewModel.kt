@@ -24,6 +24,10 @@ class LoginViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    fun clearKey() {
+        vault.clearApiKey()
+    }
+
     fun clearError() {
         _apiKeyState.value = _apiKeyState.value.copy(error = null)
     }

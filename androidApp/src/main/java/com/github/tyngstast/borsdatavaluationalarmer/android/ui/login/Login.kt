@@ -32,7 +32,7 @@ import androidx.lifecycle.flowWithLifecycle
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.getViewModel
 
-@ExperimentalComposeUiApi
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Login(
     onSuccess: () -> Unit,
