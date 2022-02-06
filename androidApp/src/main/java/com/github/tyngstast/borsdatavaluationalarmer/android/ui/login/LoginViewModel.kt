@@ -2,8 +2,8 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.tyngstast.borsdatavaluationalarmer.BorsdataApi
 import com.github.tyngstast.borsdatavaluationalarmer.Vault
+import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import org.koin.core.component.inject
 
 class LoginViewModel : ViewModel(), KoinComponent {
     private val vault: Vault by inject()
-    private val borsdataApi: BorsdataApi by inject()
+    private val borsdataClient: BorsdataClient by inject()
 
     private val _apiKeyState = MutableStateFlow(ApiKeyState(""))
     val apiKeyState: StateFlow<ApiKeyState> = _apiKeyState
@@ -35,7 +35,7 @@ class LoginViewModel : ViewModel(), KoinComponent {
     fun verifyKey(key: String) = viewModelScope.launch {
         _apiKeyState.value = ApiKeyState("", loading = true)
         try {
-            val result = borsdataApi.verifyKey(key)
+            val result = borsdataClient.verifyKey(key)
             if (result) {
                 vault.setApiKey(key)
                 _apiKeyState.value = ApiKeyState(key, false, null)

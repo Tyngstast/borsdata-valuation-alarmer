@@ -1,6 +1,8 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
 import co.touchlab.kermit.Logger
+import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
+import com.github.tyngstast.borsdatavaluationalarmer.client.InstrumentDto
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
@@ -30,7 +32,7 @@ class SharedModel : KoinComponent {
     private val instrumentDao: InstrumentDao by inject()
     private val kpiDao: KpiDao by inject()
     private val alarmDao: AlarmDao by inject()
-    private val borsdataApi: BorsdataApi by inject()
+    private val borsdataClient: BorsdataClient by inject()
     private val settings: Settings by inject()
     private val vault: Vault by inject()
     private val clock: Clock by inject()
@@ -68,7 +70,7 @@ class SharedModel : KoinComponent {
         val triggeredAlarms = alarms
             .map {
                 val kpiValue = async {
-                    val response = borsdataApi.getLatestValue(it.insId, it.kpiId)
+                    val response = borsdataClient.getLatestValue(it.insId, it.kpiId)
                     response.value.n
                 }
                 it to kpiValue
@@ -115,12 +117,12 @@ class SharedModel : KoinComponent {
 
         val (instruments, kpis) = awaitAll(
             async {
-                val instruments: List<InstrumentDto> = borsdataApi.getInstruments()
+                val instruments: List<InstrumentDto> = borsdataClient.getInstruments()
                 instrumentDao.resetInstruments(instruments)
                 instruments
             },
             async {
-                val kpis = borsdataApi.getKpis()
+                val kpis = borsdataClient.getKpis()
                 kpiDao.resetKpis(kpis)
                 kpis
             }

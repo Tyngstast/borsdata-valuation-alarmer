@@ -1,6 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer.db
 
-import com.github.tyngstast.borsdatavaluationalarmer.InstrumentDto
+import com.github.tyngstast.borsdatavaluationalarmer.client.InstrumentDto
 import com.github.tyngstast.db.Instrument
 import com.squareup.sqldelight.db.SqlDriver
 import kotlinx.coroutines.CoroutineDispatcher

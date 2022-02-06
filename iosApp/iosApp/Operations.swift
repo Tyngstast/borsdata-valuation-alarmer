@@ -4,7 +4,7 @@ import shared
 class ValuartionAlarmOperation: Operation {
     
     let dao = Dao(databaseDriverFactory: DatabaseDriverFactory())
-    let api = BorsdataApi(kVaultImpl: KVaultImpl(kVaultFactory: KVaultFactory()))
+    let api = BorsdataClient(kVaultImpl: KVaultImpl(kVaultFactory: KVaultFactory()))
     
     override func main() {
         print("operation main")

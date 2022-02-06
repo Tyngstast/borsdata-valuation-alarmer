@@ -1,5 +1,7 @@
-package com.github.tyngstast.borsdatavaluationalarmer
+package com.github.tyngstast.borsdatavaluationalarmer.client
 
+import com.github.tyngstast.borsdatavaluationalarmer.Vault
+import com.github.tyngstast.borsdatavaluationalarmer.initLogger
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.JsonFeature
@@ -14,7 +16,7 @@ import co.touchlab.kermit.Logger as KermitLogger
 import io.ktor.client.features.logging.Logger as KtorLogger
 
 
-class BorsdataApi(private val vault: Vault, private val log: KermitLogger) {
+class BorsdataClient(private val vault: Vault, private val log: KermitLogger) {
     companion object {
         private const val BD_HOST = "apiservice.borsdata.se/v1"
         private const val AUTH_PARAM = "authKey"

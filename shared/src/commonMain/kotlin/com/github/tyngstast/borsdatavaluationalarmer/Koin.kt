@@ -3,6 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
+import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
@@ -30,7 +31,7 @@ val coreModule = module {
     single { AlarmDao(get(), Dispatchers.Default) }
     single { InstrumentDao(get(), Dispatchers.Default) }
     single { KpiDao(get(), Dispatchers.Default) }
-    single { BorsdataApi(get(), getWith("BorsdataApi")) }
+    single { BorsdataClient(get(), getWith("BorsdataClient")) }
     single<Clock> { Clock.System }
 
     val baseLogger = Logger(

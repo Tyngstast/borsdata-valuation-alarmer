@@ -3,7 +3,7 @@ import shared
 
 struct ContentView: View {
     let dao = Dao(databaseDriverFactory: DatabaseDriverFactory())
-    let borsdataApi = BorsdataApi(kVaultImpl: KVaultImpl(kVaultFactory: KVaultFactory()))
+    let borsdataClient = BorsdataClient(kVaultImpl: KVaultImpl(kVaultFactory: KVaultFactory()))
     
     @State var message = "Loading..."
     
@@ -14,7 +14,7 @@ struct ContentView: View {
         print("alarms:", alarms)
         let first = alarms[0]
         
-        borsdataApi.getLatestValue(insId: first.insId, kpiId: first.kpiId) { result, error in
+        borsdataClient.getLatestValue(insId: first.insId, kpiId: first.kpiId) { result, error in
             if let result = result {
                 print(result)
                 self.message = "\(first.insName) current P/E \(result.value.n)"
