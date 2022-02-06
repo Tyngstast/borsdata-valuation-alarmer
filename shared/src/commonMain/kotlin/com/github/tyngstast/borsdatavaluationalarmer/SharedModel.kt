@@ -15,6 +15,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.datetime.Clock
+import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -45,11 +46,10 @@ class SharedModel : KoinComponent {
         val nowLdt = now.toLocalDateTime(tz)
         log.i { "current dateTime: $nowLdt" }
         val (day, hour) = when {
-            // Disable for testing 2022-02-05 - 2022-05-06
-//            // Don't run on sundays
-//            nowLdt.dayOfWeek == DayOfWeek.SUNDAY -> nowLdt.dayOfMonth + 1 to 8
-//            // We only want to run once at 8 on saturdays, so after 8 -> monday morning
-//            nowLdt.dayOfWeek == DayOfWeek.SATURDAY && nowLdt.hour > 8 -> nowLdt.dayOfMonth + 2 to 8
+            // Don't run on sundays
+            nowLdt.dayOfWeek == DayOfWeek.SUNDAY -> nowLdt.dayOfMonth + 1 to 8
+            // We only want to run once at 8 on saturdays, so after 8 -> monday morning
+            nowLdt.dayOfWeek == DayOfWeek.SATURDAY && nowLdt.hour > 8 -> nowLdt.dayOfMonth + 2 to 8
             // run next day at 8
             nowLdt.hour > 18 -> nowLdt.dayOfMonth + 1 to 8
             // run at 8
