@@ -17,6 +17,7 @@
     * WorkManager
     
 ## TODO 
+  * iOS...
   * Implement Yahoo Finance for prices
       * Probably won't do for all KPIs
       * Maybe show an info graphic when value is calculated daily (manually) or not

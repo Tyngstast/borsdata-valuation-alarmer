@@ -6,7 +6,6 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
 import java.util.concurrent.TimeUnit
@@ -28,7 +27,6 @@ class WorkerFactory(context: Context) {
     private val workerRequest: OneTimeWorkRequest =
         OneTimeWorkRequestBuilder<ValuationAlarmWorker>()
             .addTag(WORK_REQUEST_TAG)
-            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             .setInitialDelay(
                 sharedModel.getNextAlarmTriggerWorkInitialDelay(),
                 TimeUnit.MILLISECONDS

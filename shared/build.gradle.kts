@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.tyngstast"
-version = "1.0"
+version = "0.0.1"
 
 kotlin {
     android()
