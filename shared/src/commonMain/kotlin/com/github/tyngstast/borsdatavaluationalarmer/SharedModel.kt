@@ -164,13 +164,13 @@ class SharedModel : KoinComponent {
                 val ebitda = borsdataClient.getLatestValue(insId, 54)
                 ev() / ebitda
             }
-            "EV/S" -> {
-                val sales = borsdataClient.getLatestValue(insId, 53)
-                ev() / sales
-            }
             "EV/FCF" -> {
                 val fcf = borsdataClient.getLatestValue(insId, 63)
                 ev() / fcf
+            }
+            "EV/S" -> {
+                val sales = borsdataClient.getLatestValue(insId, 53)
+                ev() / sales
             }
             else -> borsdataClient.getLatestValue(insId, kpiId)
         }
