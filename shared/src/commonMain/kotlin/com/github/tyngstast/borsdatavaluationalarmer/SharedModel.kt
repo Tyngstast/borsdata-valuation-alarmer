@@ -22,6 +22,8 @@ import org.koin.core.component.inject
 class SharedModel : KoinComponent {
     companion object {
         private const val DB_STOCK_DATA_TIMESTAMP_KEY = "DbStockDataTimestampKey"
+        private const val WORKER_FAILURE_COUNTER = "WorkerFailureCounter"
+        private const val FAILURE_THRESHOLD: Int = 3
     }
 
     private val log: Logger by injectLogger("SharedModel")
@@ -74,18 +76,25 @@ class SharedModel : KoinComponent {
             .map { (alarm, kpiValueDeferred) ->
                 try {
                     alarm to kpiValueDeferred.await()
-                } catch (e: Throwable) {
+                } catch (e: ResponseException) {
                     if (e is ClientRequestException && e.response.status == HttpStatusCode.Unauthorized) {
                         vault.clearApiKey()
+                    } else {
+                        incrementFailureCounter()
                     }
+                    throw e
+                } catch (e: Throwable) {
+                    incrementFailureCounter()
                     throw e
                 }
             }
+            .also { resetFailureCounter() }
             .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
             .map { (alarm, kpiValue) -> alarm to kpiValue }
 
-        if (triggeredAlarms.isEmpty()) {
-            log.i { "No triggered Alarms" }
+        log.i {
+            if (triggeredAlarms.isEmpty()) "No triggered Alarms"
+            else "triggered alarms: ${triggeredAlarms.map { it.first.insName }}"
         }
 
         triggeredAlarms
@@ -121,5 +130,20 @@ class SharedModel : KoinComponent {
 
         log.i { "Reset Instruments and KPIs. Inserted ${instruments.size} Instruments and ${kpis.size} KPIs" }
         log.i { "Latest reset epoch: $currentTimeInMillis" }
+    }
+
+    fun scheduleNext(): Boolean {
+        val key = vault.getApiKey()
+        val failures = settings.getInt(WORKER_FAILURE_COUNTER, 0)
+        return !key.isNullOrBlank() && failures < FAILURE_THRESHOLD
+    }
+
+    private fun incrementFailureCounter() {
+        val failures: Int = settings.getInt(WORKER_FAILURE_COUNTER, 0)
+        settings.putInt(WORKER_FAILURE_COUNTER, failures + 1)
+    }
+
+    private fun resetFailureCounter() {
+        settings.putInt(WORKER_FAILURE_COUNTER, 0)
     }
 }
