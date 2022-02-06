@@ -44,8 +44,7 @@ class ValuationAlarmWorker(
                 val alarm = it.first
                 val kpiValue = String.format("%.1f", it.second)
 
-                val message =
-                    "Alarm triggades för ${alarm.insName}: ${alarm.kpiName} $kpiValue under ${alarm.kpiValue}"
+                val message = "${alarm.insName}: ${alarm.kpiName} $kpiValue under ${alarm.kpiValue}"
                 makeStatusNotification(message, context)
             }
 

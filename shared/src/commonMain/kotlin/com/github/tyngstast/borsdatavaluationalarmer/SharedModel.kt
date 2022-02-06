@@ -47,7 +47,7 @@ class SharedModel : KoinComponent {
             // run next day at 8
             nowLdt.hour > 18 -> nowLdt.dayOfMonth + 1 to 8
             // run at 8
-            nowLdt.hour <= 8 -> nowLdt.dayOfMonth to 8
+            nowLdt.hour < 8 -> nowLdt.dayOfMonth to 8
             // run next hour full hour
             else -> nowLdt.dayOfMonth to nowLdt.hour + 1
         }
