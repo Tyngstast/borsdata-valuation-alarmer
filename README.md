@@ -27,6 +27,12 @@
     
 ## TODO 
 
+#### Possible hack idea to solve background execution without an actual backend service
+Set up serverless functions for registering user ids and ping their devices. 
+  * Register/unregister function
+  * NoSQL DB with only device ids
+  * Sheduled function that "pings" devices. Execution and all data will still be limited to user's device.
+
 **Android**
   * Trouble with scheduled work not running after a night of sleep. It is likely the app is "completely killed" after such a time of inactivty.
     * Look into combining AlarmManager with WorkManager to wake and "start cycle" each day.
