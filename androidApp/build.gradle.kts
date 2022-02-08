@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
     kotlin("android")
 }
 
@@ -42,6 +43,11 @@ dependencies {
     val accompanistVersion = "0.22.0-rc"
 
     implementation(project(":shared"))
+
+    implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
     implementation("com.google.android.material:material:1.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.work:work-runtime-ktx:$workVersion")

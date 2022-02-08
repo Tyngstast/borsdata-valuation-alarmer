@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
-import java.util.concurrent.TimeUnit
 
 class WorkerFactory(context: Context) {
 
@@ -21,27 +18,14 @@ class WorkerFactory(context: Context) {
             .build()
     }
 
-    private val sharedModel = SharedModel()
     private val wm = WorkManager.getInstance(context)
 
-    fun enqueueNextKeep() {
-        enqueueNext(ExistingWorkPolicy.KEEP)
-    }
-
-    fun enqueueNextReplace() {
-        enqueueNext(ExistingWorkPolicy.REPLACE)
-    }
-
-    private fun enqueueNext(existingWorkPolicy: ExistingWorkPolicy) {
-        val workRequest: OneTimeWorkRequest = OneTimeWorkRequestBuilder<ValuationAlarmWorker>()
+    fun beginAlarmTriggerWork() {
+        val workRequest = OneTimeWorkRequestBuilder<ValuationAlarmWorker>()
             .addTag(WORK_REQUEST_TAG)
-            .setInitialDelay(
-                sharedModel.getNextAlarmTriggerWorkInitialDelay(),
-                TimeUnit.MILLISECONDS
-            )
             .setConstraints(constraints)
             .build()
 
-        wm.enqueueUniqueWork(VALUATION_SYNC_WORK, existingWorkPolicy, workRequest)
+        wm.beginUniqueWork(VALUATION_SYNC_WORK, ExistingWorkPolicy.REPLACE, workRequest).enqueue()
     }
 }

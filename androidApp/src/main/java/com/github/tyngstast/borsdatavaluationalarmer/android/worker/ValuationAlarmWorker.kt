@@ -53,11 +53,6 @@ class ValuationAlarmWorker(
             Result.failure()
         }
 
-        if (sharedModel.scheduleNext()) {
-            // Trigger from self instead of periodic to enable a more tailored schedule
-            WorkerFactory(context).enqueueNextReplace()
-        }
-
         return result.getOrDefault(Result.failure())
     }
 
