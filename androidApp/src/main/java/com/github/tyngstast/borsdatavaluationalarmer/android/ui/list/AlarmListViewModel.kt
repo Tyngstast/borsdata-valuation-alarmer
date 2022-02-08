@@ -13,10 +13,6 @@ import org.koin.core.component.inject
 
 class AlarmListViewModel : ViewModel(), KoinComponent {
 
-    companion object {
-        private const val TAG = "AlarmListViewModel"
-    }
-
     private val sharedModel = SharedModel()
     private val alarmDao: AlarmDao by inject()
 

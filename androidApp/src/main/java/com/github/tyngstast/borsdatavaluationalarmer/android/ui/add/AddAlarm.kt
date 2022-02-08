@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +35,7 @@ import org.koin.androidx.compose.getViewModel
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddAlarm(
-    popBack: () -> Unit,
+    onSuccess: () -> Unit,
     viewModel: AddAlarmViewModel = getViewModel()
 ) {
     val context = LocalContext.current
@@ -59,12 +60,16 @@ fun AddAlarm(
     val instruments = viewModel.instruments.collectAsState()
     val kpis = viewModel.kpis.collectAsState()
 
-    val (kpiNameFocusRequester, kpiValueFocusRequester) = FocusRequester.createRefs()
+    val (insNameFr, kpiNameFr, kpiValueFr) = FocusRequester.createRefs()
 
     val addAlarm = {
         viewModel.addAlarm()
         Toast.makeText(context, "Sparade nytt alarm", Toast.LENGTH_SHORT).show()
-        popBack()
+        onSuccess()
+    }
+
+    LaunchedEffect(Unit) {
+        insNameFr.requestFocus()
     }
 
     Scaffold(
@@ -72,7 +77,7 @@ fun AddAlarm(
             TopAppBar(
                 title = { Text("Lägg till alarm") },
                 navigationIcon = {
-                    IconButton(onClick = { popBack() }) {
+                    IconButton(onClick = { onSuccess() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -97,10 +102,11 @@ fun AddAlarm(
                 keyboardActions = KeyboardActions(
                     onNext = {
                         instruments.value.firstOrNull()?.apply { setInsName(this.name) }
-                        kpiNameFocusRequester.requestFocus()
+                        kpiNameFr.requestFocus()
                     }
                 ),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                focusRequester = insNameFr
             )
             AddAlarmField(
                 value = kpiName,
@@ -110,11 +116,11 @@ fun AddAlarm(
                 keyboardActions = KeyboardActions(
                     onNext = {
                         kpis.value.firstOrNull()?.apply { setKpiName(this.name) }
-                        kpiValueFocusRequester.requestFocus()
+                        kpiValueFr.requestFocus()
                     }
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                focusRequester = kpiNameFocusRequester
+                focusRequester = kpiNameFr
             )
             AddAlarmField(
                 value = kpiValue,
@@ -127,7 +133,7 @@ fun AddAlarm(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
-                focusRequester = kpiValueFocusRequester
+                focusRequester = kpiValueFr
             )
         }
     }

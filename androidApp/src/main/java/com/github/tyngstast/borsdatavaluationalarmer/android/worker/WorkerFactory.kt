@@ -24,8 +24,16 @@ class WorkerFactory(context: Context) {
     private val sharedModel = SharedModel()
     private val wm = WorkManager.getInstance(context)
 
-    private val workerRequest: OneTimeWorkRequest =
-        OneTimeWorkRequestBuilder<ValuationAlarmWorker>()
+    fun enqueueNextKeep() {
+        enqueueNext(ExistingWorkPolicy.KEEP)
+    }
+
+    fun enqueueNextReplace() {
+        enqueueNext(ExistingWorkPolicy.REPLACE)
+    }
+
+    private fun enqueueNext(existingWorkPolicy: ExistingWorkPolicy) {
+        val workRequest: OneTimeWorkRequest = OneTimeWorkRequestBuilder<ValuationAlarmWorker>()
             .addTag(WORK_REQUEST_TAG)
             .setInitialDelay(
                 sharedModel.getNextAlarmTriggerWorkInitialDelay(),
@@ -34,15 +42,6 @@ class WorkerFactory(context: Context) {
             .setConstraints(constraints)
             .build()
 
-    fun enqueueNextKeep() = workerRequest.run {
-        enqueueNext(ExistingWorkPolicy.KEEP, this)
-    }
-
-    fun enqueueNextReplace() = workerRequest.run {
-        enqueueNext(ExistingWorkPolicy.REPLACE, this)
-    }
-
-    private fun enqueueNext(existingWorkPolicy: ExistingWorkPolicy, workRequest: OneTimeWorkRequest) {
         wm.enqueueUniqueWork(VALUATION_SYNC_WORK, existingWorkPolicy, workRequest)
     }
 }

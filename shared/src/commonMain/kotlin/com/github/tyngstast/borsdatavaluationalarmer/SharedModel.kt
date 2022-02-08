@@ -2,7 +2,6 @@ package com.github.tyngstast.borsdatavaluationalarmer
 
 import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
-import com.github.tyngstast.borsdatavaluationalarmer.client.InstrumentDto
 import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
@@ -58,7 +57,7 @@ class SharedModel : KoinComponent {
             else -> nowLdt.dayOfMonth to nowLdt.hour + 1
         }
 
-        val next = LocalDateTime(nowLdt.year, nowLdt.monthNumber, day, hour, 0, 0)
+        val next = LocalDateTime(nowLdt.year, nowLdt.monthNumber, day, hour, 30, 0)
         log.i { "next alarm trigger: $next" }
 
         return next.toInstant(tz).toEpochMilliseconds() - now.toEpochMilliseconds()
@@ -91,9 +90,9 @@ class SharedModel : KoinComponent {
                     throw e
                 }
             }
-            .also { resetFailureCounter() }
             .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
             .map { (alarm, kpiValue) -> alarm to kpiValue }
+            .also { resetFailureCounter() }
 
         log.i {
             if (triggeredAlarms.isEmpty()) "No triggered Alarms"
@@ -118,7 +117,7 @@ class SharedModel : KoinComponent {
 
         val (instruments, kpis) = awaitAll(
             async {
-                val instruments: List<InstrumentDto> = borsdataClient.getInstruments()
+                val instruments = borsdataClient.getInstruments()
                 instrumentDao.resetInstruments(instruments)
                 instruments
             },
@@ -141,7 +140,12 @@ class SharedModel : KoinComponent {
         insId: Long,
         yahooId: String
     ): Double {
-        val price = yahooClient.getLatestPrice(yahooId)
+        val price: Double = try {
+            yahooClient.getLatestPrice(yahooId)
+        } catch (e: Throwable) {
+            log.e { "Failed to get price from yahoo, fall back to pre-calcuated from BD. Error: ${e.message}" }
+            return borsdataClient.getLatestValue(insId, kpiId)
+        }
 
         suspend fun ev(): Double = coroutineScope {
             val (shares, netDebt) = awaitAll(

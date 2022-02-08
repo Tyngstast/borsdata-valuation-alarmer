@@ -70,9 +70,7 @@ fun MainLayout(
                 exitTransition = { slideOutHorizontally() },
                 popEnterTransition = { slideInHorizontally() }
             ) {
-                AddAlarm(
-                    popBack = { navController.popBackStack() }
-                )
+                AddAlarm(onSuccess = { navController.popBackStack() })
             }
         }
     }

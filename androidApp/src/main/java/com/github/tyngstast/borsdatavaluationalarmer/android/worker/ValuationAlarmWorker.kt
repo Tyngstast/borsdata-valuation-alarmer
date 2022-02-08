@@ -36,7 +36,7 @@ class ValuationAlarmWorker(
         log.i { "doWork" }
         val context = applicationContext
 
-        val result: kotlin.Result<Result> = kotlin.runCatching {
+        val result = kotlin.runCatching {
             val triggeredAlarms = sharedModel.triggeredAlarms()
 
             triggeredAlarms.forEach {
