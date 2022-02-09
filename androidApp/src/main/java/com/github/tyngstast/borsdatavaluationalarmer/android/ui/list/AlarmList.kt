@@ -6,13 +6,14 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissValue
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FractionalThreshold
@@ -32,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
@@ -68,7 +68,7 @@ fun AlarmList(
             }
         }
     ) {
-        LazyColumn(modifier = Modifier.padding(vertical = 2.dp)) {
+        LazyColumn {
             items(alarms, { alarm: Alarm -> alarm.id }) { alarm ->
                 val dismissState = rememberDismissState(
                     confirmStateChange = {
@@ -81,14 +81,7 @@ fun AlarmList(
                 )
                 SwipeToDismiss(
                     state = dismissState,
-                    modifier = Modifier
-                        .shadow(
-                            elevation = 1.dp,
-                            shape = RoundedCornerShape(8.dp),
-                            clip = true
-                        )
-                        .animateItemPlacement()
-                        .padding(vertical = 3.dp),
+                    modifier = Modifier.animateItemPlacement(),
                     directions = setOf(DismissDirection.EndToStart),
                     dismissThresholds = {
                         FractionalThreshold(0.33f)
@@ -119,7 +112,10 @@ fun AlarmList(
                         }
                     },
                     dismissContent = {
-                        AlarmView(alarm)
+                        Column {
+                            AlarmCard(alarm)
+                            Divider(color = Color.LightGray, thickness = 1.dp)
+                        }
                     }
                 )
             }

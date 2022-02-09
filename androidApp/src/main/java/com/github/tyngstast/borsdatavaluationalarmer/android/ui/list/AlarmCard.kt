@@ -1,12 +1,13 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Card
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,11 +23,14 @@ import androidx.compose.ui.unit.sp
 import com.github.tyngstast.db.Alarm
 
 @Composable
-fun AlarmView(alarm: Alarm) {
+fun AlarmCard(alarm: Alarm) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val col = screenWidth.div(12)
 
-    Card(Modifier.fillMaxWidth()) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .background(Color.White)) {
         Row(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -105,9 +109,20 @@ fun AlarmView(alarm: Alarm) {
 fun AlarmViewPreview() {
     MaterialTheme {
         Column {
-            AlarmView(alarm = Alarm(1, 2, "Evolution Gaming", "", 2, "P/E", 40.0, "lte"))
-            AlarmView(alarm = Alarm(1, 2, "Kambi", "", 2, "EV/EBITDA", 100.0, "lte"))
-            AlarmView(alarm = Alarm(1, 2, "Brdr. A&O Johansen", "", 2, "Direktavkastning", 20.0, "lte"))
+            AlarmCard(alarm = Alarm(1, 2, "Evolution Gaming", "", 2, "P/E", 40.0, "lte"))
+            AlarmCard(alarm = Alarm(1, 2, "Kambi", "", 2, "EV/EBITDA", 100.0, "lte"))
+            AlarmCard(
+                alarm = Alarm(
+                    1,
+                    2,
+                    "Brdr. A&O Johansen",
+                    "",
+                    2,
+                    "Direktavkastning",
+                    20.0,
+                    "lte"
+                )
+            )
         }
     }
 }
