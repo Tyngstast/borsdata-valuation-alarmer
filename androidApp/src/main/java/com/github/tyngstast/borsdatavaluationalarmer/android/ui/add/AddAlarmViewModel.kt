@@ -2,6 +2,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
@@ -48,7 +49,7 @@ class AddAlarmViewModel : ViewModel(), KoinComponent {
                 }
                 .sortedByDescending { it.ticker.equals(_insName, ignoreCase = true) }
                 .take(3)
-                .map { Item(it.insId, it.name, it.yahooId) }
+                .map { InsItem(it.insId, it.name, it.yahooId) }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -58,15 +59,25 @@ class AddAlarmViewModel : ViewModel(), KoinComponent {
             kpiDao.getKpis(_kpiName)
                 .sortedByDescending { it.name.startsWith(_kpiName, ignoreCase = true) }
                 .take(3)
-                .map { Item(it.kpidId, it.name) }
+                .map { KpiItem(it.kpidId, it.name, SharedModel.FLUENT_KPIS.contains(it.name)) }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     fun addAlarm() {
         // First should always be closest, or exact, match after sorting.
-        val (insId, insName, yahooId) = instruments.value.first()
-        val (kpiId, kpiName) = kpis.value.first()
-        alarmDao.insertAlarm(insId, insName, yahooId!!, kpiId, kpiName, kpiValue.value.toDouble(), "lte")
+        val insItem = instruments.value.first() as InsItem
+        val kpiItem = kpis.value.first()
+        alarmDao.insertAlarm(
+            insItem.id,
+            insItem.name,
+            insItem.yahooId,
+            kpiItem.id,
+            kpiItem.name,
+            kpiValue.value.toDouble(),
+            "lte"
+        )
     }
 }
 
-data class Item(val id: Long, val name: String, val yahooId: String? = null)
+open class Item(open val id: Long, val name: String)
+class InsItem(id: Long, name: String, val yahooId: String) : Item(id, name)
+class KpiItem(id: Long, name: String, val fluent: Boolean) : Item(id, name)

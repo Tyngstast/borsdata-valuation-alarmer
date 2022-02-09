@@ -22,6 +22,7 @@ class SharedModel : KoinComponent {
         private const val DB_STOCK_DATA_TIMESTAMP_KEY = "DbStockDataTimestampKey"
         private const val WORKER_FAILURE_COUNTER = "WorkerFailureCounter"
         private const val FAILURE_THRESHOLD: Int = 3
+        val FLUENT_KPIS = listOf("P/E", "EV/EBIT", "EV/EBITDA", "EV/FCF", "EV/S")
     }
 
     private val log: Logger by injectLogger("SharedModel")

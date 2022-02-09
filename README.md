@@ -11,7 +11,7 @@
   * BD only provides API data for nordic companies unfortunately.
   * BD data is only updated once per day at 21:00 CET.
   * Schedule for alarm triggers will run on the hour, every hour, during market open (swedish time).
-    * Some KPIs are calculated on the fly, others will only change once per day. Current "flying":
+    * Some KPIs are calculated on the fly, others will only change once per day. Current "fluent" (marked by lightning bolt when selecting):
       * `P/E` 
       * `EV/EBIT`
       * `EV/EBITDA` 
@@ -28,7 +28,6 @@
     
 ## TODO 
 **Android**
-  * Show some info graphic and indication when kpi is calculated on the fly (manually)
   * Alarm snooze / disable.
  
 **iOS**
