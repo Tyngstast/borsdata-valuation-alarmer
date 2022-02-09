@@ -33,7 +33,7 @@ class ValuationAlarmWorker(
     private val sharedModel = SharedModel()
 
     override suspend fun doWork(): Result {
-        log.i { "doWork" }
+        log.d { "doWork" }
         val context = applicationContext
 
         val result = kotlin.runCatching {

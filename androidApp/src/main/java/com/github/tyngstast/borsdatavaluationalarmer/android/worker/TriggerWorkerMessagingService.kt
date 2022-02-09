@@ -17,7 +17,7 @@ class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent 
     private val sharedModel = SharedModel()
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        log.i { "Message received from: ${remoteMessage.from}" }
+        log.d { "Message received from: ${remoteMessage.from}" }
 
         if (remoteMessage.data.isNotEmpty()) {
             if (sharedModel.scheduleNext()) {
@@ -29,6 +29,6 @@ class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent 
     }
 
     override fun onNewToken(token: String) {
-        log.i { "New token generated: $token" }
+        log.d { "New token generated: $token" }
     }
 }

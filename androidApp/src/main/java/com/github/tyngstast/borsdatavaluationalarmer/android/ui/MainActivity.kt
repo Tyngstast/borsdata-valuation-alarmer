@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
         Firebase.messaging.subscribeToTopic(TRIGGER_TOPIC)
             .addOnCompleteListener { task ->
-                log.i { "Subscribed to topic $TRIGGER_TOPIC: ${task.isSuccessful}" }
+                log.d { "Subscribed to topic $TRIGGER_TOPIC: ${task.isSuccessful}" }
             }
 
         setContent {

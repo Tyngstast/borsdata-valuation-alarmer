@@ -37,7 +37,7 @@ class SharedModel : KoinComponent {
     suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> = coroutineScope {
         val alarms = alarmDao.getAllAlarms()
 
-        log.i { "Alarms: ${alarms.size}" }
+        log.d { "Alarms: ${alarms.size}" }
 
         val triggeredAlarms = alarms
             .map {
@@ -65,7 +65,7 @@ class SharedModel : KoinComponent {
             .map { (alarm, kpiValue) -> alarm to kpiValue }
             .also { resetFailureCounter() }
 
-        log.i {
+        log.d {
             if (triggeredAlarms.isEmpty()) "No triggered Alarms"
             else "triggered alarms: ${triggeredAlarms.map { it.first.insName }}"
         }
@@ -84,7 +84,7 @@ class SharedModel : KoinComponent {
             return@coroutineScope
         }
 
-        log.i { "Stock data is stale, fetching new..." }
+        log.d { "Stock data is stale, fetching new..." }
 
         val (instruments, kpis) = awaitAll(
             async {
@@ -101,8 +101,8 @@ class SharedModel : KoinComponent {
 
         settings.putLong(DB_STOCK_DATA_TIMESTAMP_KEY, currentTimeInMillis)
 
-        log.i { "Reset Instruments and KPIs. Inserted ${instruments.size} Instruments and ${kpis.size} KPIs" }
-        log.i { "Latest reset epoch: $currentTimeInMillis" }
+        log.d { "Reset Instruments and KPIs. Inserted ${instruments.size} Instruments and ${kpis.size} KPIs" }
+        log.d { "Latest reset epoch: $currentTimeInMillis" }
     }
 
     private suspend fun calcOrGetKpiValue(
