@@ -10,6 +10,8 @@ import org.koin.core.component.KoinComponent
 class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent {
 
     companion object {
+        const val NOTIFICATION_ERROR_TITLE = "Appen verkar ha stött på oväntade problem!";
+        const val NOTIFICATION_ERROR_MESSAGE = "Öppna appen för att synka på nytt";
         const val TRIGGER_TOPIC = "triggerValuationAlarmWorker";
     }
 
@@ -18,12 +20,17 @@ class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         log.d { "Message received from: ${remoteMessage.from}" }
+        val context = applicationContext
 
-        if (remoteMessage.data.isNotEmpty()) {
+        if (remoteMessage.from?.endsWith(TRIGGER_TOPIC) == true) {
             if (sharedModel.scheduleNext()) {
-                WorkerFactory(applicationContext).beginAlarmTriggerWork()
+                WorkerFactory(context).beginAlarmTriggerWork()
             } else {
-                log.e { "Failure threshold reached. *TODO Show error notification to user probably*" }
+                log.e { "Failure threshold reached. Notifying user to open app and re-sync" }
+                NotificationFactory(context).makeStatusNotification(
+                    NOTIFICATION_ERROR_TITLE,
+                    NOTIFICATION_ERROR_MESSAGE
+                )
             }
         }
     }

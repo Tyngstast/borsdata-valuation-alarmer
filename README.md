@@ -29,7 +29,6 @@
 ## TODO 
 **Android**
   * Show some info graphic and indication when kpi is calculated on the fly (manually)
-  * Click notification to open app.
   * Alarm snooze / disable.
  
 **iOS**
