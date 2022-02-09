@@ -1,6 +1,7 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -38,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.flowWithLifecycle
@@ -51,6 +53,7 @@ fun AlarmList(
     onResetKey: () -> Unit,
     viewModel: AlarmListViewModel = getViewModel()
 ) {
+    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleAwareAlarmsFlow = remember(viewModel.alarms, lifecycleOwner) {
         viewModel.alarms.flowWithLifecycle(lifecycleOwner.lifecycle)
@@ -78,6 +81,11 @@ fun AlarmList(
                 fun onDisable() {
                     disabled = !disabled
                     viewModel.disableAlarm(alarm.id, disabled)
+                    Toast.makeText(
+                        context,
+                        "Alarm ${if (disabled) "inaktiverat" else "återaktiverat"}!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 val dismissState = rememberDismissState(
