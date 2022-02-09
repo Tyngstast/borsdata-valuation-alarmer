@@ -10,7 +10,7 @@
 ### Data Updates and Alarm Triggers
   * BD only provides API data for nordic companies unfortunately.
   * BD data is only updated once per day at 21:00 CET.
-  * Schedule for alarm triggers will run on the hour, every hour, during market open (swedish time) and once on saturday morning.
+  * Schedule for alarm triggers will run on the hour, every hour, during market open (swedish time).
     * Some KPIs are calculated on the fly, others will only change once per day. Current "flying":
       * `P/E` 
       * `EV/EBIT`
@@ -24,6 +24,7 @@
     * Sql Delight
     * KVault
     * WorkManager
+    * Firebase Messaging
     
 ## TODO 
 **Android**
