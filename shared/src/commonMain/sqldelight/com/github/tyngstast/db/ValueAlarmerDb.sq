@@ -1,31 +1,9 @@
-CREATE TABLE Alarm (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    insId INTEGER NOT NULL,
-    insName TEXT NOT NULL,
-    yahooId TEXT NOT NULL,
-    kpiId INTEGER NOT NULL,
-    kpiName TEXT NOT NULL,
-    kpiValue REAL NOT NULL,
-    operation TEXT NOT NULL
-);
-
-CREATE TABLE Instrument (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    insId INTEGER NOT NULL,
-    yahooId TEXT NOT NULL,
-    name TEXT NOT NULL,
-    ticker TEXT NOT NULL
-);
-
-CREATE TABLE Kpi (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    kpidId INTEGER NOT NULL,
-    name TEXT NOT NULL,
-    format TEXT
-);
-
 selectAllAlarms:
 SELECT * FROM Alarm;
+
+selectAllEnabledAlarms:
+SELECT * FROM Alarm
+WHERE disabled = 0;
 
 selectAlarm:
 SELECT * FROM Alarm
@@ -34,6 +12,9 @@ WHERE id = ?;
 insertAlarm:
 INSERT OR IGNORE INTO Alarm(id, insId, insName, yahooId, kpiId, kpiName, kpiValue, operation)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+updateDisabledAlarm:
+UPDATE Alarm SET disabled = ? WHERE id = ?;
 
 deleteAlarm:
 DELETE FROM Alarm

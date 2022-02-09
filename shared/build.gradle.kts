@@ -108,5 +108,6 @@ android {
 sqldelight {
     database("ValueAlarmerDb") {
         packageName = "com.github.tyngstast.db"
+        deriveSchemaFromMigrations = true
     }
 }

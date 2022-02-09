@@ -12,7 +12,8 @@ class AlarmDao(
     sqlDriver: SqlDriver,
     private val backgroundDispatcher: CoroutineDispatcher
 ) : Dao(sqlDriver) {
-    fun getAllAlarms(): List<Alarm> = dbQuery.selectAllAlarms().executeAsList()
+
+    fun getAllEnabledAlarms(): List<Alarm> = dbQuery.selectAllEnabledAlarms().executeAsList()
 
     fun getAllAlarmsAsFlow(): Flow<List<Alarm>> =
         dbQuery
@@ -20,8 +21,6 @@ class AlarmDao(
             .asFlow()
             .mapToList()
             .flowOn(backgroundDispatcher)
-
-    fun getAlarm(id: Long): Alarm? = dbQuery.selectAlarm(id).executeAsOneOrNull()
 
     fun insertAlarm(
         insId: Long,
@@ -33,6 +32,10 @@ class AlarmDao(
         operation: String
     ) {
         dbQuery.insertAlarm(null, insId, insName, yahooId, kpiId, kpiName, kpiValue, operation)
+    }
+
+    fun disableAlarm(id: Long, disable: Boolean) {
+        dbQuery.updateDisabledAlarm(disable, id)
     }
 
     fun deleteAlarm(id: Long) {

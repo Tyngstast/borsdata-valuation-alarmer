@@ -25,11 +25,15 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.filled.UpdateDisabled
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -70,43 +74,62 @@ fun AlarmList(
     ) {
         LazyColumn {
             items(alarms, { alarm: Alarm -> alarm.id }) { alarm ->
+                var disabled: Boolean by remember { mutableStateOf(alarm.disabled ?: false) }
+                fun onDisable() {
+                    disabled = !disabled
+                    viewModel.disableAlarm(alarm.id, disabled)
+                }
+
                 val dismissState = rememberDismissState(
                     confirmStateChange = {
-                        val confirmed = it == DismissValue.DismissedToStart
-                        if (confirmed) {
-                            viewModel.deleteAlarm(alarm.id)
-                        }
-                        confirmed
+                        val delete = it == DismissValue.DismissedToStart
+                        val disable = it == DismissValue.DismissedToEnd
+                        if (disable) onDisable()
+                        else if (delete) viewModel.deleteAlarm(alarm.id)
+                        delete
                     }
                 )
                 SwipeToDismiss(
                     state = dismissState,
                     modifier = Modifier.animateItemPlacement(),
-                    directions = setOf(DismissDirection.EndToStart),
-                    dismissThresholds = {
-                        FractionalThreshold(0.33f)
+                    directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
+                    dismissThresholds = { direction ->
+                        FractionalThreshold(if (direction == DismissDirection.StartToEnd) 0.15f else 0.3f)
                     },
                     background = {
+                        val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
                         val color by animateColorAsState(
                             when (dismissState.targetValue) {
+                                DismissValue.Default -> Color.LightGray
                                 DismissValue.DismissedToStart -> Color.Red
-                                else -> Color.LightGray
+                                DismissValue.DismissedToEnd ->
+                                    if (disabled) Color.Green
+                                    else Color.Yellow
                             }
                         )
+                        val alignment = when (direction) {
+                            DismissDirection.StartToEnd -> Alignment.CenterStart
+                            DismissDirection.EndToStart -> Alignment.CenterEnd
+                        }
+                        val (icon, description) = when (direction) {
+                            DismissDirection.StartToEnd ->
+                                if (disabled) Icons.Default.Update to "Aktivera Alarm"
+                                else Icons.Default.UpdateDisabled to "Inaktivera Alarm"
+                            DismissDirection.EndToStart -> Icons.Default.Delete to "Ta bort Alarm"
+                        }
                         val scale by animateFloatAsState(
                             if (dismissState.targetValue == DismissValue.Default) 0.75f else 1f
                         )
-
                         Box(
                             Modifier
                                 .fillMaxSize()
                                 .background(color)
                                 .padding(horizontal = 20.dp),
-                            contentAlignment = Alignment.CenterEnd
+                            contentAlignment = alignment
                         ) {
                             Icon(
-                                Icons.Default.Delete,
-                                contentDescription = "Ta bort Alarm",
+                                icon,
+                                contentDescription = description,
                                 modifier = Modifier.scale(scale)
                             )
                         }

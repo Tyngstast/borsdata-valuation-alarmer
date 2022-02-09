@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,7 +32,9 @@ fun AlarmCard(alarm: Alarm) {
     Box(
         Modifier
             .fillMaxWidth()
-            .background(Color.White)) {
+            .background(Color.White)
+            .alpha(if (alarm.disabled == true) ContentAlpha.disabled else 1.0f)
+    ) {
         Row(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -109,8 +113,8 @@ fun AlarmCard(alarm: Alarm) {
 fun AlarmViewPreview() {
     MaterialTheme {
         Column {
-            AlarmCard(alarm = Alarm(1, 2, "Evolution Gaming", "", 2, "P/E", 40.0, "lte"))
-            AlarmCard(alarm = Alarm(1, 2, "Kambi", "", 2, "EV/EBITDA", 100.0, "lte"))
+            AlarmCard(alarm = Alarm(1, 2, "Evolution Gaming", "", 2, "P/E", 40.0, "lte", false))
+            AlarmCard(alarm = Alarm(1, 2, "Kambi", "", 2, "EV/EBITDA", 100.0, "lte", false))
             AlarmCard(
                 alarm = Alarm(
                     1,
@@ -120,7 +124,8 @@ fun AlarmViewPreview() {
                     2,
                     "Direktavkastning",
                     20.0,
-                    "lte"
+                    "lte",
+                    false
                 )
             )
         }

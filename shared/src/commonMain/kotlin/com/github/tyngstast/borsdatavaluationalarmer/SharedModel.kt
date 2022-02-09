@@ -36,9 +36,9 @@ class SharedModel : KoinComponent {
     private val clock: Clock by inject()
 
     suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> = coroutineScope {
-        val alarms = alarmDao.getAllAlarms()
+        val alarms = alarmDao.getAllEnabledAlarms()
 
-        log.d { "Alarms: ${alarms.size}" }
+        log.d { "Enabled alarms: $alarms" }
 
         val triggeredAlarms = alarms
             .map {

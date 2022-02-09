@@ -27,11 +27,7 @@
     * Firebase Messaging
     
 ## TODO 
-**Android**
-  * Alarm snooze / disable.
- 
 **iOS**
-  * Complete GUI.
-  * Need to look into if it's even possible to reliably run background work on iOS.
-    * A physical device is needed to PoC, which the author does not possess.
+  * Complete GUI implementation.
+* A physical device is needed to PoC BackgroundTasks, which the author does not possess.
 
