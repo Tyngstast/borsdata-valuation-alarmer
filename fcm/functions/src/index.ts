@@ -15,7 +15,7 @@ const message = {
 exports.triggerWorkers = functions
   .region("europe-west1")
   .pubsub
-  .schedule("0 08-18 * * 1-5")
+  .schedule("0 09-18/2 * * 1-5")
   .timeZone("Europe/Stockholm")
   .onRun((context) => {
     functions.logger.info("Triggered schedule... Executing", context);
