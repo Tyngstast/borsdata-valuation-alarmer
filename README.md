@@ -22,12 +22,23 @@
   * KMM project.
     * Ktor
     * Sql Delight
+    * Koin
     * KVault
+    * Multiplatform Settings
+  * Android
+    * Jetpack Compose
+    * Coroutines with StateFlow
     * WorkManager
     * Firebase Messaging
-    
+  * iOS
+    * TODO
+  * Firebase Cloud Messaging (FCM)
+    * Cloud Function serves as "ping" to execute workers on mobile devices. No data is stored in any backend. 
+  
 ## TODO 
+**Android**
+  * Show indication of items being swipable when clicking.
 **iOS**
   * Complete GUI implementation.
-* A physical device is needed to PoC BackgroundTasks, which the author does not possess.
+  * A physical device is needed to PoC BackgroundTasks, which the author does not possess.
 
