@@ -38,6 +38,7 @@
 ## TODO 
 **Android**
   * Show indication of items being swipable when clicking.
+  * Font family seems to be ignored on OnePlus (and maybe other brand).
 
 **iOS**
   * Complete GUI implementation.
