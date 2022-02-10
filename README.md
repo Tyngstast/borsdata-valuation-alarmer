@@ -38,6 +38,7 @@
 ## TODO 
 **Android**
   * Show indication of items being swipable when clicking.
+
 **iOS**
   * Complete GUI implementation.
   * A physical device is needed to PoC BackgroundTasks, which the author does not possess.
