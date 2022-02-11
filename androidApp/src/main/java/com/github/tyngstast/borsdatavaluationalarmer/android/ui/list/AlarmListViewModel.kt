@@ -40,11 +40,11 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
             }
     }
 
-    fun disableAlarm(id: Long, disable: Boolean) {
+    val disableAlarm = { id: Long, disable: Boolean ->
         alarmDao.disableAlarm(id, disable)
     }
 
-    fun deleteAlarm(id: Long) {
+    val deleteAlarm = { id: Long ->
         alarmDao.deleteAlarm(id)
     }
 }

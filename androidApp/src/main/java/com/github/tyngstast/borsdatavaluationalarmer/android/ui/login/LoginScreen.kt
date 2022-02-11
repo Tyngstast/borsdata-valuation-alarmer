@@ -36,12 +36,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.flowWithLifecycle
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun Login(
+fun LoginScreen(
     onSuccess: () -> Unit,
     viewModel: LoginViewModel = getViewModel()
 ) {
@@ -67,12 +68,12 @@ fun Login(
         onSuccess()
     }
 
-    fun evaluateKey() {
+    val evaluateKey = {
         viewModel.clearError()
         viewModel.verifyKey(apiKey)
     }
 
-    val onChange = { input: String ->
+    val onChange: (String) -> Unit = { input: String ->
         viewModel.clearError()
         // Multiple character increase from single event -> paste
         if (input.length - 1 > apiKey.length) {
@@ -83,62 +84,86 @@ fun Login(
         }
     }
 
+    val toggleVisibility = {
+        apiKeyVisibility = !apiKeyVisibility
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Kräver Börsdata Pro") })
         },
     ) {
-        Column(
+        LoginContent(
+            apiKey = apiKey,
+            onChange = onChange,
+            state = state,
+            apiKeyVisibility = apiKeyVisibility,
+            toggleVisibility = toggleVisibility,
+            evaluateKey = evaluateKey
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun LoginContent(
+    apiKey: String,
+    onChange: (String) -> Unit,
+    state: ApiKeyState,
+    apiKeyVisibility: Boolean,
+    toggleVisibility: () -> Unit,
+    evaluateKey: () -> Job
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        OutlinedTextField(
+            value = apiKey,
+            onValueChange = onChange,
+            visualTransformation = if (apiKeyVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            isError = state.error != null,
+            trailingIcon = {
+                when {
+                    state.loading -> CircularProgressIndicator(modifier = Modifier.scale(0.5F))
+                    state.error != null -> Icon(
+                        Icons.Default.Info,
+                        "Fel",
+                        tint = MaterialTheme.colors.error
+                    )
+                    else -> IconButton(onClick = toggleVisibility) {
+                        Icon(
+                            if (apiKeyVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            "Toggla API-nyckel synlighet"
+                        )
+                    }
+                }
+            },
+            label = { Text("API-nyckel") },
+            enabled = !state.loading,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            keyboardActions = KeyboardActions(onDone = { evaluateKey() }),
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
+        )
+        if (state.error != null) {
+            Text(
+                text = state.error.value,
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+        Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 0.dp, vertical = 12.dp),
+            contentPadding = PaddingValues(all = 12.dp),
+            enabled = apiKey.length > 20 && !state.loading,
+            onClick = { evaluateKey() }
         ) {
-            OutlinedTextField(
-                value = apiKey,
-                onValueChange = onChange,
-                visualTransformation = if (apiKeyVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-                isError = state.error != null,
-                trailingIcon = {
-                    when {
-                        state.loading -> CircularProgressIndicator(modifier = Modifier.scale(0.5F))
-                        state.error != null -> Icon(
-                            Icons.Default.Info,
-                            "Fel",
-                            tint = MaterialTheme.colors.error
-                        )
-                        else -> IconButton(onClick = { apiKeyVisibility = !apiKeyVisibility }) {
-                            Icon(
-                                if (apiKeyVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                "Toggla API-nyckel synlighet"
-                            )
-                        }
-                    }
-                },
-                label = { Text("API-nyckel") },
-                enabled = !state.loading,
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                keyboardActions = KeyboardActions(onDone = { evaluateKey() }),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
-            )
-            if (state.error != null) {
-                Text(
-                    text = state.error!!.value,
-                    color = MaterialTheme.colors.error,
-                    style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 0.dp, vertical = 12.dp),
-                contentPadding = PaddingValues(all = 12.dp),
-                enabled = apiKey.length > 20 && !state.loading,
-                onClick = { evaluateKey() }
-            ) {
-                Text("VERIFIERA")
-            }
+            Text("VERIFIERA")
         }
     }
 }

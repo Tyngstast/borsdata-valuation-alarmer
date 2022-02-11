@@ -34,7 +34,7 @@ import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddAlarm(
+fun AddAlarmScreen(
     onSuccess: () -> Unit,
     viewModel: AddAlarmViewModel = getViewModel()
 ) {
@@ -60,16 +60,10 @@ fun AddAlarm(
     val instruments = viewModel.instruments.collectAsState()
     val kpis = viewModel.kpis.collectAsState()
 
-    val (insNameFr, kpiNameFr, kpiValueFr) = FocusRequester.createRefs()
-
     val addAlarm = {
         viewModel.addAlarm()
         Toast.makeText(context, "Sparade nytt alarm", Toast.LENGTH_SHORT).show()
         onSuccess()
-    }
-
-    LaunchedEffect(Unit) {
-        insNameFr.requestFocus()
     }
 
     Scaffold(
@@ -89,53 +83,86 @@ fun AddAlarm(
             )
         }
     ) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            AddAlarmField(
-                value = insName,
-                label = "Bolag",
-                onValueChange = setInsName,
-                items = instruments.value,
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        instruments.value.firstOrNull()?.apply { setInsName(this.name) }
-                        kpiNameFr.requestFocus()
-                    }
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                focusRequester = insNameFr
-            )
-            AddAlarmField(
-                value = kpiName,
-                label = "Nyckeltal",
-                onValueChange = setKpiName,
-                items = kpis.value,
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        kpis.value.firstOrNull()?.apply { setKpiName(this.name) }
-                        kpiValueFr.requestFocus()
-                    }
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                focusRequester = kpiNameFr
-            )
-            AddAlarmField(
-                value = kpiValue,
-                label = "Går under värde",
-                onValueChange = setKpiValue,
-                keyboardActions = KeyboardActions(
-                    onDone = { addAlarm() }
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                focusRequester = kpiValueFr
-            )
-        }
+        AddAlarmContent(
+            insName = insName,
+            kpiName = kpiName,
+            kpiValue = kpiValue,
+            instruments = instruments.value,
+            kpis = kpis.value,
+            setInsName = setInsName,
+            setKpiName = setKpiName,
+            setKpiValue = setKpiValue,
+            addAlarm = addAlarm
+        )
+    }
+
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun AddAlarmContent(
+    insName: String,
+    kpiName: String,
+    kpiValue: String,
+    instruments: List<Item>,
+    kpis: List<Item>,
+    setInsName: (String) -> Unit,
+    setKpiName: (String) -> Unit,
+    setKpiValue: (String) -> Unit,
+    addAlarm: () -> Unit
+) {
+    val (insNameFr, kpiNameFr, kpiValueFr) = FocusRequester.createRefs()
+
+    LaunchedEffect(Unit) {
+        insNameFr.requestFocus()
+    }
+
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        AddAlarmField(
+            value = insName,
+            label = "Bolag",
+            onValueChange = setInsName,
+            items = instruments,
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    instruments.firstOrNull()?.apply { setInsName(this.name) }
+                    kpiNameFr.requestFocus()
+                }
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+            focusRequester = insNameFr
+        )
+        AddAlarmField(
+            value = kpiName,
+            label = "Nyckeltal",
+            onValueChange = setKpiName,
+            items = kpis,
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    kpis.firstOrNull()?.apply { setKpiName(this.name) }
+                    kpiValueFr.requestFocus()
+                }
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+            focusRequester = kpiNameFr
+        )
+        AddAlarmField(
+            value = kpiValue,
+            label = "Går under värde",
+            onValueChange = setKpiValue,
+            keyboardActions = KeyboardActions(
+                onDone = { addAlarm() }
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            focusRequester = kpiValueFr
+        )
     }
 }
 
@@ -143,35 +170,16 @@ fun AddAlarm(
 @Composable
 fun AddAlarmPreview() {
     AppTheme {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            AddAlarmField(
-                value = "Evolution",
-                label = "Bolag",
-                onValueChange = {},
-                items = listOf(
-                    Item(1, "Evolution"),
-                    Item(2, "Revolutionrace")
-                )
-            )
-            AddAlarmField(
-                value = "P/E",
-                label = "Nyckeltal",
-                onValueChange = {},
-                items = listOf(
-                    Item(1, "P/E"),
-                    Item(2, "P/S")
-                )
-            )
-            AddAlarmField(
-                value = "20.5",
-                label = "Värde",
-                onValueChange = {},
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
-            )
-        }
+        AddAlarmContent(
+            insName = "Evolution",
+            kpiName = "P/E",
+            kpiValue = "20.5",
+            instruments = listOf(),
+            kpis = listOf(),
+            setInsName = {},
+            setKpiName = {},
+            setKpiValue = {},
+            addAlarm = {}
+        )
     }
 }

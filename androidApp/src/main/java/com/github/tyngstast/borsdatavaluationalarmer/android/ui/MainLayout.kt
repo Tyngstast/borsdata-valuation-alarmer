@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarm
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmList
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.Login
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarmScreen
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListScreen
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -53,14 +53,14 @@ fun MainLayout(
                 exitTransition = { slideOutHorizontally() },
                 popEnterTransition = { slideInHorizontally() }
             ) {
-                Login(onSuccess = loginSuccess)
+                LoginScreen(onSuccess = loginSuccess)
             }
             composable(
                 route = Screen.AlarmList.title,
                 exitTransition = { slideOutHorizontally() },
                 popEnterTransition = { slideInHorizontally() }
             ) {
-                AlarmList(
+                AlarmListScreen(
                     onAdd = { navController.navigate(Screen.AddAlarm.title) },
                     onResetKey = resetKey
                 )
@@ -70,7 +70,7 @@ fun MainLayout(
                 exitTransition = { slideOutHorizontally() },
                 popEnterTransition = { slideInHorizontally() }
             ) {
-                AddAlarm(onSuccess = { navController.popBackStack() })
+                AddAlarmScreen(onSuccess = { navController.popBackStack() })
             }
         }
     }
