@@ -36,10 +36,6 @@
     * Cloud Function serves as "ping" to execute workers on mobile devices. No data is stored in any backend. 
   
 ## TODO 
-**Android**
-  * Show indication of items being swipable when clicking.
-  * Font family seems to be ignored on OnePlus (and maybe other brand).
-
 **iOS**
   * Complete GUI implementation.
   * A physical device is needed to PoC BackgroundTasks, which the author does not possess.

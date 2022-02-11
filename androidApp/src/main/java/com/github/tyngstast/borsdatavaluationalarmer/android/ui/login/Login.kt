@@ -2,10 +2,12 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.login
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -72,9 +74,12 @@ fun Login(
 
     val onChange = { input: String ->
         viewModel.clearError()
-        apiKey = input
-        if (apiKey.length >= 32) {
+        // Multiple character increase from single event -> paste
+        if (input.length - 1 > apiKey.length) {
+            apiKey = input
             evaluateKey()
+        } else {
+            apiKey = input
         }
     }
 
@@ -123,6 +128,16 @@ fun Login(
                     style = MaterialTheme.typography.caption,
                     modifier = Modifier.padding(top = 8.dp)
                 )
+            }
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 0.dp, vertical = 12.dp),
+                contentPadding = PaddingValues(all = 12.dp),
+                enabled = apiKey.length > 20 && !state.loading,
+                onClick = { evaluateKey() }
+            ) {
+                Text("VERIFIERA")
             }
         }
     }
