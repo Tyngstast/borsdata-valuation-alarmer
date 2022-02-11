@@ -33,7 +33,7 @@ val coreModule = module {
     single { InstrumentDao(get(), Dispatchers.Default) }
     single { KpiDao(get(), Dispatchers.Default) }
     single { BorsdataClient(get(), getWith("BorsdataClient")) }
-    single { YahooClient(getWith("yahooClient")) }
+    single { YahooClient(getWith("YahooClient")) }
     single<Clock> { Clock.System }
 
     val baseLogger = Logger(

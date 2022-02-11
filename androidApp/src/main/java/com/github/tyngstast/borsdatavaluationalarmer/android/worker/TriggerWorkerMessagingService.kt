@@ -3,8 +3,10 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.worker
 import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.firebase.messaging.ktx.messaging
 import org.koin.core.component.KoinComponent
 
 class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent {
@@ -24,9 +26,11 @@ class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent 
 
         if (remoteMessage.from?.endsWith(TRIGGER_TOPIC) == true) {
             if (sharedModel.scheduleNext()) {
-                WorkerFactory(context).beginAlarmTriggerWork()
+                log.d { "Schedule next work..." }
+                ValuationAlarmWorkerFactory(context).beginAlarmTriggerWork()
             } else {
                 log.e { "Failure threshold reached. Notifying user to open app and re-sync" }
+                Firebase.messaging.unsubscribeFromTopic(TRIGGER_TOPIC)
                 NotificationFactory(context).makeStatusNotification(
                     NOTIFICATION_ERROR_TITLE,
                     NOTIFICATION_ERROR_MESSAGE
@@ -37,5 +41,9 @@ class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent 
 
     override fun onNewToken(token: String) {
         log.d { "New token generated: $token" }
+    }
+
+    override fun onDeletedMessages() {
+        log.d { "On deleted messages called" }
     }
 }

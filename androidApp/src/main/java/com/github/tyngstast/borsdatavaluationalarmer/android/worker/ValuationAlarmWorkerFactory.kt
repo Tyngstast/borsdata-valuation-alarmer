@@ -7,7 +7,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 
-class WorkerFactory(context: Context) {
+class ValuationAlarmWorkerFactory(context: Context) {
 
     companion object {
         private const val VALUATION_SYNC_WORK = "valuationSyncWork";

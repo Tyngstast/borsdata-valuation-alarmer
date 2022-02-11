@@ -35,6 +35,7 @@ class NotificationFactory(private val context: Context) {
             channel.enableLights(true)
             channel.enableVibration(true)
             channel.vibrationPattern = longArrayOf(300)
+            channel.setSound(null, null)
 
             // Add the channel
             val notificationManager = context
@@ -54,6 +55,7 @@ class NotificationFactory(private val context: Context) {
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSound(null)
             .setVibrate(longArrayOf(300))
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)

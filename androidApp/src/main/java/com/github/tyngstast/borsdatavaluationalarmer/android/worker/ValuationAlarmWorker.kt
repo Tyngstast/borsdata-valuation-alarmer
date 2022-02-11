@@ -37,11 +37,10 @@ class ValuationAlarmWorker(
 
             Result.success()
         }.onFailure {
-            log.e(it) { it.message.toString() }
+            log.e(it) { "Error running worker: ${it.message.toString()}" }
             Result.failure()
         }
 
         return result.getOrDefault(Result.failure())
     }
-
 }
