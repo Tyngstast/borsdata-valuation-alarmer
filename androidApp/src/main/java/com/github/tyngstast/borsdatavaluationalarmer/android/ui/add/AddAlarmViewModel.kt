@@ -2,7 +2,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
+import com.github.tyngstast.borsdatavaluationalarmer.FluentKpi
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
@@ -59,7 +59,7 @@ class AddAlarmViewModel : ViewModel(), KoinComponent {
             kpiDao.getKpis(_kpiName)
                 .sortedByDescending { it.name.startsWith(_kpiName, ignoreCase = true) }
                 .take(3)
-                .map { KpiItem(it.kpidId, it.name, SharedModel.FLUENT_KPIS.contains(it.name)) }
+                .map { KpiItem(it.kpidId, it.name, FluentKpi.stringValues.contains(it.name)) }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     fun addAlarm() {

@@ -22,7 +22,6 @@ class SharedModel : KoinComponent {
         private const val DB_STOCK_DATA_TIMESTAMP_KEY = "DbStockDataTimestampKey"
         private const val WORKER_FAILURE_COUNTER = "WorkerFailureCounter"
         private const val FAILURE_THRESHOLD: Int = 3
-        val FLUENT_KPIS = listOf("P/E", "EV/EBIT", "EV/EBITDA", "EV/FCF", "EV/S")
     }
 
     private val log: Logger by injectLogger("SharedModel")
@@ -128,24 +127,28 @@ class SharedModel : KoinComponent {
         }
 
         return when (kpiName) {
-            "P/E" -> {
-                val eps = borsdataClient.getLatestValue(insId, 6)
+            FluentKpi.P_E.value -> {
+                val eps = borsdataClient.getLatestValue(insId, FluentKpi.P_E.denominatorId)
                 price / eps
             }
-            "EV/EBIT" -> {
-                val ebit = borsdataClient.getLatestValue(insId, 55)
+            FluentKpi.EV_E.value -> {
+                val earnings = borsdataClient.getLatestValue(insId, FluentKpi.EV_E.denominatorId)
+                ev() / earnings
+            }
+            FluentKpi.EV_EBIT.value -> {
+                val ebit = borsdataClient.getLatestValue(insId, FluentKpi.EV_EBIT.denominatorId)
                 ev() / ebit
             }
-            "EV/EBITDA" -> {
-                val ebitda = borsdataClient.getLatestValue(insId, 54)
+            FluentKpi.EV_EBITDA.value -> {
+                val ebitda = borsdataClient.getLatestValue(insId, FluentKpi.EV_EBITDA.denominatorId)
                 ev() / ebitda
             }
-            "EV/FCF" -> {
-                val fcf = borsdataClient.getLatestValue(insId, 63)
+            FluentKpi.EV_FCF.value -> {
+                val fcf = borsdataClient.getLatestValue(insId, FluentKpi.EV_FCF.denominatorId)
                 ev() / fcf
             }
-            "EV/S" -> {
-                val sales = borsdataClient.getLatestValue(insId, 53)
+            FluentKpi.EV_S.value -> {
+                val sales = borsdataClient.getLatestValue(insId, FluentKpi.EV_S.denominatorId)
                 ev() / sales
             }
             else -> borsdataClient.getLatestValue(insId, kpiId)
