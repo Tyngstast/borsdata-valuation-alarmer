@@ -14,12 +14,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class SharedModel : KoinComponent {
     companion object {
         private const val DB_STOCK_DATA_TIMESTAMP_KEY = "DbStockDataTimestampKey"
+        private const val LAST_RUN_PREFIX_KEY = "LAST_RUN_"
         private const val WORKER_FAILURE_COUNTER = "WorkerFailureCounter"
         private const val FAILURE_THRESHOLD: Int = 3
     }
@@ -36,10 +40,12 @@ class SharedModel : KoinComponent {
 
     suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> = coroutineScope {
         val alarms = alarmDao.getAllEnabledAlarms()
-
         log.d { "Enabled alarms: $alarms" }
 
-        val triggeredAlarms = alarms
+        val alarmsToRun = alarms.filter(shouldRun)
+        log.d { "Alarms to run: $alarmsToRun" }
+
+        val triggeredAlarms = alarmsToRun
             .map {
                 val kpiValue = async {
                     calcOrGetKpiValue(it.kpiId, it.kpiName, it.insId, it.yahooId)
@@ -155,6 +161,17 @@ class SharedModel : KoinComponent {
         }
     }
 
+    fun updateLastRun(alarm: Alarm) {
+        val today = today().toString()
+        settings.putString(LAST_RUN_PREFIX_KEY + alarm.id, today)
+    }
+
+    private val shouldRun: (Alarm) -> Boolean = { alarm: Alarm ->
+        val lastRun: LocalDate? = settings.getStringOrNull(LAST_RUN_PREFIX_KEY + alarm.id)
+            ?.let { LocalDate.parse(it) }
+        FluentKpi.stringValues.contains(alarm.kpiName) || lastRun == null || lastRun < today()
+    }
+
     fun scheduleNext(): Boolean {
         val key = vault.getApiKey()
         val failures = settings.getInt(WORKER_FAILURE_COUNTER, 0)
@@ -169,4 +186,7 @@ class SharedModel : KoinComponent {
     private fun resetFailureCounter() {
         settings.putInt(WORKER_FAILURE_COUNTER, 0)
     }
+
+    private fun today() = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 }
+

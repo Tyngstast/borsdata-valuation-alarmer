@@ -33,6 +33,8 @@ class ValuationAlarmWorker(
 
                 val message = "${alarm.insName}: ${alarm.kpiName} $kpiValue under ${alarm.kpiValue}"
                 NotificationFactory(context).makeStatusNotification(NOTIFICATION_TITLE, message)
+
+                sharedModel.updateLastRun(alarm)
             }
 
             Result.success()
