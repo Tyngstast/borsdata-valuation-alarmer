@@ -33,8 +33,7 @@ class NotificationFactory(private val context: Context) {
             )
             channel.description = CHANNEL_DESCRIPTION
             channel.enableLights(true)
-            channel.enableVibration(true)
-            channel.vibrationPattern = longArrayOf(300)
+            channel.enableVibration(false)
             channel.setSound(null, null)
 
             // Add the channel
@@ -51,12 +50,11 @@ class NotificationFactory(private val context: Context) {
 
         // Create the notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_launcher_foreground_upscaled)
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setSound(null)
-            .setVibrate(longArrayOf(300))
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
 
