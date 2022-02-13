@@ -1,13 +1,16 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +34,7 @@ import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.UpdateDisabled
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,7 +58,7 @@ import com.github.tyngstast.db.Alarm
 @Composable
 fun AlarmListContent(
     alarms: List<Alarm>,
-    disableAlarm: (Long, Boolean) -> Unit,
+    updateDisableAlarm: (Long, Boolean) -> Unit,
     deleteAlarm: (Long) -> Unit
 ) {
     if (alarms.isEmpty()) {
@@ -62,7 +66,7 @@ fun AlarmListContent(
     } else {
         AlarmList(
             alarms = alarms,
-            disableAlarm = disableAlarm,
+            updateDisableAlarm = updateDisableAlarm,
             deleteAlarm = deleteAlarm
         )
     }
@@ -72,17 +76,19 @@ fun AlarmListContent(
 @Composable
 fun AlarmList(
     alarms: List<Alarm>,
-    disableAlarm: (Long, Boolean) -> Unit,
+    updateDisableAlarm: (Long, Boolean) -> Unit,
     deleteAlarm: (Long) -> Unit
 ) {
     val context = LocalContext.current
+
+    var selectedRow: Alarm? by remember { mutableStateOf(null) }
 
     LazyColumn {
         items(alarms, { alarm: Alarm -> alarm.id }) { alarm ->
             var disabled: Boolean by remember { mutableStateOf(alarm.disabled ?: false) }
             fun onDisable() {
                 disabled = !disabled
-                disableAlarm(alarm.id, disabled)
+                updateDisableAlarm(alarm.id, disabled)
                 Toast.makeText(
                     context,
                     "Alarm ${if (disabled) "inaktiverat" else "återaktiverat"}!",
@@ -145,8 +151,32 @@ fun AlarmList(
                     }
                 },
                 dismissContent = {
-                    Column {
-                        AlarmCard(alarm)
+                    Column(Modifier.clickable {
+                        selectedRow = if (selectedRow == alarm) null else alarm
+                    }) {
+                        AlarmItem(alarm)
+                        AnimatedVisibility(
+                            visible = selectedRow == alarm,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.White)
+                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(Modifier.clickable { onDisable() }) {
+                                    val (icon, text) = if (disabled) Icons.Default.Update to "Återaktivera" else Icons.Default.UpdateDisabled to "Inaktivera"
+                                    Icon(icon, contentDescription = text)
+                                    Text(text)
+                                }
+                                Row(Modifier.clickable { deleteAlarm(alarm.id) }) {
+                                    Icon(Icons.Outlined.Delete, contentDescription = "Ta bort")
+                                    Text("Ta bort")
+                                }
+                            }
+                        }
                         Divider(color = Color.LightGray, thickness = 1.dp)
                     }
                 }

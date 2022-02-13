@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.github.tyngstast.db.Alarm
 
 @Composable
-fun AlarmCard(alarm: Alarm) {
+fun AlarmItem(alarm: Alarm) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val col = screenWidth.div(12)
 
@@ -113,9 +113,9 @@ fun AlarmCard(alarm: Alarm) {
 fun AlarmViewPreview() {
     MaterialTheme {
         Column {
-            AlarmCard(alarm = Alarm(1, 2, "Evolution Gaming", "", 2, "P/E", 40.0, "lte", false))
-            AlarmCard(alarm = Alarm(1, 2, "Kambi", "", 2, "EV/EBITDA", 100.0, "lte", false))
-            AlarmCard(
+            AlarmItem(alarm = Alarm(1, 2, "Evolution Gaming", "", 2, "P/E", 40.0, "lte", false))
+            AlarmItem(alarm = Alarm(1, 2, "Kambi", "", 2, "EV/EBITDA", 100.0, "lte", false))
+            AlarmItem(
                 alarm = Alarm(
                     1,
                     2,

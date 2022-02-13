@@ -45,7 +45,7 @@ fun AlarmListScreen(
     ) {
         AlarmListContent(
             alarms = alarms,
-            disableAlarm = viewModel.disableAlarm,
+            updateDisableAlarm = viewModel.updateDisableAlarm,
             deleteAlarm = viewModel.deleteAlarm,
         )
     }

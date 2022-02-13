@@ -34,7 +34,7 @@ class AlarmDao(
         dbQuery.insertAlarm(null, insId, insName, yahooId, kpiId, kpiName, kpiValue, operation)
     }
 
-    fun disableAlarm(id: Long, disable: Boolean) {
+    fun updateDisableAlarm(id: Long, disable: Boolean) {
         dbQuery.updateDisabledAlarm(disable, id)
     }
 
