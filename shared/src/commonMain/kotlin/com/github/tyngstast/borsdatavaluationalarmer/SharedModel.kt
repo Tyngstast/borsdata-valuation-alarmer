@@ -67,6 +67,8 @@ class SharedModel : KoinComponent {
                     throw e
                 }
             }
+            // Update before filtering. We should not keep fetching just because alarm did not trigger
+            .onEach { updateLastRun(it.first.id) }
             .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
             .map { (alarm, kpiValue) -> alarm to kpiValue }
             .also { resetFailureCounter() }
@@ -161,9 +163,9 @@ class SharedModel : KoinComponent {
         }
     }
 
-    fun updateLastRun(alarm: Alarm) {
+    private fun updateLastRun(id: Long) {
         val today = today().toString()
-        settings.putString(LAST_RUN_PREFIX_KEY + alarm.id, today)
+        settings.putString(LAST_RUN_PREFIX_KEY + id, today)
     }
 
     private val shouldRun: (Alarm) -> Boolean = { alarm: Alarm ->
