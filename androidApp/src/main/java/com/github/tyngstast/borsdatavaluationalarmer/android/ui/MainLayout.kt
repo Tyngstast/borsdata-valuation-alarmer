@@ -12,9 +12,12 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarmScre
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
+import com.github.tyngstast.borsdatavaluationalarmer.android.worker.TriggerWorkerMessagingService
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import org.koin.androidx.compose.getViewModel
 
 sealed class Screen(val title: String) {
@@ -41,6 +44,7 @@ fun MainLayout(
 
     val resetKey = {
         viewModel.clearKey()
+        Firebase.messaging.unsubscribeFromTopic(TriggerWorkerMessagingService.TRIGGER_TOPIC)
         navController.popBackStack(Screen.AlarmList.title, true)
         navController.graph.setStartDestination(Screen.Login.title)
         navController.navigate(Screen.Login.title)
