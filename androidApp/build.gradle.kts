@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    val composeCompilerVersion = "1.1.0-rc02"
+    val composeVersion: String by project
 
     compileSdk = 32
     defaultConfig {
@@ -27,7 +27,7 @@ android {
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = composeCompilerVersion
+        kotlinCompilerExtensionVersion = composeVersion
     }
 }
 
@@ -38,9 +38,9 @@ dependencies {
     val workVersion: String by project
     val lifecycleVersion = "2.4.0"
     val activityComposeVersion = "1.4.0"
-    val composeVersion = "1.1.0-rc01"
-    val navComposeVersion = "2.4.0-rc01"
-    val accompanistVersion = "0.22.0-rc"
+    val composeVersion: String by project
+    val navComposeVersion = "2.4.1"
+    val accompanistVersion = "0.23.0"
 
     implementation(project(":shared"))
 
