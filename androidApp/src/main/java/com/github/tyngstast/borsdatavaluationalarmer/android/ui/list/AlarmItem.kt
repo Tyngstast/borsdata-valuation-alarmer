@@ -25,14 +25,14 @@ import androidx.compose.ui.unit.sp
 import com.github.tyngstast.db.Alarm
 
 @Composable
-fun AlarmItem(alarm: Alarm) {
+fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.background) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val col = screenWidth.div(12)
 
     Box(
         Modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(backgroundColor)
             .alpha(if (alarm.disabled == true) ContentAlpha.disabled else 1.0f)
     ) {
         Row(

@@ -3,6 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -16,17 +17,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
+import androidx.compose.material.Card
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissValue
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -86,9 +92,13 @@ fun AlarmList(
     LazyColumn {
         items(alarms, { alarm: Alarm -> alarm.id }) { alarm ->
             var disabled: Boolean by remember { mutableStateOf(alarm.disabled ?: false) }
+            val backgroundColor =
+                if (selectedRow == alarm) Color(0x37CCCCCC) else MaterialTheme.colors.background
+
             fun onDisable() {
                 disabled = !disabled
                 updateDisableAlarm(alarm.id, disabled)
+                selectedRow = null
                 Toast.makeText(
                     context,
                     "Alarm ${if (disabled) "inaktiverat" else "återaktiverat"}!",
@@ -107,7 +117,6 @@ fun AlarmList(
             )
             SwipeToDismiss(
                 state = dismissState,
-                modifier = Modifier.animateItemPlacement(),
                 directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
                 dismissThresholds = { direction ->
                     FractionalThreshold(if (direction == DismissDirection.StartToEnd) 0.15f else 0.3f)
@@ -151,33 +160,65 @@ fun AlarmList(
                     }
                 },
                 dismissContent = {
-                    Column(Modifier.clickable {
-                        selectedRow = if (selectedRow == alarm) null else alarm
-                    }) {
-                        AlarmItem(alarm)
-                        AnimatedVisibility(
-                            visible = selectedRow == alarm,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.White)
-                                .padding(horizontal = 12.dp, vertical = 6.dp)
-                        ) {
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Row(Modifier.clickable { onDisable() }) {
-                                    val (icon, text) = if (disabled) Icons.Default.Update to "Återaktivera" else Icons.Default.UpdateDisabled to "Inaktivera"
-                                    Icon(icon, contentDescription = text)
-                                    Text(text)
+                    Card(
+                        elevation = animateDpAsState(
+                            if (dismissState.dismissDirection != null) 4.dp else 0.dp
+                        ).value
+                    ) {
+                        Column(
+                            Modifier.selectable(
+                                selected = selectedRow == alarm,
+                                onClick = {
+                                    selectedRow = if (selectedRow == alarm) null else alarm
                                 }
-                                Row(Modifier.clickable { deleteAlarm(alarm.id) }) {
-                                    Icon(Icons.Outlined.Delete, contentDescription = "Ta bort")
-                                    Text("Ta bort")
+                            ),
+                        ) {
+                            AlarmItem(alarm, backgroundColor)
+                            AnimatedVisibility(
+                                visible = selectedRow == alarm,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .background(backgroundColor)
+                                        .padding(
+                                            start = 12.dp,
+                                            end = 12.dp,
+                                            top = 4.dp,
+                                            bottom = 12.dp
+                                        )
+                                ) {
+                                    Row(Modifier.clickable { onDisable() }) {
+                                        val (icon, text) = if (disabled) Icons.Default.Update to "Återaktivera" else Icons.Default.UpdateDisabled to "Inaktivera"
+                                        Icon(
+                                            icon,
+                                            contentDescription = text,
+                                            modifier = Modifier.size(19.dp)
+                                        )
+                                        Text(
+                                            text,
+                                            modifier = Modifier.padding(horizontal = 4.dp),
+                                            style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                        )
+                                    }
+                                    Row(Modifier.clickable { deleteAlarm(alarm.id) }) {
+                                        Icon(
+                                            Icons.Outlined.Delete,
+                                            contentDescription = "Ta bort",
+                                            modifier = Modifier.size(19.dp)
+                                        )
+                                        Text(
+                                            "Ta bort",
+                                            modifier = Modifier.padding(horizontal = 4.dp),
+                                            style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                        )
+                                    }
                                 }
                             }
+                            Divider(color = Color.LightGray, thickness = 1.dp)
                         }
-                        Divider(color = Color.LightGray, thickness = 1.dp)
                     }
                 }
             )
