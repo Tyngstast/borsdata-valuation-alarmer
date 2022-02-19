@@ -21,14 +21,16 @@ import androidx.compose.ui.Modifier
 fun Menu(onResetKey: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier
-        .wrapContentSize(Alignment.TopEnd)) {
+    Box(
+        modifier = Modifier
+            .wrapContentSize(Alignment.TopEnd)
+    ) {
         IconButton(onClick = { expanded = true }) {
             Icon(Icons.Default.MoreVert, contentDescription = "Meny")
         }
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
         ) {
             DropdownMenuItem(onClick = onResetKey) {
                 Text("Nollställ API-nyckel")

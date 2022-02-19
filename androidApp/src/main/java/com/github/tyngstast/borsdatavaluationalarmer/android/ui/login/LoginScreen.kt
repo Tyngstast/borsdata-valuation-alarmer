@@ -1,6 +1,7 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.login
 
 import android.annotation.SuppressLint
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -67,7 +68,10 @@ fun LoginScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Kräver Börsdata Pro") })
+            TopAppBar(
+                title = { Text("Kräver Börsdata Pro") },
+                backgroundColor = MaterialTheme.colors.primaryVariant
+            )
         },
     ) {
         LoginContent(

@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -83,7 +84,7 @@ fun AddAlarmField(
                         Text(text = item.name, modifier = Modifier.padding(8.dp))
                         if (item is KpiItem && item.fluent) {
                             Icon(
-                                Icons.Filled.Bolt,
+                                Icons.Default.Bolt,
                                 contentDescription = "Fluent",
                                 modifier = Modifier.padding(horizontal = 12.dp)
                             )
@@ -107,7 +108,7 @@ private fun InputField(
 ) = TextField(
     value = value,
     singleLine = true,
-    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
+    colors = if (MaterialTheme.colors.isLight) TextFieldDefaults.textFieldColors(backgroundColor = Color.White) else TextFieldDefaults.textFieldColors(),
     modifier = Modifier
         .fillMaxWidth()
         .onFocusChanged(onFocusChange)

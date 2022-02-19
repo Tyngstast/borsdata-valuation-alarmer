@@ -3,6 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.add
 import android.widget.Toast
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -49,9 +50,13 @@ fun AddAlarmScreen(
     val kpis = viewModel.kpis.collectAsState()
 
     val addAlarm = {
-        viewModel.addAlarm()
-        Toast.makeText(context, "Sparade nytt alarm", Toast.LENGTH_SHORT).show()
-        onSuccess()
+        if (insName.isBlank() || kpiName.isBlank() || kpiValue.isBlank()) {
+            Toast.makeText(context, "Var god fyll i värden", Toast.LENGTH_SHORT).show()
+        } else {
+            viewModel.addAlarm()
+            Toast.makeText(context, "Sparade nytt alarm", Toast.LENGTH_SHORT).show()
+            onSuccess()
+        }
     }
 
     Scaffold(
@@ -65,7 +70,11 @@ fun AddAlarmScreen(
                 },
                 actions = {
                     IconButton(onClick = addAlarm) {
-                        Icon(Icons.Filled.Check, contentDescription = "Add")
+                        Icon(
+                            Icons.Filled.Check,
+                            contentDescription = "Add",
+                            tint = MaterialTheme.colors.secondary
+                        )
                     }
                 }
             )

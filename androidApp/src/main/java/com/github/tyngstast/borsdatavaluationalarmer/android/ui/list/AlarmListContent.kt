@@ -50,7 +50,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -58,6 +57,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.deleteColor
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.disableColor
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.divider
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.enableColor
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.selectedColor
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.swipeBackground
 import com.github.tyngstast.db.Alarm
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
@@ -93,7 +98,8 @@ fun AlarmList(
         items(alarms, { alarm: Alarm -> alarm.id }) { alarm ->
             var disabled: Boolean by remember { mutableStateOf(alarm.disabled ?: false) }
             val backgroundColor =
-                if (selectedRow == alarm) Color(0x37CCCCCC) else MaterialTheme.colors.background
+                if (selectedRow == alarm) MaterialTheme.colors.selectedColor
+                else MaterialTheme.colors.background
 
             fun onDisable() {
                 disabled = !disabled
@@ -119,17 +125,17 @@ fun AlarmList(
                 state = dismissState,
                 directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
                 dismissThresholds = { direction ->
-                    FractionalThreshold(if (direction == DismissDirection.StartToEnd) 0.15f else 0.3f)
+                    FractionalThreshold(if (direction == DismissDirection.StartToEnd) 0.15f else 0.25f)
                 },
                 background = {
                     val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
                     val color by animateColorAsState(
                         when (dismissState.targetValue) {
-                            DismissValue.Default -> Color.LightGray
-                            DismissValue.DismissedToStart -> Color.Red
+                            DismissValue.Default -> MaterialTheme.colors.swipeBackground
+                            DismissValue.DismissedToStart -> MaterialTheme.colors.deleteColor
                             DismissValue.DismissedToEnd ->
-                                if (disabled) Color.Green
-                                else Color.Yellow
+                                if (disabled) MaterialTheme.colors.enableColor
+                                else MaterialTheme.colors.disableColor
                         }
                     )
                     val alignment = when (direction) {
@@ -161,6 +167,7 @@ fun AlarmList(
                 },
                 dismissContent = {
                     Card(
+                        shape = MaterialTheme.shapes.large,
                         elevation = animateDpAsState(
                             if (dismissState.dismissDirection != null) 4.dp else 0.dp
                         ).value
@@ -191,7 +198,9 @@ fun AlarmList(
                                         )
                                 ) {
                                     Row(Modifier.clickable { onDisable() }) {
-                                        val (icon, text) = if (disabled) Icons.Default.Update to "Återaktivera" else Icons.Default.UpdateDisabled to "Inaktivera"
+                                        val (icon, text) =
+                                            if (disabled) Icons.Default.Update to "Återaktivera"
+                                            else Icons.Default.UpdateDisabled to "Inaktivera"
                                         Icon(
                                             icon,
                                             contentDescription = text,
@@ -217,7 +226,7 @@ fun AlarmList(
                                     }
                                 }
                             }
-                            Divider(color = Color.LightGray, thickness = 1.dp)
+                            Divider(color = MaterialTheme.colors.divider, thickness = 1.dp)
                         }
                     }
                 }

@@ -3,6 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 import android.annotation.SuppressLint
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import org.koin.androidx.compose.getViewModel
@@ -34,12 +36,17 @@ fun AlarmListScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Aktiva alarm") },
+                backgroundColor = MaterialTheme.colors.primaryVariant,
                 actions = { Menu(onResetKey) }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAdd) {
-                Icon(Icons.Filled.Add, "")
+                Icon(
+                    Icons.Default.Add,
+                    "Lägg till Alarm",
+                    tint = Color.Black
+                )
             }
         }
     ) {
