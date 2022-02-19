@@ -16,12 +16,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
 import org.koin.androidx.compose.getViewModel
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddAlarmScreen(
     onSuccess: () -> Unit,

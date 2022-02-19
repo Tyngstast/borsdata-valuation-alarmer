@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -65,7 +64,6 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.selectedCo
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.swipeBackground
 import com.github.tyngstast.db.Alarm
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun AlarmListContent(
     alarms: List<Alarm>,
@@ -83,7 +81,7 @@ fun AlarmListContent(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AlarmList(
     alarms: List<Alarm>,
