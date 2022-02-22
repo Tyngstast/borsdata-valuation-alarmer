@@ -1,4 +1,4 @@
-package com.github.tyngstast.borsdatavaluationalarmer.android.worker
+package com.github.tyngstast.borsdatavaluationalarmer.android.util
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

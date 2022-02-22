@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
-import com.github.tyngstast.borsdatavaluationalarmer.android.worker.TriggerWorkerMessagingService
+import com.github.tyngstast.borsdatavaluationalarmer.android.messaging.TriggerWorkerMessagingService.Companion.TRIGGER_TOPIC
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
 import com.github.tyngstast.db.Alarm
@@ -34,9 +34,9 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
                 _alarms.value = it
             }
         }
-        Firebase.messaging.subscribeToTopic(TriggerWorkerMessagingService.TRIGGER_TOPIC)
+        Firebase.messaging.subscribeToTopic(TRIGGER_TOPIC)
             .addOnCompleteListener { task ->
-                log.d { "Subscribed to topic ${TriggerWorkerMessagingService.TRIGGER_TOPIC}: ${task.isSuccessful}" }
+                log.d { "Subscribed to topic $TRIGGER_TOPIC: ${task.isSuccessful}" }
             }
     }
 

@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".worker.TriggerWorkerMessagingService"
+            android:name=".messaging.TriggerWorkerMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

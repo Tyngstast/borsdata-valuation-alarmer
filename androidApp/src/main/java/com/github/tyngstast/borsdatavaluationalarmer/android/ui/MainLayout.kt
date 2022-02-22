@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import com.github.tyngstast.borsdatavaluationalarmer.android.messaging.TriggerWorkerMessagingService.Companion.TRIGGER_TOPIC
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarmScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
-import com.github.tyngstast.borsdatavaluationalarmer.android.worker.TriggerWorkerMessagingService
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -44,7 +44,7 @@ fun MainLayout(
 
     val resetKey = {
         viewModel.clearKey()
-        Firebase.messaging.unsubscribeFromTopic(TriggerWorkerMessagingService.TRIGGER_TOPIC)
+        Firebase.messaging.unsubscribeFromTopic(TRIGGER_TOPIC)
         navController.popBackStack(Screen.AlarmList.title, true)
         navController.graph.setStartDestination(Screen.Login.title)
         navController.navigate(Screen.Login.title)
