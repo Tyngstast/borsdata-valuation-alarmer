@@ -3,8 +3,10 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -16,6 +18,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewM
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import org.koin.androidx.compose.getViewModel
@@ -32,6 +35,14 @@ fun MainLayout(
     viewModel: LoginViewModel = getViewModel()
 ) {
     val navController = rememberAnimatedNavController()
+    val systemUiController = rememberSystemUiController()
+    val statusBarColor = MaterialTheme.colors.primaryVariant
+    val navColor = MaterialTheme.colors.background
+
+    SideEffect {
+        systemUiController.setStatusBarColor(color = statusBarColor)
+        systemUiController.setNavigationBarColor(color = navColor)
+    }
 
     val apiKeyState by remember(viewModel) { viewModel.apiKeyState }.collectAsState()
     val start = if (apiKeyState.apiKey.isNotBlank()) Screen.AlarmList.title else Screen.Login.title

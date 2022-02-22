@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import org.koin.androidx.compose.getViewModel
@@ -42,11 +41,7 @@ fun AlarmListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAdd) {
-                Icon(
-                    Icons.Default.Add,
-                    "Lägg till Alarm",
-                    tint = Color.Black
-                )
+                Icon(Icons.Default.Add, "Lägg till Alarm")
             }
         }
     ) {
