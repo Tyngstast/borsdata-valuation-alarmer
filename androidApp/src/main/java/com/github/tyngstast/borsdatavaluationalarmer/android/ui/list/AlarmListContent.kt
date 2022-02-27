@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.UpdateDisabled
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -67,6 +68,7 @@ import com.github.tyngstast.db.Alarm
 @Composable
 fun AlarmListContent(
     alarms: List<Alarm>,
+    onEdit: (Long) -> Unit,
     updateDisableAlarm: (Long, Boolean) -> Unit,
     deleteAlarm: (Long) -> Unit
 ) {
@@ -75,6 +77,7 @@ fun AlarmListContent(
     } else {
         AlarmList(
             alarms = alarms,
+            onEdit = onEdit,
             updateDisableAlarm = updateDisableAlarm,
             deleteAlarm = deleteAlarm
         )
@@ -85,6 +88,7 @@ fun AlarmListContent(
 @Composable
 fun AlarmList(
     alarms: List<Alarm>,
+    onEdit: (Long) -> Unit,
     updateDisableAlarm: (Long, Boolean) -> Unit,
     deleteAlarm: (Long) -> Unit
 ) {
@@ -195,32 +199,51 @@ fun AlarmList(
                                             bottom = 12.dp
                                         )
                                 ) {
-                                    Row(Modifier.clickable { onDisable() }) {
+                                    Row {
+                                        Row(Modifier.clickable { onEdit(alarm.id) }) {
+                                            Icon(
+                                                Icons.Outlined.Edit,
+                                                contentDescription = "Redigera",
+                                                modifier = Modifier.size(19.dp)
+                                            )
+                                            Text(
+                                                "Redigera",
+                                                modifier = Modifier.padding(horizontal = 2.dp),
+                                                style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                            )
+                                        }
+                                    }
+                                    Row {
                                         val (icon, text) =
                                             if (disabled) Icons.Default.Update to "Återaktivera"
                                             else Icons.Default.UpdateDisabled to "Inaktivera"
-                                        Icon(
-                                            icon,
-                                            contentDescription = text,
-                                            modifier = Modifier.size(19.dp)
-                                        )
-                                        Text(
-                                            text,
-                                            modifier = Modifier.padding(horizontal = 4.dp),
-                                            style = LocalTextStyle.current.copy(fontSize = 14.sp)
-                                        )
-                                    }
-                                    Row(Modifier.clickable { deleteAlarm(alarm.id) }) {
-                                        Icon(
-                                            Icons.Outlined.Delete,
-                                            contentDescription = "Ta bort",
-                                            modifier = Modifier.size(19.dp)
-                                        )
-                                        Text(
-                                            "Ta bort",
-                                            modifier = Modifier.padding(horizontal = 4.dp),
-                                            style = LocalTextStyle.current.copy(fontSize = 14.sp)
-                                        )
+                                        Row(Modifier
+                                            .clickable { onDisable() }
+                                            .padding(horizontal = 12.dp)
+                                        ) {
+                                            Icon(
+                                                icon,
+                                                contentDescription = text,
+                                                modifier = Modifier.size(19.dp)
+                                            )
+                                            Text(
+                                                text,
+                                                modifier = Modifier.padding(horizontal = 2.dp),
+                                                style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                            )
+                                        }
+                                        Row(Modifier.clickable { deleteAlarm(alarm.id) }) {
+                                            Icon(
+                                                Icons.Outlined.Delete,
+                                                contentDescription = "Ta bort",
+                                                modifier = Modifier.size(19.dp)
+                                            )
+                                            Text(
+                                                "Ta bort",
+                                                modifier = Modifier.padding(horizontal = 2.dp),
+                                                style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                            )
+                                        }
                                     }
                                 }
                             }

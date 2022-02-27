@@ -10,8 +10,11 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.github.tyngstast.borsdatavaluationalarmer.android.messaging.TriggerWorkerMessagingService.Companion.TRIGGER_TOPIC
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarmScreen
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.edit.EditAlarmScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
@@ -24,9 +27,10 @@ import com.google.firebase.messaging.ktx.messaging
 import org.koin.androidx.compose.getViewModel
 
 sealed class Screen(val title: String) {
-    object Login : Screen("Login")
-    object AlarmList : Screen("AlarmList")
-    object AddAlarm : Screen("AddAlarm")
+    object Login : Screen("login")
+    object AlarmList : Screen("list")
+    object AddAlarm : Screen("add")
+    object EditAlarm : Screen("edit")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -40,7 +44,7 @@ fun MainLayout(
     val navColor = MaterialTheme.colors.background
 
     SideEffect {
-        systemUiController.setStatusBarColor(color = statusBarColor)
+        systemUiController.setStatusBarColor(color = statusBarColor, darkIcons = false)
         systemUiController.setNavigationBarColor(color = navColor)
     }
 
@@ -77,6 +81,7 @@ fun MainLayout(
             ) {
                 AlarmListScreen(
                     onAdd = { navController.navigate(Screen.AddAlarm.title) },
+                    onEdit = { id: Long -> navController.navigate("${Screen.EditAlarm.title}/$id") },
                     onResetKey = resetKey
                 )
             }
@@ -86,6 +91,17 @@ fun MainLayout(
                 popEnterTransition = { slideInHorizontally() }
             ) {
                 AddAlarmScreen(onSuccess = { navController.popBackStack() })
+            }
+            composable(
+                route = "${Screen.EditAlarm.title}/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.LongType }),
+                exitTransition = { slideOutHorizontally() },
+                popEnterTransition = { slideInHorizontally() }
+            ) { backstackEntry ->
+                EditAlarmScreen(
+                    id = backstackEntry.arguments!!.getLong("id"),
+                    onSuccess = { navController.popBackStack() }
+                )
             }
         }
     }

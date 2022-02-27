@@ -16,6 +16,9 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 updateDisabledAlarm:
 UPDATE Alarm SET disabled = ? WHERE id = ?;
 
+updateKpiValue:
+UPDATE Alarm SET kpiValue = ? WHERE id = ?;
+
 deleteAlarm:
 DELETE FROM Alarm
 WHERE id = ?;

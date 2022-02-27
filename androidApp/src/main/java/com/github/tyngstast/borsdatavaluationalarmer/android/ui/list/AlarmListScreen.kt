@@ -20,6 +20,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun AlarmListScreen(
     onAdd: () -> Unit,
+    onEdit: (Long) -> Unit,
     onResetKey: () -> Unit,
     viewModel: AlarmListViewModel = getViewModel()
 ) {
@@ -47,6 +48,7 @@ fun AlarmListScreen(
     ) {
         AlarmListContent(
             alarms = alarms,
+            onEdit = onEdit,
             updateDisableAlarm = viewModel.updateDisableAlarm,
             deleteAlarm = viewModel.deleteAlarm,
         )

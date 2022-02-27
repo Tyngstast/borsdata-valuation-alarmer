@@ -63,14 +63,14 @@ fun AddAlarmScreen(
                 title = { Text("Lägg till alarm") },
                 navigationIcon = {
                     IconButton(onClick = { onSuccess() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Bakåt")
                     }
                 },
                 actions = {
                     IconButton(onClick = addAlarm) {
                         Icon(
                             Icons.Filled.Check,
-                            contentDescription = "Add",
+                            contentDescription = "Lägg till",
                             tint = MaterialTheme.colors.secondary
                         )
                     }
@@ -90,6 +90,5 @@ fun AddAlarmScreen(
             addAlarm = addAlarm
         )
     }
-
 }
 

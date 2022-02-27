@@ -22,6 +22,8 @@ class AlarmDao(
             .mapToList()
             .flowOn(backgroundDispatcher)
 
+    fun getAlarm(id: Long) = dbQuery.selectAlarm(id).executeAsOne()
+
     fun insertAlarm(
         insId: Long,
         insName: String,
@@ -36,6 +38,10 @@ class AlarmDao(
 
     fun updateDisableAlarm(id: Long, disable: Boolean) {
         dbQuery.updateDisabledAlarm(disable, id)
+    }
+
+    fun updateKpiValue(id: Long, kpiValue: Double) {
+        dbQuery.updateKpiValue(kpiValue, id)
     }
 
     fun deleteAlarm(id: Long) {

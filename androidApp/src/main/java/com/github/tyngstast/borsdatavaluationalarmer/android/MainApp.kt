@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.StrictMode
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarmViewModel
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.edit.EditAlarmViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.initKoin
@@ -37,6 +38,7 @@ class MainApp : Application() {
                 single<Context> { this@MainApp }
                 viewModel { AlarmListViewModel() }
                 viewModel { AddAlarmViewModel() }
+                viewModel { EditAlarmViewModel() }
                 viewModel { LoginViewModel() }
                 single<SharedPreferences> {
                     get<Context>().getSharedPreferences(

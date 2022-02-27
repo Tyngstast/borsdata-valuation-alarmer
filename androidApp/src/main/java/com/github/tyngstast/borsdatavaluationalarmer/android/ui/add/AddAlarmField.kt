@@ -12,10 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.runtime.Composable
@@ -27,23 +24,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
 
 @Composable
 fun AddAlarmField(
     value: String,
     label: String,
+    disabled: Boolean = false,
     onValueChange: (String) -> Unit,
+    keyboardActions: KeyboardActions,
+    keyboardOptions: KeyboardOptions,
+    focusRequester: FocusRequester,
     items: List<Item> = listOf(),
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    focusRequester: FocusRequester = FocusRequester.Default
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -59,7 +53,8 @@ fun AddAlarmField(
         onFocusChange = { showSuggestions = false },
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
-        focusRequester = focusRequester
+        focusRequester = focusRequester,
+        disabled = disabled
     )
     AnimatedVisibility(visible = showSuggestions) {
         LazyColumn(
@@ -95,28 +90,3 @@ fun AddAlarmField(
         }
     }
 }
-
-@Composable
-private fun InputField(
-    value: String,
-    label: String,
-    onValueChange: (String) -> Unit,
-    onFocusChange: (FocusState) -> Unit,
-    keyboardActions: KeyboardActions,
-    keyboardOptions: KeyboardOptions,
-    focusRequester: FocusRequester
-) = TextField(
-    value = value,
-    singleLine = true,
-    colors = if (MaterialTheme.colors.isLight) TextFieldDefaults.textFieldColors(backgroundColor = Color.White) else TextFieldDefaults.textFieldColors(),
-    modifier = Modifier
-        .fillMaxWidth()
-        .onFocusChanged(onFocusChange)
-        .focusRequester(focusRequester),
-    label = { Text(label, fontSize = 16.sp) },
-    onValueChange = onValueChange,
-    keyboardActions = keyboardActions,
-    keyboardOptions = keyboardOptions
-)
-
-
