@@ -11,6 +11,8 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -24,9 +26,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.sp
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
 import org.koin.androidx.compose.getViewModel
 
@@ -45,13 +52,16 @@ fun EditAlarmScreen(
     }
 
     val alarm = viewModel.getAlarm(id)
-    var kpiValue: String by remember { mutableStateOf(alarm.kpiValue.toString()) }
+    var kpiValue by remember {
+        mutableStateOf(
+            alarm.kpiValue.toString().run { TextFieldValue(this, TextRange(this.length)) })
+    }
 
     val editAlarm = {
-        if (kpiValue.isBlank()) {
+        if (kpiValue.text.isBlank()) {
             Toast.makeText(context, "Var god fyll i ett värde", Toast.LENGTH_SHORT).show()
         } else {
-            viewModel.editAlarm(id, kpiValue)
+            viewModel.editAlarm(id, kpiValue.text)
             Toast.makeText(context, "Uppdaterade alarm", Toast.LENGTH_SHORT).show()
             onSuccess()
         }
@@ -93,10 +103,17 @@ fun EditAlarmScreen(
                 label = "Nyckeltal",
                 disabled = true
             )
-            InputField(
+            TextField(
                 value = kpiValue,
-                label = "Värde",
-                onValueChange = { value: String -> kpiValue = value },
+                singleLine = true,
+                colors = if (MaterialTheme.colors.isLight) TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White
+                ) else TextFieldDefaults.textFieldColors(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(kpiValueFr),
+                label = { Text("Värde", fontSize = 16.sp) },
+                onValueChange = { kpiValue = it },
                 keyboardActions = KeyboardActions(
                     onDone = { editAlarm() }
                 ),
@@ -104,7 +121,6 @@ fun EditAlarmScreen(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
-                focusRequester = kpiValueFr
             )
         }
     }

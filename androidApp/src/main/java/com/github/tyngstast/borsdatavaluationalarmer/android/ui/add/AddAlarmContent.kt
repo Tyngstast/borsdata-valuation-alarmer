@@ -13,6 +13,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.AppTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -39,7 +40,7 @@ fun AddAlarmContent(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        AddAlarmField(
+        SuggestionInputField(
             value = insName,
             label = "Bolag",
             onValueChange = setInsName,
@@ -53,7 +54,7 @@ fun AddAlarmContent(
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
             focusRequester = insNameFr
         )
-        AddAlarmField(
+        SuggestionInputField(
             value = kpiName,
             label = "Nyckeltal",
             onValueChange = setKpiName,
@@ -67,7 +68,7 @@ fun AddAlarmContent(
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
             focusRequester = kpiNameFr
         )
-        AddAlarmField(
+        InputField(
             value = kpiValue,
             label = "Går under värde",
             onValueChange = setKpiValue,

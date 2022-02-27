@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
 
 @Composable
-fun AddAlarmField(
+fun SuggestionInputField(
     value: String,
     label: String,
     disabled: Boolean = false,
