@@ -267,6 +267,6 @@ fun WelcomeInfo() {
             )
         )
         Spacer(Modifier.height(16.dp))
-        Text("Överiga nyckeltal uppdateras en gång per dag.", textAlign = TextAlign.Center)
+        Text("Övriga nyckeltal uppdateras en gång per dag.", textAlign = TextAlign.Center)
     }
 }
