@@ -37,12 +37,13 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
             .alpha(if (alarm.disabled == true) ContentAlpha.disabled else 1.0f)
     ) {
         Row(
+            modifier = Modifier.padding(vertical = 12.dp),
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 Modifier
-                    .padding(12.dp)
+                    .padding(horizontal = 8.dp)
                     .width(col.times(6).dp)
             ) {
                 Column {
@@ -55,18 +56,21 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
                     )
                 }
                 Column {
-                    Text(text = alarm.insName)
+                    Text(
+                        text = alarm.insName,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top,
                 modifier = Modifier
-                    .padding(vertical = 12.dp)
                     .width(col.times(6).dp)
             ) {
                 Column(
-                    Modifier.width(col.times(3).dp)
+                    Modifier.width(col.times(3.1).dp)
                 ) {
                     Column {
                         Text(
@@ -88,7 +92,7 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
                 Column(
                     Modifier
                         .padding(horizontal = 8.dp)
-                        .width(col.times(3).dp),
+                        .width(col.times(2.9).dp),
                     horizontalAlignment = Alignment.End
                 ) {
                     Column {
@@ -101,7 +105,11 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
                         )
                     }
                     Column {
-                        Text(text = alarm.kpiValue.toString())
+                        Text(
+                            text = alarm.kpiValue.toString(),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
                 }
             }
