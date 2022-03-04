@@ -2,6 +2,14 @@
 
 **Only working Android implementation for now**. See [TODO](#todo).
 
+## Screenshots
+<div align="left"> 
+  <img src="screenshots/list.png" width="300" height="auto" alt="Alarm List View" />
+  <img src="screenshots/add.png" width="300" height="auto" alt="Add Alarm View" />
+</div>
+
+[See more](screenshots)
+
 ## About
   * Uses Börsdata API.
   * Requires personal API key from Pro membership.
@@ -11,8 +19,9 @@
   * BD only provides API data for nordic companies unfortunately.
   * BD data is only updated once per day at 21:00 CET.
   * Schedule for alarm triggers will run on the hour, every hour, during market open (swedish time).
-    * Some KPIs are calculated on the fly, others will only change once per day. Current "fluent" (marked by lightning bolt when selecting):
-      * `P/E` 
+    * Some KPIs are calculated on the fly, others will only change once per day. Live KPIs will be calculated on each trigger, the rest will run once per day. Current "Live KPIs" (marked by lightning bolt when selecting in GUI):
+      * `P/E`
+      * `EV/E` 
       * `EV/EBIT`
       * `EV/EBITDA` 
       * `EV/FCF` 
@@ -27,7 +36,8 @@
     * Multiplatform Settings
   * Android
     * Jetpack Compose
-    * Coroutines with StateFlow
+    * StateFlow
+    * Coroutines 
     * WorkManager
     * Firebase Messaging
   * iOS
