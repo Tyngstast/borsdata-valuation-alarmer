@@ -11,7 +11,8 @@ import com.github.tyngstast.db.Alarm
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -22,8 +23,12 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
     private val alarmDao: AlarmDao by inject()
     private val log: Logger by injectLogger("AlarmListViewModel")
 
-    private val _alarms = MutableStateFlow<List<Alarm>>(emptyList())
-    val alarms: StateFlow<List<Alarm>> = _alarms
+    private val _alarmListState = MutableStateFlow<AlarmListState>(AlarmListState.Loading)
+    val alarmListState = _alarmListState.stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        AlarmListState.Loading
+    )
 
     init {
         viewModelScope.launch {
@@ -31,7 +36,7 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
         }
         viewModelScope.launch {
             alarmDao.getAllAlarmsAsFlow().collect {
-                _alarms.value = it
+                _alarmListState.value = AlarmListState.Success(it)
             }
         }
         Firebase.messaging.subscribeToTopic(TRIGGER_TOPIC)
@@ -46,5 +51,10 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
 
     val deleteAlarm = { id: Long ->
         alarmDao.deleteAlarm(id)
+    }
+
+    sealed class AlarmListState {
+        object Loading: AlarmListState()
+        data class Success(val alarms: List<Alarm>): AlarmListState()
     }
 }

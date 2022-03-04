@@ -18,6 +18,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.edit.EditAlarmSc
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel.ApiKeyState.Success
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -49,7 +50,7 @@ fun MainLayout(
     }
 
     val apiKeyState by remember(viewModel) { viewModel.apiKeyState }.collectAsState()
-    val start = if (apiKeyState.apiKey.isNotBlank()) Screen.AlarmList.title else Screen.Login.title
+    val start = if (apiKeyState is Success) Screen.AlarmList.title else Screen.Login.title
 
     val loginSuccess = {
         navController.popBackStack(Screen.Login.title, true)

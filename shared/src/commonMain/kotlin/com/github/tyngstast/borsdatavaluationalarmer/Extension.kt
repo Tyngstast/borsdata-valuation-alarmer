@@ -9,3 +9,10 @@ val operationsMap = mapOf(
 
 fun Alarm.evaluate(kpiValue: Double): Boolean =
     operationsMap.getValue(this.operation).invoke(kpiValue, this.kpiValue)
+
+fun String.isDouble(): Boolean = try {
+    this.replace(",", ".").toDouble()
+    true
+} catch (e: Throwable) {
+    false
+}

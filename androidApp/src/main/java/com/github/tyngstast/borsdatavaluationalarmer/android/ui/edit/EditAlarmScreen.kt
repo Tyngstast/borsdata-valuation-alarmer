@@ -35,6 +35,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
+import com.github.tyngstast.borsdatavaluationalarmer.isDouble
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -51,6 +52,7 @@ fun EditAlarmScreen(
         kpiValueFr.requestFocus()
     }
 
+    // This should be reworked to not get alarm on main thread
     val alarm = viewModel.getAlarm(id)
     var kpiValue by remember {
         mutableStateOf(
@@ -58,8 +60,8 @@ fun EditAlarmScreen(
     }
 
     val editAlarm = {
-        if (kpiValue.text.isBlank()) {
-            Toast.makeText(context, "Var god fyll i ett värde", Toast.LENGTH_SHORT).show()
+        if (!kpiValue.text.isDouble()) {
+            Toast.makeText(context, "Var god fyll i ett giltigt värde", Toast.LENGTH_SHORT).show()
         } else {
             viewModel.editAlarm(id, kpiValue.text)
             Toast.makeText(context, "Uppdaterade alarm", Toast.LENGTH_SHORT).show()
