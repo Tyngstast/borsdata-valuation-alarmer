@@ -1,6 +1,6 @@
 # Börsdata Valuation Alarmer
 
-**Only working Android implementation** for now. See [TODO](#todo).
+**Only working Android implementation for now**. See [TODO](#todo).
 
 ## About
   * Uses Börsdata API.
