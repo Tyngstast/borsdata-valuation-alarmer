@@ -122,7 +122,7 @@ fun AlarmListContent(
         )
     } else if (alarmListState !is Loading) {
         WelcomeInfo()
-    }
+    } // else loading animation
 }
 
 @OptIn(ExperimentalMaterialApi::class)

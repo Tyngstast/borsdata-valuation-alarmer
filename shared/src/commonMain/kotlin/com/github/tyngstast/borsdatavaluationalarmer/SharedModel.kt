@@ -155,6 +155,10 @@ class SharedModel : KoinComponent {
                 val fcf = borsdataClient.getLatestValue(insId, FluentKpi.EV_FCF.denominatorId)
                 ev() / fcf
             }
+            FluentKpi.EV_OP.value -> {
+                val op = borsdataClient.getLatestValue(insId, FluentKpi.EV_OP.denominatorId)
+                ev() / op
+            }
             FluentKpi.EV_S.value -> {
                 val sales = borsdataClient.getLatestValue(insId, FluentKpi.EV_S.denominatorId)
                 ev() / sales

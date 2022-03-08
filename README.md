@@ -25,6 +25,7 @@
       * `EV/EBIT`
       * `EV/EBITDA` 
       * `EV/FCF` 
+      * `EV/OP`
       * `EV/S`
 
 ## Tech
