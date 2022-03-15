@@ -7,6 +7,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.github.tyngstast.borsdatavaluationalarmer.android.worker.ValuationAlarmWorker
+import java.util.concurrent.TimeUnit
 
 class ValuationAlarmWorkerFactory(context: Context) {
 
@@ -23,10 +24,20 @@ class ValuationAlarmWorkerFactory(context: Context) {
 
     fun beginAlarmTriggerWork() {
         val workRequest = OneTimeWorkRequestBuilder<ValuationAlarmWorker>()
+            .setInitialDelay(randomInitialDelay(), TimeUnit.SECONDS)
             .addTag(WORK_REQUEST_TAG)
             .setConstraints(constraints)
             .build()
 
         wm.beginUniqueWork(VALUATION_SYNC_WORK, ExistingWorkPolicy.REPLACE, workRequest).enqueue()
+    }
+
+    /**
+     * 60 - 600 seconds -> 1 - 5 minutes.
+     * Use at least 1 min to let quotes update after open.
+     * Use seconds to spread out requests towards backend more.
+     */
+    private fun randomInitialDelay(): Long {
+        return (60L..300L).random()
     }
 }
