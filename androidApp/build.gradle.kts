@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     kotlin("android")
 }
 
@@ -47,6 +48,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:29.3.0"))
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
