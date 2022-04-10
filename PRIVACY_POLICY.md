@@ -9,7 +9,7 @@ The app does use Firebase Analytics and Crashlytics and will therefore collect t
 This data is only used to get some estimations of usage, and to fix potential bugs.
 Read more here: https://support.google.com/firebase/answer/9234069?visit_id=637852004121025789-880058941&rd=1
 
-If you find any security vulnerability that has been inadvertently caused by me, or have any question regarding how the app protects your privacy, please send me email and I will try to fix it/help you.
+If you find any security vulnerability that has been inadvertently caused by me, or have any question regarding how the app protects your privacy, please send me an email and I will try to fix it/help you.
 
 ### Contact
 bd.varderingslarm@gmail.com
