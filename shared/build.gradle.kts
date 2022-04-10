@@ -50,6 +50,7 @@ kotlin {
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
                 implementation("co.touchlab:kermit:$kermitVersion")
+                implementation("co.touchlab:kermit-crashlytics:$kermitVersion")
             }
         }
         val commonTest by getting {
