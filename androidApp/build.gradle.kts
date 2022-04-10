@@ -36,15 +36,15 @@ dependencies {
     val kermitVersion: String by project
     val koinVersion: String by project
     val workVersion: String by project
-    val lifecycleVersion = "2.4.0"
+    val lifecycleVersion = "2.4.1"
     val activityComposeVersion = "1.4.0"
     val composeVersion: String by project
-    val navComposeVersion = "2.4.1"
+    val navComposeVersion = "2.4.2"
     val accompanistVersion = "0.23.0"
 
     implementation(project(":shared"))
 
-    implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
+    implementation(platform("com.google.firebase:firebase-bom:29.3.0"))
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
 
