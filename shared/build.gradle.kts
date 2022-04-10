@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     id("com.squareup.sqldelight")
     id("kotlinx-serialization")
+    id("co.touchlab.kermit")
 }
 
 group = "com.github.tyngstast"
@@ -103,6 +104,13 @@ android {
     defaultConfig {
         minSdk = 23
         targetSdk = 32
+    }
+}
+
+val releaseBuild: String by project
+kermit {
+    if (releaseBuild.toBoolean()) {
+        stripBelow = co.touchlab.kermit.gradle.StripSeverity.Info
     }
 }
 

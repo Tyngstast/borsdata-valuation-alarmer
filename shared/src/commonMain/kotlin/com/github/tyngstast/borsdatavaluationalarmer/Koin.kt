@@ -37,8 +37,9 @@ val coreModule = module {
     single { YahooClient(getWith("YahooClient")) }
     single<Clock> { Clock.System }
 
+    val logger = if (isDebug) platformLogWriter() else CrashlyticsLogWriter()
     val baseLogger = Logger(
-        config = StaticConfig(logWriterList = listOf(platformLogWriter(), CrashlyticsLogWriter())),
+        config = StaticConfig(logWriterList = listOf(logger)),
         tag = "BorsdataValuationAlarmer"
     )
 

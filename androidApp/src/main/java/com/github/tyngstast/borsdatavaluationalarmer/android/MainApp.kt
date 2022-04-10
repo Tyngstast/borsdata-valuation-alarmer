@@ -9,12 +9,15 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.edit.EditAlarmVi
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.initKoin
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 class MainApp : Application() {
 
     override fun onCreate() {
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(
                 StrictMode.ThreadPolicy.Builder()
