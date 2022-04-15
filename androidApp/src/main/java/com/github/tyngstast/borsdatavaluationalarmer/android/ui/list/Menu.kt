@@ -32,9 +32,9 @@ fun Menu(onResetKey: () -> Unit) {
             data = Uri.parse("mailto:$email?subject=Feedback")
             putExtra(Intent.EXTRA_SUBJECT, "Feedback")
         }
-        if (intent.resolveActivity(context.packageManager) != null) {
+        try {
             context.startActivity(intent)
-        } else {
+        } catch (e: Throwable) {
             Toast.makeText(
                 context,
                 "Hittade ingen app för e-post\r\n\nMaila oss på:\r\n$email",
