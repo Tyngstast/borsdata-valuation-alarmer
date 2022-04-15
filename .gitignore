@@ -11,4 +11,5 @@
 local.properties
 /logs
 google-services.json
+keystore.properties
 */release
