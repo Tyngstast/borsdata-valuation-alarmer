@@ -2,8 +2,10 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.login
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
@@ -25,9 +27,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -120,17 +124,13 @@ fun LoginContent(
             visualTransformation = if (apiKeyVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             isError = state is Error,
             trailingIcon = {
-                when {
-                    state is Loading -> CircularProgressIndicator(modifier = Modifier.scale(0.5F))
-                    state is Error -> Icon(
-                        Icons.Default.Info,
-                        "Fel",
-                        tint = MaterialTheme.colors.error
-                    )
+                when (state) {
+                    is Loading -> CircularProgressIndicator(modifier = Modifier.scale(0.5F))
                     else -> IconButton(onClick = toggleVisibility) {
                         Icon(
                             if (apiKeyVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                            "Toggla API-nyckel synlighet"
+                            "Toggla API-nyckel synlighet",
+                            tint = Color.Gray
                         )
                     }
                 }
@@ -143,12 +143,20 @@ fun LoginContent(
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
         )
         if (state is Error) {
-            Text(
-                text = state.errorCode.value,
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(top = 8.dp)
-            )
+            Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Default.Info,
+                    "Fel uppstod",
+                    modifier = Modifier.size(19.dp),
+                    tint = MaterialTheme.colors.error
+                )
+                Text(
+                    modifier = Modifier.padding(start = 4.dp),
+                    text = state.errorCode.value,
+                    color = MaterialTheme.colors.error,
+                    style = MaterialTheme.typography.caption,
+                )
+            }
         }
         Button(
             modifier = Modifier
