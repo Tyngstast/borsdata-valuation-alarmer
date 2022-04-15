@@ -29,7 +29,7 @@ fun Menu(onResetKey: () -> Unit) {
     val feedbackEmailIntent: () -> Unit = {
         val email = "bd.varderingslarm@gmail.com"
         val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:$email")
+            data = Uri.parse("mailto:$email?subject=Feedback")
             putExtra(Intent.EXTRA_SUBJECT, "Feedback")
         }
         if (intent.resolveActivity(context.packageManager) != null) {
@@ -37,7 +37,7 @@ fun Menu(onResetKey: () -> Unit) {
         } else {
             Toast.makeText(
                 context,
-                "Hittade ingen app för e-post.\r\n\nMaila oss på:\r\n$email",
+                "Hittade ingen app för e-post\r\n\nMaila oss på:\r\n$email",
                 Toast.LENGTH_SHORT
             ).show()
         }
