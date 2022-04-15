@@ -2,17 +2,12 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,28 +19,22 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.Card
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.DismissValue
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Bolt
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.UpdateDisabled
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -54,7 +43,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -65,12 +53,8 @@ import androidx.compose.ui.unit.sp
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState.Loading
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState.Success
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.deleteColor
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.disableColor
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.divider
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.enableColor
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.selectedColor
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.swipeBackground
 import com.github.tyngstast.db.Alarm
 import org.koin.androidx.compose.getViewModel
 
@@ -155,6 +139,91 @@ fun AlarmList(
                 ).show()
             }
 
+            Card(
+                shape = MaterialTheme.shapes.large,
+//                elevation = animateDpAsState(
+//                    if (dismissState.dismissDirection != null) 4.dp else 0.dp
+//                ).value
+            ) {
+                Column(
+                    Modifier.selectable(
+                        selected = selectedRow == alarm,
+                        onClick = {
+                            selectedRow = if (selectedRow == alarm) null else alarm
+                        }
+                    ),
+                ) {
+                    AlarmItem(alarm, backgroundColor)
+                    AnimatedVisibility(
+                        visible = selectedRow == alarm,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .background(backgroundColor)
+                                .padding(
+                                    start = 12.dp,
+                                    end = 12.dp,
+                                    top = 4.dp,
+                                    bottom = 12.dp
+                                )
+                        ) {
+                            Row {
+                                Row(Modifier.clickable { onEdit(alarm.id) }) {
+                                    Icon(
+                                        Icons.Outlined.Edit,
+                                        contentDescription = "Redigera",
+                                        modifier = Modifier.size(19.dp)
+                                    )
+                                    Text(
+                                        "Redigera",
+                                        modifier = Modifier.padding(horizontal = 2.dp),
+                                        style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                    )
+                                }
+                            }
+                            Row {
+                                val (icon, text) =
+                                    if (disabled) Icons.Default.Update to "Återaktivera"
+                                    else Icons.Default.UpdateDisabled to "Inaktivera"
+                                Row(
+                                    Modifier
+                                        .clickable { onDisable() }
+                                        .padding(horizontal = 12.dp)
+                                ) {
+                                    Icon(
+                                        icon,
+                                        contentDescription = text,
+                                        modifier = Modifier.size(19.dp)
+                                    )
+                                    Text(
+                                        text,
+                                        modifier = Modifier.padding(horizontal = 2.dp),
+                                        style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                    )
+                                }
+                                Row(Modifier.clickable { deleteAlarm(alarm.id) }) {
+                                    Icon(
+                                        Icons.Outlined.Delete,
+                                        contentDescription = "Ta bort",
+                                        modifier = Modifier.size(19.dp)
+                                    )
+                                    Text(
+                                        "Ta bort",
+                                        modifier = Modifier.padding(horizontal = 2.dp),
+                                        style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Divider(color = MaterialTheme.colors.divider, thickness = 1.dp)
+                }
+            }
+
+            /*
             val dismissState = rememberDismissState(
                 confirmStateChange = {
                     val delete = it == DismissValue.DismissedToStart
@@ -168,7 +237,7 @@ fun AlarmList(
                 state = dismissState,
                 directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
                 dismissThresholds = { direction ->
-                    FractionalThreshold(if (direction == DismissDirection.StartToEnd) 0.15f else 0.25f)
+                    FractionalThreshold(if (direction == DismissDirection.StartToEnd) 0.25f else 0.4f)
                 },
                 background = {
                     val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
@@ -209,91 +278,9 @@ fun AlarmList(
                     }
                 },
                 dismissContent = {
-                    Card(
-                        shape = MaterialTheme.shapes.large,
-                        elevation = animateDpAsState(
-                            if (dismissState.dismissDirection != null) 4.dp else 0.dp
-                        ).value
-                    ) {
-                        Column(
-                            Modifier.selectable(
-                                selected = selectedRow == alarm,
-                                onClick = {
-                                    selectedRow = if (selectedRow == alarm) null else alarm
-                                }
-                            ),
-                        ) {
-                            AlarmItem(alarm, backgroundColor)
-                            AnimatedVisibility(
-                                visible = selectedRow == alarm,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier
-                                        .background(backgroundColor)
-                                        .padding(
-                                            start = 12.dp,
-                                            end = 12.dp,
-                                            top = 4.dp,
-                                            bottom = 12.dp
-                                        )
-                                ) {
-                                    Row {
-                                        Row(Modifier.clickable { onEdit(alarm.id) }) {
-                                            Icon(
-                                                Icons.Outlined.Edit,
-                                                contentDescription = "Redigera",
-                                                modifier = Modifier.size(19.dp)
-                                            )
-                                            Text(
-                                                "Redigera",
-                                                modifier = Modifier.padding(horizontal = 2.dp),
-                                                style = LocalTextStyle.current.copy(fontSize = 14.sp)
-                                            )
-                                        }
-                                    }
-                                    Row {
-                                        val (icon, text) =
-                                            if (disabled) Icons.Default.Update to "Återaktivera"
-                                            else Icons.Default.UpdateDisabled to "Inaktivera"
-                                        Row(
-                                            Modifier
-                                                .clickable { onDisable() }
-                                                .padding(horizontal = 12.dp)
-                                        ) {
-                                            Icon(
-                                                icon,
-                                                contentDescription = text,
-                                                modifier = Modifier.size(19.dp)
-                                            )
-                                            Text(
-                                                text,
-                                                modifier = Modifier.padding(horizontal = 2.dp),
-                                                style = LocalTextStyle.current.copy(fontSize = 14.sp)
-                                            )
-                                        }
-                                        Row(Modifier.clickable { deleteAlarm(alarm.id) }) {
-                                            Icon(
-                                                Icons.Outlined.Delete,
-                                                contentDescription = "Ta bort",
-                                                modifier = Modifier.size(19.dp)
-                                            )
-                                            Text(
-                                                "Ta bort",
-                                                modifier = Modifier.padding(horizontal = 2.dp),
-                                                style = LocalTextStyle.current.copy(fontSize = 14.sp)
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                            Divider(color = MaterialTheme.colors.divider, thickness = 1.dp)
-                        }
-                    }
                 }
             )
+             */
         }
     }
 }
