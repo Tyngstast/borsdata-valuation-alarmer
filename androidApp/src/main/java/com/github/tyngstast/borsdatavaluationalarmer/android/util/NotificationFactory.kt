@@ -19,9 +19,21 @@ class NotificationFactory(private val context: Context) {
         private const val CHANNEL_NAME = "Valuation Alarmer Notifications"
         private const val CHANNEL_DESCRIPTION = "Show notification from valuation alarmer"
         private val notificationId = AtomicInteger(0)
+
+        private const val TRIGGER_NOTIFICATION_TITLE = "Värderingslarm triggades!"
+        private const val NOTIFICATION_ERROR_TITLE = "Appen verkar ha stött på oväntade problem!";
+        private const val NOTIFICATION_ERROR_MESSAGE = "Öppna appen för att synka på nytt";
     }
 
-    fun makeStatusNotification(title: String, message: String) {
+    fun makeErrorNotification() {
+        makeStatusNotification(NOTIFICATION_ERROR_TITLE, NOTIFICATION_ERROR_MESSAGE)
+    }
+
+    fun makeAlarmTriggerNotification(message: String) {
+        makeStatusNotification(TRIGGER_NOTIFICATION_TITLE, message)
+    }
+
+    private fun makeStatusNotification(title: String, message: String) {
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because

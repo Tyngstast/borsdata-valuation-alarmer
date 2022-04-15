@@ -14,8 +14,6 @@ import org.koin.core.component.KoinComponent
 class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent {
 
     companion object {
-        const val NOTIFICATION_ERROR_TITLE = "Appen verkar ha stött på oväntade problem!";
-        const val NOTIFICATION_ERROR_MESSAGE = "Öppna appen för att synka på nytt";
         const val TRIGGER_TOPIC = "triggerValuationAlarmWorker";
     }
 
@@ -33,10 +31,7 @@ class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent 
             } else {
                 log.e { "Failure threshold reached. Notifying user to open app and re-sync" }
                 Firebase.messaging.unsubscribeFromTopic(TRIGGER_TOPIC)
-                NotificationFactory(context).makeStatusNotification(
-                    NOTIFICATION_ERROR_TITLE,
-                    NOTIFICATION_ERROR_MESSAGE
-                )
+                NotificationFactory(context).makeErrorNotification()
             }
         }
     }

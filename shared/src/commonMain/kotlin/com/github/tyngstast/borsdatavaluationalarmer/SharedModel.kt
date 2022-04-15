@@ -58,10 +58,11 @@ class SharedModel : KoinComponent {
                 } catch (e: ResponseException) {
                     if (e is ClientRequestException && e.response.status == HttpStatusCode.Unauthorized) {
                         vault.clearApiKey()
+                        throw ResetAppException("401 response. Cleared API Key", e)
                     } else {
                         incrementFailureCounter()
+                        throw e
                     }
-                    throw e
                 } catch (e: Throwable) {
                     incrementFailureCounter()
                     throw e
