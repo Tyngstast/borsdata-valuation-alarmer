@@ -20,8 +20,8 @@ android {
         applicationId = "com.github.tyngstast.borsdatavaluationalarmer.android"
         minSdk = 23
         targetSdk = 32
-        versionCode = 4
-        versionName = "0.0.4"
+        versionCode = 5
+        versionName = "0.0.5"
     }
     signingConfigs {
         create("release") {
