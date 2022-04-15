@@ -41,7 +41,8 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
         }
         Firebase.messaging.subscribeToTopic(TRIGGER_TOPIC)
             .addOnCompleteListener { task ->
-                log.d { "Subscribed to topic $TRIGGER_TOPIC: ${task.isSuccessful}" }
+                log.d { "Subscribed to topic $TRIGGER_TOPIC: ${task.isSuccessful}. Also resetting failure counter" }
+                sharedModel.resetFailureCounter()
             }
     }
 

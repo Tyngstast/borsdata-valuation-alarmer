@@ -114,6 +114,10 @@ class SharedModel : KoinComponent {
         log.d { "Latest reset epoch: $currentTimeInMillis" }
     }
 
+    fun resetFailureCounter() {
+        settings.putInt(WORKER_FAILURE_COUNTER, 0)
+    }
+
     private suspend fun calcOrGetKpiValue(
         kpiId: Long,
         kpiName: String,
@@ -188,10 +192,6 @@ class SharedModel : KoinComponent {
     private fun incrementFailureCounter() {
         val failures: Int = settings.getInt(WORKER_FAILURE_COUNTER, 0)
         settings.putInt(WORKER_FAILURE_COUNTER, failures + 1)
-    }
-
-    private fun resetFailureCounter() {
-        settings.putInt(WORKER_FAILURE_COUNTER, 0)
     }
 
     private fun today() = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
