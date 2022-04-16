@@ -20,8 +20,11 @@ android {
         applicationId = "com.github.tyngstast.borsdatavaluationalarmer.android"
         minSdk = 23
         targetSdk = 32
-        versionCode = 6
-        versionName = "0.0.6"
+        versionCode = 7
+        versionName = "0.0.7"
+    }
+    packagingOptions {
+        resources.excludes.add("META-INF/*.kotlin_module")
     }
     signingConfigs {
         create("release") {
@@ -33,7 +36,7 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),

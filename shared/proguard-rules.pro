@@ -22,13 +22,13 @@
 
 # Keep `Companion` object fields of serializable classes.
 # This avoids serializer lookup through `getDeclaredClasses` as done for named companion objects.
--if @kotlinx.serialization.Serializable class **
+-if @kotlinx.serialization.Serializable class com.github.tyngstast.borsdatavaluationalarmer.**
 -keepclassmembers class <1> {
     static <1>$Companion Companion;
 }
 
 # Keep `serializer()` on companion objects (both default and named) of serializable classes.
--if @kotlinx.serialization.Serializable class ** {
+-if @kotlinx.serialization.Serializable class com.github.tyngstast.borsdatavaluationalarmer.** {
     static **$* *;
 }
 -keepclassmembers class <2>$<3> {
@@ -36,7 +36,7 @@
 }
 
 # Keep `INSTANCE.serializer()` of serializable objects.
--if @kotlinx.serialization.Serializable class ** {
+-if @kotlinx.serialization.Serializable class com.github.tyngstast.borsdatavaluationalarmer.** {
     public static ** INSTANCE;
 }
 -keepclassmembers class <1> {
