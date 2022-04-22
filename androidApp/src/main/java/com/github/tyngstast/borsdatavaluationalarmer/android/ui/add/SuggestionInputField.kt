@@ -65,6 +65,7 @@ fun SuggestionInputField(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
                         .clickable {
                             onValueChange(item.name)
                             showSuggestions = false
@@ -76,12 +77,11 @@ fun SuggestionInputField(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = item.name, modifier = Modifier.padding(8.dp))
+                        Text(text = item.name, modifier = Modifier.padding(vertical = 8.dp))
                         if (item is KpiItem && item.fluent) {
                             Icon(
                                 Icons.Default.Bolt,
-                                contentDescription = "Fluent",
-                                modifier = Modifier.padding(horizontal = 12.dp)
+                                contentDescription = "Fluent"
                             )
                         }
                     }

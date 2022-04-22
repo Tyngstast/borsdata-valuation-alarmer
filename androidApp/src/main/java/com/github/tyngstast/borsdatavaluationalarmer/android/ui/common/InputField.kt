@@ -3,6 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.common
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -28,14 +29,15 @@ fun InputField(
     disabled: Boolean = false,
 ) {
     TextField(
-        value = value,
-        singleLine = true,
-        colors = if (MaterialTheme.colors.isLight) TextFieldDefaults.textFieldColors(backgroundColor = Color.White) else TextFieldDefaults.textFieldColors(),
-        enabled = !disabled,
         modifier = Modifier
             .fillMaxWidth()
             .onFocusChanged(onFocusChange)
             .focusRequester(focusRequester),
+        value = value,
+        singleLine = true,
+        colors = if (MaterialTheme.colors.isLight) TextFieldDefaults.textFieldColors(backgroundColor = Color.White) else TextFieldDefaults.textFieldColors(),
+        enabled = !disabled,
+        textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
         label = { Text(label, fontSize = 16.sp) },
         onValueChange = onValueChange,
         keyboardActions = keyboardActions,
