@@ -81,7 +81,7 @@ fun SuggestionInputField(
                             Icon(
                                 Icons.Default.Bolt,
                                 contentDescription = "Fluent",
-                                modifier = Modifier.padding(horizontal = 12.dp)
+                                modifier = Modifier.padding(horizontal = 8.dp)
                             )
                         }
                     }
