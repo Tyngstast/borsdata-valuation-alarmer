@@ -3,7 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
+import com.github.tyngstast.borsdatavaluationalarmer.AlarmerSdk
 import com.github.tyngstast.borsdatavaluationalarmer.android.messaging.TriggerWorkerMessagingService.Companion.TRIGGER_TOPIC
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
@@ -19,7 +19,7 @@ import org.koin.core.component.inject
 
 class AlarmListViewModel : ViewModel(), KoinComponent {
 
-    private val sharedModel = SharedModel()
+    private val alarmerSdk = AlarmerSdk()
     private val alarmDao: AlarmDao by inject()
     private val log: Logger by injectLogger("AlarmListViewModel")
 
@@ -32,7 +32,7 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
 
     init {
         viewModelScope.launch {
-            sharedModel.updateInstrumentsAndKpisIfStale()
+            alarmerSdk.updateInstrumentsAndKpisIfStale()
         }
         viewModelScope.launch {
             alarmDao.getAllAlarmsAsFlow().collect {
@@ -42,7 +42,7 @@ class AlarmListViewModel : ViewModel(), KoinComponent {
         Firebase.messaging.subscribeToTopic(TRIGGER_TOPIC)
             .addOnCompleteListener { task ->
                 log.d { "Subscribed to topic $TRIGGER_TOPIC: ${task.isSuccessful}. Also resetting failure counter" }
-                sharedModel.resetFailureCounter()
+                alarmerSdk.resetFailureCounter()
             }
     }
 

@@ -20,7 +20,7 @@ import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SharedModel : KoinComponent {
+class AlarmerSdk : KoinComponent {
     companion object {
         private const val DB_STOCK_DATA_TIMESTAMP_KEY = "DbStockDataTimestampKey"
         private const val LAST_RUN_PREFIX_KEY = "LAST_RUN_"
@@ -28,7 +28,7 @@ class SharedModel : KoinComponent {
         private const val FAILURE_THRESHOLD: Int = 3
     }
 
-    private val log: Logger by injectLogger("SharedModel")
+    private val log: Logger by injectLogger("AlarmerSdk")
     private val instrumentDao: InstrumentDao by inject()
     private val kpiDao: KpiDao by inject()
     private val alarmDao: AlarmDao by inject()

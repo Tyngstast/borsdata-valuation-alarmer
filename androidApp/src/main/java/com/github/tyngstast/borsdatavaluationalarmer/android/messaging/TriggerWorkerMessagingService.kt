@@ -1,7 +1,7 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.messaging
 
 import co.touchlab.kermit.Logger
-import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
+import com.github.tyngstast.borsdatavaluationalarmer.AlarmerSdk
 import com.github.tyngstast.borsdatavaluationalarmer.android.util.NotificationFactory
 import com.github.tyngstast.borsdatavaluationalarmer.android.util.ValuationAlarmWorkerFactory
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
@@ -18,14 +18,14 @@ class TriggerWorkerMessagingService : FirebaseMessagingService(), KoinComponent 
     }
 
     private val log: Logger by injectLogger("TriggerWorkerMessagingService")
-    private val sharedModel = SharedModel()
+    private val alarmerSdk = AlarmerSdk()
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         log.d { "Message received from: ${remoteMessage.from}" }
         val context = applicationContext
 
         if (remoteMessage.from?.endsWith(TRIGGER_TOPIC) == true) {
-            if (sharedModel.scheduleNext()) {
+            if (alarmerSdk.scheduleNext()) {
                 log.d { "Schedule next work..." }
                 ValuationAlarmWorkerFactory(context).beginAlarmTriggerWork()
             } else {

@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import co.touchlab.kermit.Logger
+import com.github.tyngstast.borsdatavaluationalarmer.AlarmerSdk
 import com.github.tyngstast.borsdatavaluationalarmer.ResetAppException
-import com.github.tyngstast.borsdatavaluationalarmer.SharedModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.messaging.TriggerWorkerMessagingService
 import com.github.tyngstast.borsdatavaluationalarmer.android.util.NotificationFactory
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
@@ -20,14 +20,14 @@ class ValuationAlarmWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
 
     private val log: Logger by injectLogger("ValuationAlarmWorker")
-    private val sharedModel = SharedModel()
+    private val alarmerSdk = AlarmerSdk()
 
     override suspend fun doWork(): Result {
         log.d { "doWork" }
         val context = applicationContext
 
         val result = kotlin.runCatching {
-            val triggeredAlarms = sharedModel.triggeredAlarms()
+            val triggeredAlarms = alarmerSdk.triggeredAlarms()
 
             triggeredAlarms.forEach {
                 val alarm = it.first
