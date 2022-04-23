@@ -26,9 +26,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.AppTheme
 import com.github.tyngstast.borsdatavaluationalarmer.isDouble
@@ -63,13 +65,24 @@ fun AddAlarmScreen(
 
     val addAlarm = {
         if (insName.isBlank() || kpiName.isBlank() || kpiValue.isBlank()) {
-            Toast.makeText(context, "Var god fyll i värden", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.add_toast_empty_input),
+                Toast.LENGTH_SHORT
+            ).show()
         } else if (!kpiValue.isDouble()) {
-            Toast.makeText(context, "Var god fyll i ett giltigt KPI-värde", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.add_toast_invalid_kpi_value),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             viewModel.addAlarm(kpiValue.replace(",", ".").toDouble())
-            Toast.makeText(context, "Sparade nytt alarm", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.add_toast_save_success),
+                Toast.LENGTH_SHORT
+            ).show()
             onSuccess()
         }
     }
@@ -77,17 +90,17 @@ fun AddAlarmScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Lägg till alarm") },
+                title = { Text(stringResource(R.string.add_text_title)) },
                 navigationIcon = {
                     IconButton(onClick = { onSuccess() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Bakåt")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.icon_cd_back))
                     }
                 },
                 actions = {
                     IconButton(onClick = addAlarm) {
                         Icon(
                             Icons.Filled.Check,
-                            contentDescription = "Lägg till",
+                            contentDescription = stringResource(R.string.icon_cd_save),
                             tint = MaterialTheme.colors.secondary
                         )
                     }
@@ -135,7 +148,7 @@ fun AddAlarmContent(
     ) {
         SuggestionInputField(
             value = insName,
-            label = "Bolag",
+            label = stringResource(R.string.company_label),
             onValueChange = setInsName,
             items = instruments,
             keyboardActions = KeyboardActions(
@@ -149,7 +162,7 @@ fun AddAlarmContent(
         )
         SuggestionInputField(
             value = kpiName,
-            label = "Nyckeltal",
+            label = stringResource(R.string.kpi_label),
             onValueChange = setKpiName,
             items = kpis,
             keyboardActions = KeyboardActions(
@@ -163,7 +176,7 @@ fun AddAlarmContent(
         )
         InputField(
             value = kpiValue,
-            label = "Går under värde",
+            label = stringResource(R.string.kpi_below_threshold_label),
             onValueChange = setKpiValue,
             keyboardActions = KeyboardActions(
                 onDone = { addAlarm() }

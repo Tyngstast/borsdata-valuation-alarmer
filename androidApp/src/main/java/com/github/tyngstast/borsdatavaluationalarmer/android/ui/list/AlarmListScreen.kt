@@ -44,12 +44,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState.Loading
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState.Success
@@ -70,14 +72,14 @@ fun AlarmListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Aktiva alarm") },
+                title = { Text(stringResource(R.string.list_text_title)) },
                 backgroundColor = MaterialTheme.colors.primaryVariant,
                 actions = { Menu(onResetKey) }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAdd) {
-                Icon(Icons.Default.Add, "Lägg till Alarm")
+                Icon(Icons.Default.Add, stringResource(R.string.list_cd_add_button))
             }
         }
     ) {
@@ -134,7 +136,10 @@ fun AlarmList(
                 selectedRow = null
                 Toast.makeText(
                     context,
-                    "Alarm ${if (disabled) "inaktiverat" else "återaktiverat"}!",
+                    context.getString(
+                        if (disabled) R.string.list_toast_alarm_deacitvated
+                        else R.string.list_toast_alarm_reacitvated
+                    ),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -172,13 +177,14 @@ fun AlarmList(
                         ) {
                             Row {
                                 Row(Modifier.clickable { onEdit(alarm.id) }) {
+                                    val editText = stringResource(R.string.list_edit_button)
                                     Icon(
                                         Icons.Outlined.Edit,
-                                        contentDescription = "Redigera",
+                                        contentDescription = editText,
                                         modifier = Modifier.size(19.dp)
                                     )
                                     Text(
-                                        "Redigera",
+                                        editText,
                                         modifier = Modifier.padding(horizontal = 2.dp),
                                         style = LocalTextStyle.current.copy(fontSize = 14.sp)
                                     )
@@ -186,8 +192,8 @@ fun AlarmList(
                             }
                             Row {
                                 val (icon, text) =
-                                    if (disabled) Icons.Default.Update to "Återaktivera"
-                                    else Icons.Default.UpdateDisabled to "Inaktivera"
+                                    if (disabled) Icons.Default.Update to context.getString(R.string.list_reactiveate_button)
+                                    else Icons.Default.UpdateDisabled to context.getString(R.string.list_deactiveate_button)
                                 Row(
                                     Modifier
                                         .clickable { onDisable() }
@@ -205,13 +211,14 @@ fun AlarmList(
                                     )
                                 }
                                 Row(Modifier.clickable { deleteAlarm(alarm.id) }) {
+                                    val deleteText = stringResource(R.string.list_delete_button)
                                     Icon(
                                         Icons.Outlined.Delete,
-                                        contentDescription = "Ta bort",
+                                        contentDescription = deleteText,
                                         modifier = Modifier.size(19.dp)
                                     )
                                     Text(
-                                        "Ta bort",
+                                        deleteText,
                                         modifier = Modifier.padding(horizontal = 2.dp),
                                         style = LocalTextStyle.current.copy(fontSize = 14.sp)
                                     )
@@ -295,15 +302,15 @@ fun WelcomeInfo() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Text("Här var det tomt!")
+        Text(stringResource(R.string.welcome_p1))
         Spacer(Modifier.height(16.dp))
-        Text("Lägg till ett alarm för att starta ny bevakning.", textAlign = TextAlign.Center)
+        Text(stringResource(R.string.welcome_p2), textAlign = TextAlign.Center)
         Spacer(Modifier.height(16.dp))
         Text(
             text = buildAnnotatedString {
-                append("En ")
+                append(stringResource(R.string.welcome_p3_1))
                 appendInlineContent("bolt", "[bolt]")
-                append(" markerar nyckeltal som räknas ut med nuvarande pris.")
+                append(stringResource(R.string.welcome_p3_2))
             },
             textAlign = TextAlign.Center,
             inlineContent = mapOf(
@@ -314,11 +321,11 @@ fun WelcomeInfo() {
                         placeholderVerticalAlign = PlaceholderVerticalAlign.Center
                     )
                 ) {
-                    Icon(Icons.Filled.Bolt, contentDescription = "Blixt")
+                    Icon(Icons.Filled.Bolt, contentDescription = stringResource(R.string.welcome_p3_icon_cd))
                 }
             )
         )
         Spacer(Modifier.height(16.dp))
-        Text("Övriga nyckeltal uppdateras en gång per dag.", textAlign = TextAlign.Center)
+        Text(stringResource(R.string.welcome_p4), textAlign = TextAlign.Center)
     }
 }

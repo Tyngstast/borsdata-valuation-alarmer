@@ -18,10 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.textLabel
 import com.github.tyngstast.db.Alarm
 
@@ -48,7 +50,7 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
             ) {
                 Column {
                     Text(
-                        text = "Bolag",
+                        text = stringResource(R.string.company_label),
                         style = LocalTextStyle.current.copy(
                             fontSize = 12.sp,
                             color = MaterialTheme.colors.textLabel
@@ -74,7 +76,7 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
                 ) {
                     Column {
                         Text(
-                            text = "Nyckeltal",
+                            text = stringResource(R.string.kpi_label),
                             style = LocalTextStyle.current.copy(
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colors.textLabel
@@ -97,7 +99,7 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
                 ) {
                     Column {
                         Text(
-                            text = "Värde",
+                            text = stringResource(R.string.kpi_value),
                             style = LocalTextStyle.current.copy(
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colors.textLabel

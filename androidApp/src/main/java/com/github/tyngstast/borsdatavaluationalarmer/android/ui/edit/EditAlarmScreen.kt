@@ -29,11 +29,13 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
+import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
 import com.github.tyngstast.borsdatavaluationalarmer.isDouble
 import org.koin.androidx.compose.getViewModel
@@ -61,10 +63,18 @@ fun EditAlarmScreen(
 
     val editAlarm = {
         if (!kpiValue.text.isDouble()) {
-            Toast.makeText(context, "Var god fyll i ett giltigt värde", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.edit_toast_invalid_kpi_value),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             viewModel.editAlarm(id, kpiValue.text)
-            Toast.makeText(context, "Uppdaterade alarm", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.edit_toast_save_success),
+                Toast.LENGTH_SHORT
+            ).show()
             onSuccess()
         }
     }
@@ -72,17 +82,17 @@ fun EditAlarmScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Redigera alarm") },
+                title = { Text(stringResource(R.string.edit_text_title)) },
                 navigationIcon = {
                     IconButton(onClick = { onSuccess() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.icon_cd_back))
                     }
                 },
                 actions = {
                     IconButton(onClick = editAlarm) {
                         Icon(
                             Icons.Filled.Check,
-                            contentDescription = "Redigera",
+                            contentDescription = stringResource(R.string.icon_cd_save),
                             tint = MaterialTheme.colors.secondary
                         )
                     }
@@ -97,12 +107,12 @@ fun EditAlarmScreen(
         ) {
             InputField(
                 value = alarm.insName,
-                label = "Bolag",
+                label = stringResource(R.string.company_label),
                 disabled = true
             )
             InputField(
                 value = alarm.kpiName,
-                label = "Nyckeltal",
+                label = stringResource(R.string.kpi_label),
                 disabled = true
             )
             TextField(
@@ -114,7 +124,7 @@ fun EditAlarmScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(kpiValueFr),
-                label = { Text("Värde", fontSize = 16.sp) },
+                label = { Text(stringResource(R.string.kpi_below_threshold_label), fontSize = 16.sp) },
                 onValueChange = { kpiValue = it },
                 keyboardActions = KeyboardActions(
                     onDone = { editAlarm() }

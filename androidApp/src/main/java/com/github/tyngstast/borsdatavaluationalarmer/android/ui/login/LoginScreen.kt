@@ -33,10 +33,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel.ApiKeyState
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel.ApiKeyState.Error
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel.ApiKeyState.Loading
@@ -60,6 +62,7 @@ fun LoginScreen(
 
     if (state !is Loading && state is Success && !successCalled) {
         // Safe guard for multiple pop backs. Find a better way to do this
+        @Suppress("UNUSED_VALUE")
         successCalled = true
         keyboardController?.hide()
         onSuccess()
@@ -88,7 +91,7 @@ fun LoginScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Kräver Börsdata Pro") },
+                title = { Text(stringResource(R.string.login_text_title)) },
                 backgroundColor = MaterialTheme.colors.primaryVariant
             )
         },
@@ -129,13 +132,13 @@ fun LoginContent(
                     else -> IconButton(onClick = toggleVisibility) {
                         Icon(
                             if (apiKeyVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                            "Toggla API-nyckel synlighet",
+                            stringResource(R.string.login_cd_toggle_visibility),
                             tint = Color.Gray
                         )
                     }
                 }
             },
-            label = { Text("API-nyckel") },
+            label = { Text(stringResource(R.string.login_text_input_label)) },
             enabled = state !is Loading,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -146,13 +149,13 @@ fun LoginContent(
             Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Default.Info,
-                    "Fel uppstod",
+                    stringResource(R.string.login_cd_error_icon),
                     modifier = Modifier.size(19.dp),
                     tint = MaterialTheme.colors.error
                 )
                 Text(
                     modifier = Modifier.padding(start = 4.dp),
-                    text = state.errorCode.value,
+                    text = stringResource(state.errorCode.resourceId),
                     color = MaterialTheme.colors.error,
                     style = MaterialTheme.typography.caption,
                 )
@@ -166,7 +169,7 @@ fun LoginContent(
             enabled = apiKey.length > 20 && state !is Loading,
             onClick = { evaluateKey() }
         ) {
-            Text("VERIFIERA")
+            Text(stringResource(R.string.login_text_submit_button))
         }
     }
 }

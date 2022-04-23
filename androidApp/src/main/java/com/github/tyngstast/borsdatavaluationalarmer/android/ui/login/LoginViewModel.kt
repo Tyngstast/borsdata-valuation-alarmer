@@ -3,6 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.tyngstast.borsdatavaluationalarmer.Vault
+import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -60,8 +61,8 @@ class LoginViewModel : ViewModel(), KoinComponent {
         object Empty: ApiKeyState()
     }
 
-    enum class ErrorCode(val value: String) {
-        UNAUTHORIZED("Felaktig API-nyckel"),
-        SERVICE_ERROR("Oväntat fel vid anrop mot Börsdata")
+    enum class ErrorCode(val resourceId: Int) {
+        UNAUTHORIZED(R.string.login_unauthorized),
+        SERVICE_ERROR(R.string.login_service_error)
     }
 }
