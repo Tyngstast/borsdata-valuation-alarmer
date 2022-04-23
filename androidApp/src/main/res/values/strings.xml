@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Börsdata Värderingslarm</string>
+    <string name="app_name">Börsdata Valuation Alarm</string>
 
     <string name="contact_email">bd.varderingslarm@gmail.com</string>
 
