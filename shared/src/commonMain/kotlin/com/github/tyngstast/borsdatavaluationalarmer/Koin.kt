@@ -9,6 +9,11 @@ import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
+import com.github.tyngstast.borsdatavaluationalarmer.model.AddAlarmModel
+import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListModel
+import com.github.tyngstast.borsdatavaluationalarmer.model.EditAlarmModel
+import com.github.tyngstast.borsdatavaluationalarmer.model.LoginModel
+import com.github.tyngstast.borsdatavaluationalarmer.settings.AlarmerSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
 import org.koin.core.KoinApplication
@@ -35,6 +40,7 @@ val coreModule = module {
     single { KpiDao(get(), Dispatchers.Default) }
     single { BorsdataClient(get(), getWith("BorsdataClient")) }
     single { YahooClient(getWith("YahooClient")) }
+    single { AlarmerSettings(get()) }
     single<Clock> { Clock.System }
 
     val logger = if (isDebug) platformLogWriter() else CrashlyticsLogWriter()
@@ -44,9 +50,35 @@ val coreModule = module {
     )
 
     factory { (tag: String?) -> if (tag != null) baseLogger.withTag(tag) else baseLogger }
+
+    single {
+        AlarmListModel(
+            log = getWith("AlarmListModel"),
+            instrumentDao = get(),
+            kpiDao = get(),
+            alarmDao = get(),
+            borsdataClient = get(),
+            alarmerSettings = get(),
+            clock = get()
+        )
+    }
+    single { AddAlarmModel(instrumentDao = get(), kpiDao = get(), alarmDao = get()) }
+    single { EditAlarmModel(alarmDao = get()) }
+    single { LoginModel(vault = get(), borsdataClient = get()) }
+    single {
+        ValuationAlarmWorkerModel(
+            log = getWith("ValuationAlarmWorkerModel"),
+            alarmDao = get(),
+            borsdataClient = get(),
+            yahooClient = get(),
+            alarmerSettings = get(),
+            vault = get(),
+            clock = get()
+        )
+    }
 }
 
-internal inline fun <reified T> Scope.getWith(vararg params: Any?): T =
+inline fun <reified T> Scope.getWith(vararg params: Any?): T =
     get(parameters = { parametersOf(*params) })
 
 fun KoinComponent.injectLogger(tag: String): Lazy<Logger> = inject { parametersOf(tag) }

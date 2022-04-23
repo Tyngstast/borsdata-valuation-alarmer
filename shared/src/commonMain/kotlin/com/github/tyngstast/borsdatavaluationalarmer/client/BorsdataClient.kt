@@ -1,6 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer.client
 
-import com.github.tyngstast.borsdatavaluationalarmer.Vault
+import com.github.tyngstast.borsdatavaluationalarmer.settings.Vault
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

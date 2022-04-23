@@ -39,10 +39,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel.ApiKeyState
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel.ApiKeyState.Error
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel.ApiKeyState.Loading
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel.ApiKeyState.Success
+import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.stringResourceByName
+import com.github.tyngstast.borsdatavaluationalarmer.model.LoginModel.ApiKeyState
 import kotlinx.coroutines.Job
 import org.koin.androidx.compose.getViewModel
 
@@ -60,7 +58,7 @@ fun LoginScreen(
 
     val state by viewModel.apiKeyState.collectAsState()
 
-    if (state !is Loading && state is Success && !successCalled) {
+    if (state !is ApiKeyState.Loading && state is ApiKeyState.Success && !successCalled) {
         // Safe guard for multiple pop backs. Find a better way to do this
         @Suppress("UNUSED_VALUE")
         successCalled = true
@@ -125,10 +123,10 @@ fun LoginContent(
             value = apiKey,
             onValueChange = onChange,
             visualTransformation = if (apiKeyVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-            isError = state is Error,
+            isError = state is ApiKeyState.Error,
             trailingIcon = {
                 when (state) {
-                    is Loading -> CircularProgressIndicator(modifier = Modifier.scale(0.5F))
+                    is ApiKeyState.Loading -> CircularProgressIndicator(modifier = Modifier.scale(0.5F))
                     else -> IconButton(onClick = toggleVisibility) {
                         Icon(
                             if (apiKeyVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
@@ -139,13 +137,13 @@ fun LoginContent(
                 }
             },
             label = { Text(stringResource(R.string.login_text_input_label)) },
-            enabled = state !is Loading,
+            enabled = state !is ApiKeyState.Loading,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
             keyboardActions = KeyboardActions(onDone = { evaluateKey() }),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
         )
-        if (state is Error) {
+        if (state is ApiKeyState.Error) {
             Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Default.Info,
@@ -155,7 +153,7 @@ fun LoginContent(
                 )
                 Text(
                     modifier = Modifier.padding(start = 4.dp),
-                    text = stringResource(state.errorCode.resourceId),
+                    text = stringResourceByName(state.errorCode.resourceId),
                     color = MaterialTheme.colors.error,
                     style = MaterialTheme.typography.caption,
                 )
@@ -166,7 +164,7 @@ fun LoginContent(
                 .fillMaxWidth()
                 .padding(horizontal = 0.dp, vertical = 12.dp),
             contentPadding = PaddingValues(all = 12.dp),
-            enabled = apiKey.length > 20 && state !is Loading,
+            enabled = apiKey.length > 20 && state !is ApiKeyState.Loading,
             onClick = { evaluateKey() }
         ) {
             Text(stringResource(R.string.login_text_submit_button))

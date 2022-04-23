@@ -27,6 +27,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
+import com.github.tyngstast.borsdatavaluationalarmer.model.Item
+import com.github.tyngstast.borsdatavaluationalarmer.model.KpiItem
 
 @Composable
 fun SuggestionInputField(

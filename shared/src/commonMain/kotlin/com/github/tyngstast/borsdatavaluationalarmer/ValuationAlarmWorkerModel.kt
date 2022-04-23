@@ -4,39 +4,29 @@ import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
 import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
-import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
-import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
+import com.github.tyngstast.borsdatavaluationalarmer.model.FluentKpi
+import com.github.tyngstast.borsdatavaluationalarmer.model.ResetAppException
+import com.github.tyngstast.borsdatavaluationalarmer.settings.AlarmerSettings
+import com.github.tyngstast.borsdatavaluationalarmer.settings.Vault
 import com.github.tyngstast.db.Alarm
-import com.russhwolf.settings.Settings
 import io.ktor.client.features.*
 import io.ktor.http.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-class AlarmerSdk : KoinComponent {
-    companion object {
-        private const val DB_STOCK_DATA_TIMESTAMP_KEY = "DbStockDataTimestampKey"
-        private const val LAST_RUN_PREFIX_KEY = "LAST_RUN_"
-        private const val WORKER_FAILURE_COUNTER = "WorkerFailureCounter"
-        private const val FAILURE_THRESHOLD: Int = 3
-    }
-
-    private val log: Logger by injectLogger("AlarmerSdk")
-    private val instrumentDao: InstrumentDao by inject()
-    private val kpiDao: KpiDao by inject()
-    private val alarmDao: AlarmDao by inject()
-    private val borsdataClient: BorsdataClient by inject()
-    private val yahooClient: YahooClient by inject()
-    private val settings: Settings by inject()
-    private val vault: Vault by inject()
-    private val clock: Clock by inject()
+class ValuationAlarmWorkerModel(
+    private val log: Logger,
+    private val alarmDao: AlarmDao,
+    private val borsdataClient: BorsdataClient,
+    private val yahooClient: YahooClient,
+    private val alarmerSettings: AlarmerSettings,
+    private val vault: Vault,
+    private val clock: Clock
+) {
 
     suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> = coroutineScope {
         val alarms = alarmDao.getAllEnabledAlarms()
@@ -60,11 +50,11 @@ class AlarmerSdk : KoinComponent {
                         vault.clearApiKey()
                         throw ResetAppException("401 response. Cleared API Key", e)
                     } else {
-                        incrementFailureCounter()
+                        alarmerSettings.incrementFailureCounter()
                         throw e
                     }
                 } catch (e: Throwable) {
-                    incrementFailureCounter()
+                    alarmerSettings.incrementFailureCounter()
                     throw e
                 }
             }
@@ -72,7 +62,7 @@ class AlarmerSdk : KoinComponent {
             .onEach { updateLastRun(it.first.id) }
             .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
             .map { (alarm, kpiValue) -> alarm to kpiValue }
-            .also { resetFailureCounter() }
+            .also { alarmerSettings.resetFailureCounter() }
 
         log.d {
             if (triggeredAlarms.isEmpty()) "No triggered Alarms"
@@ -80,42 +70,6 @@ class AlarmerSdk : KoinComponent {
         }
 
         triggeredAlarms
-    }
-
-    suspend fun updateInstrumentsAndKpisIfStale() = coroutineScope {
-        val currentTimeInMillis = clock.now().toEpochMilliseconds()
-        // Default to 0 to fetch if key is missing
-        val latestFetch = settings.getLong(DB_STOCK_DATA_TIMESTAMP_KEY, 0)
-        val oneWeekInMillis = 7 * 24 * 60 * 60 * 1000
-        val stale = latestFetch + oneWeekInMillis < currentTimeInMillis
-
-        if (!stale) {
-            return@coroutineScope
-        }
-
-        log.d { "Stock data is stale, fetching new..." }
-
-        val (instruments, kpis) = awaitAll(
-            async {
-                val instruments = borsdataClient.getInstruments()
-                instrumentDao.resetInstruments(instruments)
-                instruments
-            },
-            async {
-                val kpis = borsdataClient.getKpis()
-                kpiDao.resetKpis(kpis)
-                kpis
-            }
-        )
-
-        settings.putLong(DB_STOCK_DATA_TIMESTAMP_KEY, currentTimeInMillis)
-
-        log.d { "Reset Instruments and KPIs. Inserted ${instruments.size} Instruments and ${kpis.size} KPIs" }
-        log.d { "Latest reset epoch: $currentTimeInMillis" }
-    }
-
-    fun resetFailureCounter() {
-        settings.putInt(WORKER_FAILURE_COUNTER, 0)
     }
 
     private suspend fun calcOrGetKpiValue(
@@ -174,24 +128,12 @@ class AlarmerSdk : KoinComponent {
 
     private fun updateLastRun(id: Long) {
         val today = today().toString()
-        settings.putString(LAST_RUN_PREFIX_KEY + id, today)
+        alarmerSettings.updateLastRun(id, today)
     }
 
     private val shouldRun: (Alarm) -> Boolean = { alarm: Alarm ->
-        val lastRun: LocalDate? = settings.getStringOrNull(LAST_RUN_PREFIX_KEY + alarm.id)
-            ?.let { LocalDate.parse(it) }
+        val lastRun = alarmerSettings.getLastRun(alarm.id)
         FluentKpi.stringValues.contains(alarm.kpiName) || lastRun == null || lastRun < today()
-    }
-
-    fun scheduleNext(): Boolean {
-        val key = vault.getApiKey()
-        val failures = settings.getInt(WORKER_FAILURE_COUNTER, 0)
-        return !key.isNullOrBlank() && failures < FAILURE_THRESHOLD
-    }
-
-    private fun incrementFailureCounter() {
-        val failures: Int = settings.getInt(WORKER_FAILURE_COUNTER, 0)
-        settings.putInt(WORKER_FAILURE_COUNTER, failures + 1)
     }
 
     private fun today() = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date

@@ -1,4 +1,4 @@
-package com.github.tyngstast.borsdatavaluationalarmer
+package com.github.tyngstast.borsdatavaluationalarmer.model
 
 enum class FluentKpi(val value: String, val denominatorId: Long) {
     P_E("P/E", 6), // EPS

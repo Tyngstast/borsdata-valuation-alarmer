@@ -2,21 +2,16 @@ package com.github.tyngstast.borsdatavaluationalarmer.android.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.tyngstast.borsdatavaluationalarmer.Vault
-import com.github.tyngstast.borsdatavaluationalarmer.android.R
-import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
+import com.github.tyngstast.borsdatavaluationalarmer.model.LoginModel
+import com.github.tyngstast.borsdatavaluationalarmer.model.LoginModel.ApiKeyState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 
-class LoginViewModel : ViewModel(), KoinComponent {
-    private val vault: Vault by inject()
-    private val borsdataClient: BorsdataClient by inject()
+class LoginViewModel(private val loginModel: LoginModel) : ViewModel() {
 
     private val _apiKeyState = MutableStateFlow<ApiKeyState>(ApiKeyState.Empty)
     val apiKeyState: StateFlow<ApiKeyState> = _apiKeyState.stateIn(
@@ -26,13 +21,13 @@ class LoginViewModel : ViewModel(), KoinComponent {
     )
 
     init {
-        vault.getApiKey()?.let {
+        loginModel.getApiKey()?.let {
             _apiKeyState.value = ApiKeyState.Success(it)
         }
     }
 
     fun clearKey() {
-        vault.clearApiKey()
+        loginModel.clearApiKey()
     }
 
     fun clearError() {
@@ -40,29 +35,8 @@ class LoginViewModel : ViewModel(), KoinComponent {
     }
 
     fun verifyKey(key: String) = viewModelScope.launch {
-        _apiKeyState.value = ApiKeyState.Loading
-        try {
-            val result = borsdataClient.verifyKey(key)
-            if (result) {
-                vault.setApiKey(key)
-                _apiKeyState.value = ApiKeyState.Success(key)
-            } else {
-                _apiKeyState.value = ApiKeyState.Error(ErrorCode.UNAUTHORIZED)
-            }
-        } catch (e: Exception) {
-            _apiKeyState.value = ApiKeyState.Error(ErrorCode.SERVICE_ERROR)
+        loginModel.verifyKey(key).collect {
+            _apiKeyState.value = it
         }
-    }
-
-    sealed class ApiKeyState {
-        data class Success(val apiKey: String): ApiKeyState()
-        data class Error(val errorCode: ErrorCode): ApiKeyState()
-        object Loading: ApiKeyState()
-        object Empty: ApiKeyState()
-    }
-
-    enum class ErrorCode(val resourceId: Int) {
-        UNAUTHORIZED(R.string.login_unauthorized),
-        SERVICE_ERROR(R.string.login_service_error)
     }
 }

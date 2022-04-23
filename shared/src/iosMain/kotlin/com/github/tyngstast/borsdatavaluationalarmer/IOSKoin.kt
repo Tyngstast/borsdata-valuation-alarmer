@@ -1,5 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
+import com.github.tyngstast.borsdatavaluationalarmer.settings.Vault
 import com.github.tyngstast.db.ValueAlarmerDb
 import com.liftric.kvault.KVault
 import com.russhwolf.settings.AppleSettings

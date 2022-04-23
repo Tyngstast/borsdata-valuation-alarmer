@@ -33,7 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.AppTheme
-import com.github.tyngstast.borsdatavaluationalarmer.isDouble
+import com.github.tyngstast.borsdatavaluationalarmer.model.Item
+import com.github.tyngstast.borsdatavaluationalarmer.util.isDouble
 import org.koin.androidx.compose.getViewModel
 
 
@@ -50,11 +51,11 @@ fun AddAlarmScreen(
 
     val setInsName: (String) -> Unit = { value: String ->
         insName = value
-        viewModel.updateInstruments(value)
+        viewModel.getInstruments(value)
     }
     val setKpiName: (String) -> Unit = { value: String ->
         kpiName = value
-        viewModel.updateKpis(value)
+        viewModel.getKpis(value)
     }
     val setKpiValue = { value: String ->
         kpiValue = value

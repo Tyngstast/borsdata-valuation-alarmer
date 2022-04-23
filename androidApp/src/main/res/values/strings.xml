@@ -32,7 +32,7 @@
     <string name="list_toast_alarm_deacitvated">Alarm Deactivated</string>
 
     <!-- Welcome Info -->
-    <string name="welcome_p1">This was empty!</string>
+    <string name="welcome_p1">Welcome!</string>
     <string name="welcome_p2">Add an alarm to start monitoring.</string>
     <string name="welcome_p3_1">A\u0020</string>
     <string name="welcome_p3_2">\u0020marks KPIs being calculated with current prices.</string>

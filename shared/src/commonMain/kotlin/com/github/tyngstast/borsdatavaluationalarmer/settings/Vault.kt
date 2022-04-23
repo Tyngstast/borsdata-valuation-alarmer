@@ -1,4 +1,4 @@
-package com.github.tyngstast.borsdatavaluationalarmer
+package com.github.tyngstast.borsdatavaluationalarmer.settings
 
 import com.liftric.kvault.KVault
 

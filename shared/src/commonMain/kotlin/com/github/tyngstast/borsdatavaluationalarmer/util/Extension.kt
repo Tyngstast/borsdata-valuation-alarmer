@@ -1,4 +1,4 @@
-package com.github.tyngstast.borsdatavaluationalarmer
+package com.github.tyngstast.borsdatavaluationalarmer.util
 
 import com.github.tyngstast.db.Alarm
 

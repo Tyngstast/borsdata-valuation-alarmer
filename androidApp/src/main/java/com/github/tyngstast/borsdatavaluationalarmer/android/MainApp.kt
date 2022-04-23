@@ -8,12 +8,14 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarmView
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.edit.EditAlarmViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
+import com.github.tyngstast.borsdatavaluationalarmer.getWith
 import com.github.tyngstast.borsdatavaluationalarmer.initKoin
 import com.github.tyngstast.borsdatavaluationalarmer.isDebug
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+@Suppress("unused")
 class MainApp : Application() {
 
     override fun onCreate() {
@@ -40,16 +42,16 @@ class MainApp : Application() {
         initKoin(
             module {
                 single<Context> { this@MainApp }
-                viewModel { AlarmListViewModel() }
-                viewModel { AddAlarmViewModel() }
-                viewModel { EditAlarmViewModel() }
-                viewModel { LoginViewModel() }
                 single<SharedPreferences> {
                     get<Context>().getSharedPreferences(
                         "VALUATION_ALARMER_SETTINGS",
                         Context.MODE_PRIVATE
                     )
                 }
+                viewModel { AlarmListViewModel(getWith("AlarmListViewModel"), get()) }
+                viewModel { AddAlarmViewModel(get()) }
+                viewModel { EditAlarmViewModel(get()) }
+                viewModel { LoginViewModel(get()) }
             }
         )
     }
