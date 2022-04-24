@@ -38,6 +38,8 @@ class AlarmListViewModel(
             .addOnCompleteListener { task ->
                 log.d { "Subscribed to topic $TRIGGER_TOPIC: ${task.isSuccessful}. Also resetting failure counter" }
                 alarmListModel.resetFailureCounter()
+            }.addOnFailureListener {
+                log.e(it) { "Failed to subscribe to topic" }
             }
     }
 

@@ -43,7 +43,7 @@ class ValuationAlarmWorker(
         }.onFailure {
             log.e(it) { "Error running worker: ${it.message.toString()}" }
             if (it is ResetAppException) {
-                log.e { "Critical error, likely 401 response. Resetting app and notifying user" }
+                log.e(it) { "Critical error, likely 401 response. Resetting app and notifying user" }
                 Firebase.messaging.unsubscribeFromTopic(TriggerWorkerMessagingService.TRIGGER_TOPIC)
                 NotificationFactory(context).makeErrorNotification()
             }

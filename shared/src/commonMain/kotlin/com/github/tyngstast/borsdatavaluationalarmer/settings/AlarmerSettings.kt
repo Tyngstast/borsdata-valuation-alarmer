@@ -13,10 +13,6 @@ class AlarmerSettings(private val settings: Settings) {
 
     fun getLatestDataFetch() = settings.getLong(DB_STOCK_DATA_TIMESTAMP_KEY, 0)
 
-    fun resetFailureCounter() {
-        settings.putInt(WORKER_FAILURE_COUNTER, 0)
-    }
-
     fun updateLatestDataFetch(timestamp: Long) {
         settings.putLong(DB_STOCK_DATA_TIMESTAMP_KEY, timestamp)
     }
@@ -34,5 +30,9 @@ class AlarmerSettings(private val settings: Settings) {
     fun incrementFailureCounter() {
         val failures: Int = settings.getInt(WORKER_FAILURE_COUNTER, 0)
         settings.putInt(WORKER_FAILURE_COUNTER, failures + 1)
+    }
+
+    fun resetFailureCounter() {
+        settings.putInt(WORKER_FAILURE_COUNTER, 0)
     }
 }
