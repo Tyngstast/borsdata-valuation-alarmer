@@ -60,7 +60,7 @@ dependencies {
     val kermitVersion: String by project
     val koinVersion: String by project
     val workVersion: String by project
-    val lifecycleVersion = "2.4.1"
+    val lifecycleVersion: String by project
     val activityComposeVersion = "1.4.0"
     val composeVersion: String by project
     val navComposeVersion = "2.4.2"

@@ -24,7 +24,7 @@ class LoginModel(
             val result = borsdataClient.verifyKey(key)
             if (result) {
                 vault.setApiKey(key)
-                emit(ApiKeyState.Success(key))
+                emit(ApiKeyState.Success)
             } else {
                 emit(ApiKeyState.Error(ErrorCode.UNAUTHORIZED))
             }
@@ -32,16 +32,16 @@ class LoginModel(
             emit(ApiKeyState.Error(ErrorCode.SERVICE_ERROR))
         }
     }
+}
 
-    sealed class ApiKeyState {
-        data class Success(val apiKey: String) : ApiKeyState()
-        data class Error(val errorCode: ErrorCode) : ApiKeyState()
-        object Loading : ApiKeyState()
-        object Empty : ApiKeyState()
-    }
+sealed class ApiKeyState {
+    data class Error(val errorCode: ErrorCode) : ApiKeyState()
+    object Success : ApiKeyState()
+    object Loading : ApiKeyState()
+    object Empty : ApiKeyState()
+}
 
-    enum class ErrorCode(val resourceId: String) {
-        UNAUTHORIZED("login_unauthorized"),
-        SERVICE_ERROR("login_service_error")
-    }
+enum class ErrorCode(val resourceId: String) {
+    UNAUTHORIZED("login_unauthorized"),
+    SERVICE_ERROR("login_service_error")
 }
