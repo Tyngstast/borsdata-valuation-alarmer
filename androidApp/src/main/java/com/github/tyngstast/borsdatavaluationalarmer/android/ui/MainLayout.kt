@@ -18,7 +18,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.edit.EditAlarmSc
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginScreen
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewModel
-import com.github.tyngstast.borsdatavaluationalarmer.model.LoginModel.ApiKeyState
+import com.github.tyngstast.borsdatavaluationalarmer.model.ApiKeyState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController

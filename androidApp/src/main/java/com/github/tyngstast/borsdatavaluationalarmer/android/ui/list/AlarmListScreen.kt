@@ -52,11 +52,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState.Loading
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel.AlarmListState.Success
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.divider
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.selectedColor
+import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListViewModel.AlarmListState
 import com.github.tyngstast.db.Alarm
 import org.koin.androidx.compose.getViewModel
 
@@ -99,16 +97,16 @@ fun AlarmListContent(
     updateDisableAlarm: (Long, Boolean) -> Unit,
     deleteAlarm: (Long) -> Unit
 ) {
-    if (alarmListState is Success && alarmListState.alarms.isNotEmpty()) {
+    if (alarmListState is AlarmListState.Success && alarmListState.alarms.isNotEmpty()) {
         AlarmList(
             alarms = alarmListState.alarms,
             onEdit = onEdit,
             updateDisableAlarm = updateDisableAlarm,
             deleteAlarm = deleteAlarm
         )
-    } else if (alarmListState !is Loading) {
+    } else if (alarmListState !is AlarmListState.Loading) {
         WelcomeInfo()
-    } // else loading animation
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)

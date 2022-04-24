@@ -40,7 +40,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.stringResourceByName
-import com.github.tyngstast.borsdatavaluationalarmer.model.LoginModel.ApiKeyState
+import com.github.tyngstast.borsdatavaluationalarmer.model.ApiKeyState
 import kotlinx.coroutines.Job
 import org.koin.androidx.compose.getViewModel
 

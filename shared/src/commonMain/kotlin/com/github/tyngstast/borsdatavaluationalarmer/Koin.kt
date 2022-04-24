@@ -2,7 +2,6 @@ package com.github.tyngstast.borsdatavaluationalarmer
 
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
-import co.touchlab.kermit.crashlytics.CrashlyticsLogWriter
 import co.touchlab.kermit.platformLogWriter
 import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
 import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
@@ -43,9 +42,9 @@ val coreModule = module {
     single { AlarmerSettings(get()) }
     single<Clock> { Clock.System }
 
-    val logger = if (isDebug) platformLogWriter() else CrashlyticsLogWriter()
+//    val logger = if (isDebug) platformLogWriter() else CrashlyticsLogWriter()
     val baseLogger = Logger(
-        config = StaticConfig(logWriterList = listOf(logger)),
+        config = StaticConfig(logWriterList = listOf(platformLogWriter())),
         tag = "BorsdataValuationAlarmer"
     )
 

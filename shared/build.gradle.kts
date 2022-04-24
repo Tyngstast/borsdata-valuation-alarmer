@@ -12,19 +12,20 @@ version = "0.0.1"
 
 kotlin {
     android()
-    iosX64()
-    iosArm64()
-    //iosSimulatorArm64() sure all ios dependencies support this target
+    ios()
+    iosSimulatorArm64()
 
     val coroutinesVersion: String by project
-    val serializationVersion = "1.3.2"
-    val ktorVersion = "1.6.7"
+    val kermitVersion: String by project
+    val lifecycleVersion: String by project
     val sqlDelightVersion: String by project
     val koinVersion: String by project
+    val serializationVersion = "1.3.2"
+    val ktorVersion = "1.6.7"
     val kVaultVersion = "1.7.0"
     val settingsVersion = "0.8.1"
     val datetimeVersion = "0.3.2"
-    val kermitVersion: String by project
+    val statelyVersion = "1.2.1"
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -32,7 +33,7 @@ kotlin {
         ios.deploymentTarget = "14.1"
         podfile = project.file("../iosApp/Podfile")
         framework {
-            baseName = "shared"
+            isStatic = false // SwiftUI preview requires dynamic framework
         }
     }
     
@@ -51,7 +52,8 @@ kotlin {
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
                 implementation("co.touchlab:kermit:$kermitVersion")
-                implementation("co.touchlab:kermit-crashlytics:$kermitVersion")
+                implementation("co.touchlab:stately-common:$statelyVersion")
+//                implementation("co.touchlab:kermit-crashlytics:$kermitVersion")
             }
         }
         val commonTest by getting {
@@ -64,6 +66,7 @@ kotlin {
             dependencies {
                 implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
             }
         }
         val androidTest by getting {
@@ -72,28 +75,18 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        //val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            //iosSimulatorArm64Main.dependsOn(this)
-
+        val iosMain by getting {
             dependencies {
                 implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
         }
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        //val iosSimulatorArm64Test by getting
-        val iosTest by creating {
-            dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            //iosSimulatorArm64Test.dependsOn(this)
+        val iosTest by getting
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosTest)
         }
     }
 }
