@@ -42,12 +42,12 @@
     * WorkManager
     * Firebase Messaging
   * iOS
-    * TODO
+    * SwiftUI
+    * \<tech \/\>
   * Firebase Cloud Messaging (FCM)
     * Cloud Function serves as "ping" to execute workers on mobile devices. No data is stored in any backend. 
   
 ## TODO 
-**iOS**
-  * Complete GUI implementation.
-  * A physical device is needed to PoC BackgroundTasks, which the author does not possess.
+### iOS
+ViewModels have been extracted to `shared` and wrappers created to translate flows in swift. GUI, firebase messaging and bg workers is the bulk of the remaining work.
 
