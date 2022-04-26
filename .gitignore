@@ -13,3 +13,6 @@ local.properties
 google-services.json
 keystore.properties
 */release
+
+xcuserdata
+*.xcuserstate
