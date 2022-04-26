@@ -21,6 +21,7 @@ class LoginViewModel : ObservableObject {
             switch keyState {
             case is ApiKeyState.Loading:
                 self?.loading = true
+                return
             case is ApiKeyState.Success:
                 self?.signedIn = true
             case let state as ApiKeyState.Error:
@@ -30,6 +31,8 @@ class LoginViewModel : ObservableObject {
             default:
                 self?.log.d(message: { "default case cannot be reached since state is a sealed class" })
             }
+            // all cases except loading == true should stop loading
+            self?.loading = false
         }.store(in: &cancellables)
 
         self.viewModel = viewModel

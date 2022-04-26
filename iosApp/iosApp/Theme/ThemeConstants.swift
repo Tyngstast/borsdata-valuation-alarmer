@@ -10,6 +10,7 @@ extension Color {
     static let backgroundColor = Color("Background")
     static let textColor = Color("TextColor")
     static let errorColor = Color("Error")
+    static let paleWhite = Color(white: 1, opacity: 179 / 255.0)
 }
 
 extension UIColor {
