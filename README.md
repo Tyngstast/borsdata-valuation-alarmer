@@ -49,5 +49,5 @@
   
 ## TODO 
 ### iOS
-ViewModels have been extracted to `shared` and wrappers created to translate flows in swift. GUI, firebase messaging and bg workers is the bulk of the remaining work.
+ViewModels have been extracted to `shared` and wrappers created to translate flows in swift. GUI, firebase messaging and bg workers is the bulk of the remaining work. See: [`refactor-viewmodels-for-ios-interop` branch](https://github.com/Tyngstast/borsdata-valuation-alarmer/tree/refactor-viewmodels-for-ios-interop)
 
