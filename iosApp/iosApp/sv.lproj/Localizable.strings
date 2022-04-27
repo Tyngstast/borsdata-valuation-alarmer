@@ -1,0 +1,52 @@
+/* Multi use */
+"company_label" = "Bolag";
+"kpi_label" = "Nyckeltal";
+"kpi_below_threshold_label" = "Går under värde";
+"icon_cd_back" = "Bakåt";
+"icon_cd_save" = "Spara";
+"kpi_value" = "Värde";
+
+/* Login */
+"login_text_title" = "Kräver Börsdata Pro";
+"login_text_input_label" = "API-nyckel";
+"login_cd_toggle_visibility" = "Toggle API-key visibility";
+"login_cd_error_icon" = "Fel uppstod";
+"login_text_submit_button" = "VERIFIERA";
+/* Login integration errors */
+"login_unauthorized" = "Felaktig API-nyckel";
+"login_service_error" = "Oväntat fel vid anrop mot Börsdata";
+
+/* List */
+"list_edit_button" = "Redigera";
+"list_deactiveate_button" = "Inaktivera";
+"list_reactiveate_button" = "Återaktivera";
+"list_delete_button" = "Ta bort";
+"list_text_title" = "Aktiva alarm";
+"list_cd_add_button" = "Lägg till llarm";
+"list_toast_alarm_reacitvated" = "Alarm återaktiverat";
+"list_toast_alarm_deacitvated" = "Alarm inaktiverat";
+
+/* Welcome Info */
+"welcome_p1" = "Här var det tomt!";
+"welcome_p2" = "Lägg till ett alarm för att starta ny bevakning.";
+"welcome_p3_1" = "En\u0020";
+"welcome_p3_2" = "\u0020markerar nyckeltal som räknas ut med nuvarande pris.";
+"welcome_p3_icon_cd" = "Blixt";
+"welcome_p4" = "Övriga nyckeltal uppdateras en gång per dag.";
+
+/* Menu */
+"menu_feedback" = "Lämna feedback";
+"menu_reset" = "Nollställ API-nyckel";
+"menu_icon_cd" = "Meny";
+"menu_toast_email_error" = "Hittade ingen app för e-post\n\nMaila oss på:\n";
+
+/* Add */
+"add_text_title" = "Lägg till alarm";
+"add_toast_empty_input" = "Var god fyll i värden";
+"add_toast_invalid_kpi_value" = "Var god fyll i ett giltigt triggervärde";
+"add_toast_save_success" = "Sparade nytt alarm";
+
+/* Edit */
+"edit_text_title" = "Redigera alarm";
+"edit_toast_invalid_kpi_value" = "Var god fyll i ett giltigt värde";
+"edit_toast_save_success" = "Uppdaterade alarm";

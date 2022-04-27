@@ -4,7 +4,7 @@ struct ListView: View {
     var body: some View {
         VStack {
             Text("List")
-        }.navigationTitle("Active Alarms")
+        }.navigationTitle(NSLocalizedString("list_text_title", comment: "List alarms title"))
     }
 }
 
