@@ -30,7 +30,11 @@ struct LoginViewContent: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            SecureInputField("API Key", loading: loading, text: $apiKey)
+            SecureInputField(
+                NSLocalizedString("login_text_input_label", comment: "API Key input hint"),
+                loading: loading,
+                text: $apiKey
+            )
                 .onChange(of: apiKey) { value in
                     onClearErrror()
                     if (value.count - 2 > prevValue.count) {
@@ -41,7 +45,7 @@ struct LoginViewContent: View {
             if (error != nil) {
                 HStack {
                     Image(systemName: "exclamationmark.circle.fill")
-                    Text(error!.resourceId)
+                    Text(NSLocalizedString(error!.resourceId, comment: "Translation of error message"))
                 }
                 .foregroundColor(.errorColor)
             }
@@ -51,7 +55,7 @@ struct LoginViewContent: View {
                 }
                 onVerify(apiKey)
             }, label: {
-                Text("VERIFY")
+                Text(NSLocalizedString("login_text_submit_button", comment: "Verify login button"))
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 50)
                     .background(loginDisabled ? Color.gray : Color.primaryColor)
                     .foregroundColor(loginDisabled ? .paleWhite : .white)
@@ -60,7 +64,7 @@ struct LoginViewContent: View {
             })
             .disabled(loginDisabled)
         }
-        .navigationTitle("Requires Börsdata Pro")
+        .navigationTitle(NSLocalizedString("login_text_title", comment: "List alarms title"))
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding()
     }
