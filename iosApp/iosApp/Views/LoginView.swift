@@ -5,6 +5,7 @@ struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     
     var body: some View {
+        let _ = viewModel.clearKey()
         LoginViewContent(
             loading: viewModel.loading,
             error: viewModel.error,
@@ -33,11 +34,11 @@ struct LoginViewContent: View {
             SecureInputField(
                 NSLocalizedString("login_text_input_label", comment: "API Key input hint"),
                 loading: loading,
-                text: $apiKey
+                password: $apiKey
             )
                 .onChange(of: apiKey) { value in
                     onClearErrror()
-                    if (value.count - 2 > prevValue.count) {
+                    if (value.count - 5 > prevValue.count) {
                         onVerify(apiKey)
                     }
                     prevValue = value
@@ -71,30 +72,35 @@ struct LoginViewContent: View {
 }
 
 struct SecureInputField: View {
-    @Binding private var text: String
-    @State private var isSecured: Bool = true
+    @FocusState private var focused: focusedField?
+    @Binding private var password: String
+    @State private var showPassword: Bool = false
     private var loading: Bool
     private var title: String
     
-    init(_ title: String, loading: Bool, text: Binding<String>) {
+    init(_ title: String, loading: Bool, password: Binding<String>) {
         self.title = title
         self.loading = loading
-        self._text = text
+        self._password = password
     }
     
     var body: some View {
         ZStack(alignment: .trailing) {
             Group {
-                if isSecured {
-                    SecureField(title, text: $text)
-                } else {
-                    TextField(title, text: $text)
-                        .keyboardType(.alphabet)
-                }
+                TextField(title, text: $password)
+                    .focused($focused, equals: .unSecure)
+                    // This is needed to remove suggestion bar, otherwise swapping between
+                    // fields will change keyboard height and be distracting to user.
+                    .keyboardType(.alphabet)
+                    .opacity(showPassword ? 1 : 0)
+                // SecureField still gets cleared on input after toggling showPassword
+                SecureField(title, text: $password)
+                    .focused($focused, equals: .secure)
+                    .opacity(showPassword ? 0 : 1)
             }
             .padding()
-            .disableAutocorrection(true)
             .autocapitalization(.none)
+            .disableAutocorrection(true)
             .frame(height: 60)
             .overlay(
                 RoundedRectangle(cornerRadius: 5.0)
@@ -103,21 +109,25 @@ struct SecureInputField: View {
                         style: StrokeStyle(lineWidth: 2.0)
                     )
             )
-            .background(Color.backgroundColor)
             
             Button(action: {
-                isSecured.toggle()
-            }) {
+                showPassword.toggle()
+                focused = focused == .secure ? .unSecure : .secure
+            }, label: {
                 if loading {
                     ProgressView()
                         .accentColor(.gray)
                 } else {
-                    Image(systemName: self.isSecured ? "eye.slash.fill" : "eye.fill")
+                    Image(systemName: self.showPassword ? "eye.slash.fill" : "eye.fill")
                         .accentColor(.gray)
                 }
-            }
+            })
             .padding(.trailing, 16)
         }
+    }
+    
+    enum focusedField {
+        case secure, unSecure
     }
 }
 
