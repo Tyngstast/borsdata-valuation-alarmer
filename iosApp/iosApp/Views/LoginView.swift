@@ -5,7 +5,6 @@ struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     
     var body: some View {
-        let _ = viewModel.clearKey()
         LoginViewContent(
             loading: viewModel.loading,
             error: viewModel.error,
@@ -43,7 +42,7 @@ struct LoginViewContent: View {
                     }
                     prevValue = value
                 }
-            if (error != nil) {
+            if error != nil {
                 HStack {
                     Image(systemName: "exclamationmark.circle.fill")
                     Text(NSLocalizedString(error!.resourceId, comment: "Translation of error message"))

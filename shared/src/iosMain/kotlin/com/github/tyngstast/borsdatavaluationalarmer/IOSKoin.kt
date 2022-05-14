@@ -2,7 +2,6 @@ package com.github.tyngstast.borsdatavaluationalarmer
 
 import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListCallbackViewModel
-import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.LoginCallbackViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.settings.Vault
 import com.github.tyngstast.db.ValueAlarmerDb
@@ -42,5 +41,5 @@ fun Koin.loggerWithTag(tag: String) =
 @Suppress("unused") // Called from Swift
 object ViewModels : KoinComponent {
     fun getLoginViewModel() = get<LoginCallbackViewModel>()
-    fun getAlarmListViewModel() = get<AlarmListViewModel>()
+    fun getAlarmListViewModel() = get<AlarmListCallbackViewModel>()
 }

@@ -29,8 +29,8 @@
 /* Welcome Info */
 "welcome_p1" = "Welcome!";
 "welcome_p2" = "Add an alarm to start monitoring.";
-"welcome_p3_1" = "A\u0020";
-"welcome_p3_2" = "\u0020marks KPIs being calculated with current prices.";
+"welcome_p3_1" = "A ";
+"welcome_p3_2" = " marks KPIs being calculated with current prices.";
 "welcome_p3_icon_cd" = "Lightning";
 "welcome_p4" = "Remaining KPIs are updated once per day.";
 

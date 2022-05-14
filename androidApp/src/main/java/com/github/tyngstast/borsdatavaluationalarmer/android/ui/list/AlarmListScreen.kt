@@ -54,7 +54,7 @@ import androidx.compose.ui.unit.sp
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.divider
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.selectedColor
-import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListViewModel.AlarmListState
+import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListState
 import com.github.tyngstast.db.Alarm
 import org.koin.androidx.compose.getViewModel
 

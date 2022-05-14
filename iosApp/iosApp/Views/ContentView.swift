@@ -5,10 +5,14 @@ struct ContentView: View {
     @ObservedObject var viewModel = LoginViewModel()
     
 	var body: some View {
+//        let _ = viewModel.clearKey()
         NavigationView {
             VStack {
                 if viewModel.signedIn {
                     ListView()
+                        .onAppear(perform: {
+                            viewModel.deactivate()
+                        })
                 } else {
                     LoginView(viewModel: viewModel)
                 }

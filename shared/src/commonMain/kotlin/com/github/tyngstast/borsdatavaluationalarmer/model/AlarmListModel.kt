@@ -69,3 +69,8 @@ class AlarmListModel(
         alarmerSettings.resetFailureCounter()
     }
 }
+
+sealed class AlarmListState {
+    object Loading : AlarmListState()
+    data class Success(val alarms: List<Alarm>) : AlarmListState()
+}

@@ -29,8 +29,8 @@
 /* Welcome Info */
 "welcome_p1" = "Här var det tomt!";
 "welcome_p2" = "Lägg till ett alarm för att starta ny bevakning.";
-"welcome_p3_1" = "En\u0020";
-"welcome_p3_2" = "\u0020markerar nyckeltal som räknas ut med nuvarande pris.";
+"welcome_p3_1" = "En ";
+"welcome_p3_2" = " markerar nyckeltal som räknas ut med nuvarande pris.";
 "welcome_p3_icon_cd" = "Blixt";
 "welcome_p4" = "Övriga nyckeltal uppdateras en gång per dag.";
 

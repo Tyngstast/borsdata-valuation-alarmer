@@ -1,19 +1,15 @@
-
 import Combine
 import shared
 
 
-class LoginViewModel : ObservableObject {
+class LoginViewModel : BaseViewModel<LoginCallbackViewModel> {
     private let log = koin.loggerWithTag(tag: "LoginViewModel")
-    private var viewModel: LoginCallbackViewModel?
     
     @Published var loading = false
     @Published var signedIn = false
     @Published var error: ErrorCode?
 
-    private var cancellables = [AnyCancellable]()
-    
-    func activate() {
+    override func activate() {
         let viewModel = ViewModels.shared.getLoginViewModel()
 
         doPublish(viewModel.apiKeyState) { [weak self] keyState in
@@ -35,18 +31,9 @@ class LoginViewModel : ObservableObject {
             self?.loading = false
         }.store(in: &cancellables)
 
-        self.viewModel = viewModel
+        super.viewModel = viewModel
     }
 
-    func deactivate() {
-        cancellables.forEach { $0.cancel() }
-        cancellables.removeAll()
-
-        viewModel?.clear()
-        viewModel = nil
-    }
-    
-    
     func clearKey() {
        viewModel?.clearKey()
     }
