@@ -18,7 +18,31 @@ class AlarmListViewModel : BaseViewModel<AlarmListCallbackViewModel> {
                 self?.loading = true
                 return
             case let successState as AlarmListState.Success:
-                self?.alarms = successState.alarms
+//                self?.alarms = successState.alarms
+                self?.alarms = [
+                    Alarm(
+                        id: 1,
+                        insId: 1,
+                        insName: "Evolution",
+                        yahooId: "1",
+                        kpiId: 1,
+                        kpiName: "P/E",
+                        kpiValue: 30.0,
+                        operation: "lt",
+                        disabled: false
+                    ),
+                    Alarm(
+                        id: 2,
+                        insId: 2,
+                        insName: "Brdr. A&O Johansen",
+                        yahooId: "2",
+                        kpiId: 2,
+                        kpiName: "EV/EBITDA",
+                        kpiValue: 5.5,
+                        operation: "lt",
+                        disabled: false
+                    )
+                ]
             default:
                 self?.log.d(message: { "default case cannot be reached since state is a sealed class" })
             }

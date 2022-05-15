@@ -31,7 +31,6 @@ struct AppRootView<Content: View>: View {
         }
         .statusBarStyle(.lightContent)
         .navigationBarStyle(font: .navigationTitleFont, backgroundColor: .primaryColor, titleColor: .white)
-        
     }
 }
 
