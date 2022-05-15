@@ -16,7 +16,7 @@ struct ContentView: View {
                 } else {
                     LoginView(viewModel: viewModel)
                 }
-            }.padding(.top, 10)
+            }
         }.onAppear(perform: {
             viewModel.activate()
         }).onDisappear(perform: {

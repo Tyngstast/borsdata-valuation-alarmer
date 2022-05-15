@@ -18,8 +18,8 @@
 
 /* List */
 "list_edit_button" = "Edit";
-"list_deactiveate_button" = "Deactivate";
-"list_reactiveate_button" = "Reactivate";
+"list_deactivate_button" = "Deactivate";
+"list_reactivate_button" = "Reactivate";
 "list_delete_button" = "Delete";
 "list_text_title" = "Active Alarms";
 "list_cd_add_button" = "Add Alarm";

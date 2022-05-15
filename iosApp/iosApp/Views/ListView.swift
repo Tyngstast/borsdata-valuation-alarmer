@@ -4,10 +4,17 @@ import shared
 struct ListView: View {
     @ObservedObject var viewModel = AlarmListViewModel()
     
+    func onEdit(id: Int64) {
+        
+    }
+    
     var body: some View {
         ListViewContent(
             loading: viewModel.loading,
-            alarms: viewModel.alarms
+            alarms: viewModel.alarms,
+            onEdit: onEdit,
+            onDelete: viewModel.deleteAlarm,
+            onUpdateDisabled: viewModel.updateDisabled
         )
         .onAppear(perform: viewModel.activate)
         .onDisappear(perform: viewModel.deactivate)
@@ -17,11 +24,19 @@ struct ListView: View {
 struct ListViewContent: View {
     var loading: Bool
     var alarms: [Alarm]
+    var onEdit: (Int64) -> Void
+    var onDelete: (Int64) -> Void
+    var onUpdateDisabled: (Int64, Bool) -> Void
     
     var body: some View {
         VStack {
             if !alarms.isEmpty {
-                AlarmListContent(alarms: alarms)
+                AlarmListContent(
+                    alarms: alarms,
+                    onEdit: onEdit,
+                    onDelete: onDelete,
+                    onUpdateDisabled: onUpdateDisabled
+                )
             } else if !loading {
                 WelcomeInfoContent()
             }
@@ -32,12 +47,19 @@ struct ListViewContent: View {
 
 struct AlarmListContent: View {
     var alarms: [Alarm]
+    var onEdit: (Int64) -> Void
+    var onDelete: (Int64) -> Void
+    var onUpdateDisabled: (Int64, Bool) -> Void
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             ForEach(alarms, id: \.id) { alarm in
-                AlarmItem(alarm: alarm)
-                    .padding(.horizontal)
+                AlarmItem(
+                    alarm: alarm,
+                    onEdit: onEdit,
+                    onDelete: onDelete,
+                    onUpdateDisabled: onUpdateDisabled
+                )
                 Divider()
                     .frame(height: 2)
                     .background(Color(.systemGray5))
@@ -49,28 +71,84 @@ struct AlarmListContent: View {
 
 struct AlarmItem: View {
     var alarm: Alarm
+    var onEdit: (Int64) -> Void
+    var onDelete: (Int64) -> Void
+    var onUpdateDisabled: (Int64, Bool) -> Void
+    @State private var isExpanded = false
+    @State var disabled: Bool
+    
+    init(alarm: Alarm, onEdit: @escaping (Int64) -> Void, onDelete: @escaping (Int64) -> Void, onUpdateDisabled: @escaping (Int64, Bool) -> Void) {
+        self.alarm = alarm
+        self.onEdit = onEdit
+        self.onDelete = onDelete
+        self.onUpdateDisabled = onUpdateDisabled
+        self.disabled = (alarm.disabled ?? false) as! Bool
+    }
+    
+    func toggleDisabled() {
+        onUpdateDisabled(alarm.id, disabled)
+        disabled.toggle()
+        withAnimation{
+            isExpanded.toggle()
+        }
+    }
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(NSLocalizedString("company_label", comment: "Company name"))
-                    .foregroundColor(Color(UIColor.darkGray))
-                Text(alarm.insName)
+        let backgroundColor = isExpanded ? Color.selectedColor : Color.backgroundColor
+        return VStack {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(NSLocalizedString("company_label", comment: "Company name"))
+                        .foregroundColor(Color(UIColor.darkGray))
+                        .font(.appFont(size: 14))
+                    Text(alarm.insName)
+                }
+                Spacer()
+                VStack(alignment: .leading) {
+                    Text(NSLocalizedString("kpi_label", comment: "KPI Name"))
+                        .foregroundColor(Color(UIColor.darkGray))
+                        .font(.appFont(size: 14))
+                    Text(alarm.kpiName)
+                }
+                VStack(alignment: .trailing) {
+                    Text(NSLocalizedString("kpi_value", comment: "KPI Value"))
+                        .foregroundColor(Color(UIColor.darkGray))
+                        .font(.appFont(size: 14))
+                    Text(String(format: "%.1f", alarm.kpiValue))
+                }
+                .padding(.leading, 12)
             }
-            Spacer()
-            VStack(alignment: .leading) {
-                Text(NSLocalizedString("kpi_label", comment: "KPI Name"))
-                    .foregroundColor(Color(UIColor.darkGray))
-                Text(alarm.kpiName)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                withAnimation{
+                    isExpanded.toggle()
+                }
             }
-            VStack(alignment: .trailing) {
-                Text(NSLocalizedString("kpi_value", comment: "KPI Value"))
-                    .foregroundColor(Color(UIColor.darkGray))
-                Text(String(format: "%.1f", alarm.kpiValue))
+            .frame(height: 50)
+            if isExpanded {
+                HStack {
+                    Button(action: { onEdit(alarm.id) }) {
+                        Text(Image(systemName: "pencil")) + Text(" \(NSLocalizedString("list_edit_button", comment: "Edit Alarm"))")
+                    }
+                    Spacer()
+                    Button(action: toggleDisabled) {
+                        let (icon, text) = disabled
+                            ? ("bell", NSLocalizedString("list_reactivate_button", comment: "Reactivate alarm"))
+                            : ("bell.slash", NSLocalizedString("list_deactivate_button", comment: "Deactivate Alarm"))
+                        Text(Image(systemName: icon)) + Text(" \(text)")
+                    }
+                    Button(action: { onDelete(alarm.id) }) {
+                        Text(Image(systemName: "trash")) + Text(" \(NSLocalizedString("list_delete_button", comment: "Delete Alarm"))")
+                    }
+                    .padding(.leading, 8)
+                }
+                .foregroundColor(.textColor)
+                .padding(.vertical, 4)
             }
-            .padding(.leading, 12)
         }
-        .frame(height: 50)
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+        .background(backgroundColor)
     }
 }
 
@@ -122,7 +200,10 @@ struct ListView_Previews: PreviewProvider {
                         operation: "lt",
                         disabled: false
                     )
-                ]
+                ],
+                onEdit: { _ in },
+                onDelete: { _ in },
+                onUpdateDisabled: { _, _ in }
             )
         }.previewDevice(PreviewDevice(rawValue: "iPhone 11"))
     }

@@ -4,10 +4,17 @@ extension String {
     static let appFont = "Montserrat-Regular"
 }
 
+extension Font {
+    static func appFont(size: CGFloat = 17) -> Font {
+        return Font.custom(.appFont, size: size)
+    }
+}
+
 extension Color {
     static let primaryColor = Color("Primary")
     static let secondaryColor = Color("Secondary")
     static let backgroundColor = Color("Background")
+    static let selectedColor = Color("SelectedRow")
     static let textColor = Color("TextColor")
     static let errorColor = Color("Error")
     static let paleWhite = Color(white: 1, opacity: 179 / 255.0)

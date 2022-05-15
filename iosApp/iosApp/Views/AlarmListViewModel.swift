@@ -29,7 +29,7 @@ class AlarmListViewModel : BaseViewModel<AlarmListCallbackViewModel> {
                         kpiName: "P/E",
                         kpiValue: 30.0,
                         operation: "lt",
-                        disabled: false
+                        disabled: true
                     ),
                     Alarm(
                         id: 2,
@@ -52,5 +52,13 @@ class AlarmListViewModel : BaseViewModel<AlarmListCallbackViewModel> {
         }.store(in: &cancellables)
         
         super.viewModel = viewModel
+    }
+    
+    func deleteAlarm(id: Int64) {
+        super.viewModel?.deleteAlarm(id: id)
+    }
+    
+    func updateDisabled(id: Int64, disable: Bool) {
+        super.viewModel?.updateDisableAlarm(id: id, disable: disable)
     }
 }

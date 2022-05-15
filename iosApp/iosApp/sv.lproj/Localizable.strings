@@ -18,8 +18,8 @@
 
 /* List */
 "list_edit_button" = "Redigera";
-"list_deactiveate_button" = "Inaktivera";
-"list_reactiveate_button" = "Återaktivera";
+"list_deactivate_button" = "Inaktivera";
+"list_reactivate_button" = "Återaktivera";
 "list_delete_button" = "Ta bort";
 "list_text_title" = "Aktiva alarm";
 "list_cd_add_button" = "Lägg till llarm";

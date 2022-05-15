@@ -27,7 +27,7 @@ struct AppRootView<Content: View>: View {
     var body: some View {
         RootView {
             content
-                .font(Font.custom(.appFont, size: 17))
+                .font(.appFont())
         }
         .statusBarStyle(.lightContent)
         .navigationBarStyle(font: .navigationTitleFont, backgroundColor: .primaryColor, titleColor: .white)
