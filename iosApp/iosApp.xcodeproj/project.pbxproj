@@ -21,6 +21,8 @@
 		B233AA402815CB07003160C8 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233AA3F2815CB07003160C8 /* ListView.swift */; };
 		B24A059C282F9BE200396CAE /* AlarmListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24A059B282F9BE200396CAE /* AlarmListViewModel.swift */; };
 		B24A059E282FA44E00396CAE /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24A059D282FA44E00396CAE /* BaseViewModel.swift */; };
+		B24A05A028314F3D00396CAE /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24A059F28314F3D00396CAE /* AddView.swift */; };
+		B24A05A22831544F00396CAE /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24A05A12831544F00396CAE /* EditView.swift */; };
 		B2EDCB0028170333000A0088 /* ThemeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDCAFF28170333000A0088 /* ThemeConstants.swift */; };
 		B2EDCB3928172FA0000A0088 /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2EDCB3328172FA0000A0088 /* Montserrat-Italic.ttf */; };
 		B2EDCB3A28172FA0000A0088 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2EDCB3428172FA0000A0088 /* Montserrat-Medium.ttf */; };
@@ -55,6 +57,8 @@
 		B233AA3F2815CB07003160C8 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		B24A059B282F9BE200396CAE /* AlarmListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmListViewModel.swift; sourceTree = "<group>"; };
 		B24A059D282FA44E00396CAE /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		B24A059F28314F3D00396CAE /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
+		B24A05A12831544F00396CAE /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 		B2EDCAFF28170333000A0088 /* ThemeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeConstants.swift; sourceTree = "<group>"; };
 		B2EDCB3328172FA0000A0088 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Italic.ttf"; sourceTree = "<group>"; };
 		B2EDCB3428172FA0000A0088 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
@@ -143,6 +147,8 @@
 				B2EDCB4528174C01000A0088 /* AppRootView.swift */,
 				B24A059B282F9BE200396CAE /* AlarmListViewModel.swift */,
 				B24A059D282FA44E00396CAE /* BaseViewModel.swift */,
+				B24A059F28314F3D00396CAE /* AddView.swift */,
+				B24A05A12831544F00396CAE /* EditView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -304,6 +310,7 @@
 			files = (
 				B233AA402815CB07003160C8 /* ListView.swift in Sources */,
 				B24A059C282F9BE200396CAE /* AlarmListViewModel.swift in Sources */,
+				B24A05A028314F3D00396CAE /* AddView.swift in Sources */,
 				B2EDCB0028170333000A0088 /* ThemeConstants.swift in Sources */,
 				B24A059E282FA44E00396CAE /* BaseViewModel.swift in Sources */,
 				B233AA3C2815BFE2003160C8 /* Koin.swift in Sources */,
@@ -311,6 +318,7 @@
 				B2EDCB4428174719000A0088 /* RootNavigationBar.swift in Sources */,
 				B233AA3E2815CAF9003160C8 /* LoginView.swift in Sources */,
 				B233AA38281575F5003160C8 /* LoginViewModel.swift in Sources */,
+				B24A05A22831544F00396CAE /* EditView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				B2EDCB4628174C01000A0088 /* AppRootView.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,

@@ -5,7 +5,6 @@ struct ContentView: View {
     @ObservedObject var viewModel = LoginViewModel()
     
 	var body: some View {
-//        let _ = viewModel.clearKey()
         NavigationView {
             VStack {
                 if viewModel.signedIn {
@@ -22,6 +21,7 @@ struct ContentView: View {
         }).onDisappear(perform: {
             viewModel.deactivate()
         })
+        .accentColor(.white)
 	}
 }
 

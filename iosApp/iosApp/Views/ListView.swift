@@ -4,15 +4,10 @@ import shared
 struct ListView: View {
     @ObservedObject var viewModel = AlarmListViewModel()
     
-    func onEdit(id: Int64) {
-        
-    }
-    
     var body: some View {
         ListViewContent(
             loading: viewModel.loading,
             alarms: viewModel.alarms,
-            onEdit: onEdit,
             onDelete: viewModel.deleteAlarm,
             onUpdateDisabled: viewModel.updateDisabled
         )
@@ -24,7 +19,6 @@ struct ListView: View {
 struct ListViewContent: View {
     var loading: Bool
     var alarms: [Alarm]
-    var onEdit: (Int64) -> Void
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
     
@@ -33,7 +27,6 @@ struct ListViewContent: View {
             if !alarms.isEmpty {
                 AlarmListContent(
                     alarms: alarms,
-                    onEdit: onEdit,
                     onDelete: onDelete,
                     onUpdateDisabled: onUpdateDisabled
                 )
@@ -47,7 +40,6 @@ struct ListViewContent: View {
 
 struct AlarmListContent: View {
     var alarms: [Alarm]
-    var onEdit: (Int64) -> Void
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
     
@@ -56,13 +48,34 @@ struct AlarmListContent: View {
             ForEach(alarms, id: \.id) { alarm in
                 AlarmItem(
                     alarm: alarm,
-                    onEdit: onEdit,
                     onDelete: onDelete,
                     onUpdateDisabled: onUpdateDisabled
                 )
                 Divider()
                     .frame(height: 2)
                     .background(Color(.systemGray5))
+            }
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: AddView()) {
+                        Text("+")
+                        .font(.system(.largeTitle))
+                        .frame(width: 66, height: 62)
+                        .foregroundColor(.black)
+                        .padding(.bottom, 4)
+                    }
+                    .background(Color.secondaryColor)
+                    .cornerRadius(38.5)
+                    .padding()
+                    .shadow(
+                        color: Color.black.opacity(0.3),
+                        radius: 3,
+                        x: 3,
+                        y: 3
+                    )
+                }
             }
         }
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
@@ -71,15 +84,13 @@ struct AlarmListContent: View {
 
 struct AlarmItem: View {
     var alarm: Alarm
-    var onEdit: (Int64) -> Void
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
     @State private var isExpanded = false
     @State var disabled: Bool
     
-    init(alarm: Alarm, onEdit: @escaping (Int64) -> Void, onDelete: @escaping (Int64) -> Void, onUpdateDisabled: @escaping (Int64, Bool) -> Void) {
+    init(alarm: Alarm, onDelete: @escaping (Int64) -> Void, onUpdateDisabled: @escaping (Int64, Bool) -> Void) {
         self.alarm = alarm
-        self.onEdit = onEdit
         self.onDelete = onDelete
         self.onUpdateDisabled = onUpdateDisabled
         self.disabled = (alarm.disabled ?? false) as! Bool
@@ -127,7 +138,7 @@ struct AlarmItem: View {
             .frame(height: 50)
             if isExpanded {
                 HStack {
-                    Button(action: { onEdit(alarm.id) }) {
+                    NavigationLink(destination: EditView(id: alarm.id)) {
                         Text(Image(systemName: "pencil")) + Text(" \(NSLocalizedString("list_edit_button", comment: "Edit Alarm"))")
                     }
                     Spacer()
@@ -202,7 +213,6 @@ struct ListView_Previews: PreviewProvider {
                         disabled: true
                     )
                 ],
-                onEdit: { _ in },
                 onDelete: { _ in },
                 onUpdateDisabled: { _, _ in }
             )
