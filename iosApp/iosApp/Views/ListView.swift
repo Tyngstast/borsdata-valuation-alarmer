@@ -149,6 +149,7 @@ struct AlarmItem: View {
         .padding(.horizontal)
         .padding(.vertical, 8)
         .background(backgroundColor)
+        .opacity(disabled ? 0.38 : 1.0)
     }
 }
 
@@ -198,7 +199,7 @@ struct ListView_Previews: PreviewProvider {
                         kpiName: "EV/EBITDA",
                         kpiValue: 5.5,
                         operation: "lt",
-                        disabled: false
+                        disabled: true
                     )
                 ],
                 onEdit: { _ in },
