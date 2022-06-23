@@ -35,6 +35,17 @@ struct ListViewContent: View {
             }
         }
         .navigationTitle(NSLocalizedString("list_text_title", comment: "List alarms title"))
+        .navigationBarItems(trailing: ZStack {
+            Menu { // TODO: menu does not work with position args
+                Button(action: {}) {
+                    Text(NSLocalizedString("menu_reset", comment: "Reset API key"))
+                }
+            } label: {
+                Image(systemName: "ellipsis")
+            }
+            .position(x: 0, y: 55)
+        }
+        )
     }
 }
 
