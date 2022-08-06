@@ -48,10 +48,14 @@
   
 ## Setup 
 ### Dev
-  1. https://kotlinlang.org/docs/multiplatform-mobile-setup.html
+  1. https://kotlinlang.org/docs/multiplatform-mobile-setup.html (listen to `kdoctor`)
   2. (Only for M1 Mac) https://youtrack.jetbrains.com/issue/KT-49418/KMM-Wizard-Android-Studio-BumbleBee-202111-Beta1-Gradle-Build-Failed-As-Soon-As-Completes-Wizard-Due-To-pod-install-Task-Failed#focus=Comments-27-5429773.0-0 
-  3. Get `google-services.json` and add to `androidApp` dir.
-  4. Update java.home in gradle.properties
+  3. (Only Mac) Fix Java for Xcode if you installed java through third party jdk manager.
+     1. `sudp mkdir -p /Library/Java/JavaVirtualMachines/<jdk_name>/Contents`
+     2. `sudo ln -s /path/to/jdk /Library/Java/JavaVirtualMachines/<jdk_name>/Contents/Home`
+     3. Find example `Info.plist` and add in `Contents`. Update values.
+  4. Get `google-services.json` and add to `androidApp` dir.
+  5. Update java.home in gradle.properties
 
 ### Release
 Get/Generate `.jks` keystore and create `keystore.properties` in project root dir.
