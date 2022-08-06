@@ -43,7 +43,6 @@
     * Firebase Messaging
   * iOS
     * SwiftUI
-    * \<tech \/\>
   * Firebase Cloud Messaging (FCM)
     * Cloud Function serves as "ping" to execute workers on mobile devices. No data is stored in any backend. 
   
