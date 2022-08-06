@@ -46,7 +46,17 @@
   * Firebase Cloud Messaging (FCM)
     * Cloud Function serves as "ping" to execute workers on mobile devices. No data is stored in any backend. 
   
+## Setup 
+### Dev
+  1. https://kotlinlang.org/docs/multiplatform-mobile-setup.html
+  2. (Only for M1 Mac) https://youtrack.jetbrains.com/issue/KT-49418/KMM-Wizard-Android-Studio-BumbleBee-202111-Beta1-Gradle-Build-Failed-As-Soon-As-Completes-Wizard-Due-To-pod-install-Task-Failed#focus=Comments-27-5429773.0-0 
+  3. Get `google-services.json` and add to `androidApp` dir.
+  4. Update java.home in gradle.properties
+
+### Release
+Get/Generate `.jks` keystore and create `keystore.properties` in project root dir.
+
 ## TODO 
 ### iOS
-ViewModels have been extracted to `shared` and wrappers created to translate flows in swift. GUI, firebase messaging and bg workers is the bulk of the remaining work.
+ViewModels have been extracted to `shared` and wrappers created to translate flows in swift. GUI, Firebase Messaging and BG workers is the bulk of the remaining work.
 
