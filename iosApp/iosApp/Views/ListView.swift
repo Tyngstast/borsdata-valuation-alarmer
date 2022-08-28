@@ -36,9 +36,31 @@ struct ListViewContent: View {
             } else if !loading {
                 WelcomeInfoContent()
             }
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: AddView()) {
+                        Text("+")
+                            .font(.system(.largeTitle))
+                            .frame(width: 66, height: 62)
+                            .foregroundColor(.black)
+                            .padding(.bottom, 4)
+                    }
+                        .background(Color.secondaryColor)
+                        .cornerRadius(38.5)
+                        .padding()
+                        .shadow(
+                            color: Color.black.opacity(0.3),
+                            radius: 3,
+                            x: 3,
+                            y: 3
+                        )
+                }
+            }
         }
         .navigationTitle(NSLocalizedString("list_text_title", comment: "List alarms title"))
-        .navigationBarItems(trailing: ZStack {
+        .toolbar {
             Menu {
                 Button(action: onResetKey) {
                     Text(NSLocalizedString("menu_reset", comment: "Reset API key"))
@@ -46,7 +68,7 @@ struct ListViewContent: View {
             } label: {
                 Image(systemName: "ellipsis")
             }
-        })
+        }
     }
 }
 
@@ -66,28 +88,6 @@ struct AlarmListContent: View {
                 Divider()
                     .frame(height: 2)
                     .background(Color(.systemGray5))
-            }
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    NavigationLink(destination: AddView()) {
-                        Text("+")
-                            .font(.system(.largeTitle))
-                            .frame(width: 66, height: 62)
-                            .foregroundColor(.black)
-                            .padding(.bottom, 4)
-                    }
-                    .background(Color.secondaryColor)
-                    .cornerRadius(38.5)
-                    .padding()
-                    .shadow(
-                        color: Color.black.opacity(0.3),
-                        radius: 3,
-                        x: 3,
-                        y: 3
-                    )
-                }
             }
         }
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
@@ -225,7 +225,7 @@ struct ListView_Previews: PreviewProvider {
                         kpiValue: 5.5,
                         operation: "lt",
                         disabled: true
-                    ),
+                    )
                 ],
                 onDelete: { _ in },
                 onUpdateDisabled: { _, _ in },
