@@ -18,6 +18,7 @@ open class LoginViewModel(private val loginModel: LoginModel) : ViewModel() {
 
     fun clearKey() {
         loginModel.clearApiKey()
+        _apiKeyStateFlow.value = ApiKeyState.Empty
     }
 
     fun clearError() {

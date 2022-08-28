@@ -1,15 +1,17 @@
-import SwiftUI
 import shared
+import SwiftUI
 
 struct ListView: View {
-    @ObservedObject var viewModel = AlarmListViewModel()
-    
+    @StateObject var viewModel = AlarmListViewModel()
+    var onResetKey: () -> Void
+
     var body: some View {
         ListViewContent(
             loading: viewModel.loading,
             alarms: viewModel.alarms,
             onDelete: viewModel.deleteAlarm,
-            onUpdateDisabled: viewModel.updateDisabled
+            onUpdateDisabled: viewModel.updateDisabled,
+            onResetKey: onResetKey
         )
         .onAppear(perform: viewModel.activate)
         .onDisappear(perform: viewModel.deactivate)
@@ -21,7 +23,8 @@ struct ListViewContent: View {
     var alarms: [Alarm]
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
-    
+    var onResetKey: () -> Void
+
     var body: some View {
         VStack {
             if !alarms.isEmpty {
@@ -36,16 +39,14 @@ struct ListViewContent: View {
         }
         .navigationTitle(NSLocalizedString("list_text_title", comment: "List alarms title"))
         .navigationBarItems(trailing: ZStack {
-            Menu { // TODO: menu does not work with position args
-                Button(action: {}) {
+            Menu {
+                Button(action: onResetKey) {
                     Text(NSLocalizedString("menu_reset", comment: "Reset API key"))
                 }
             } label: {
                 Image(systemName: "ellipsis")
             }
-            .position(x: 0, y: 55)
-        }
-        )
+        })
     }
 }
 
@@ -53,7 +54,7 @@ struct AlarmListContent: View {
     var alarms: [Alarm]
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(alarms, id: \.id) { alarm in
@@ -72,10 +73,10 @@ struct AlarmListContent: View {
                     Spacer()
                     NavigationLink(destination: AddView()) {
                         Text("+")
-                        .font(.system(.largeTitle))
-                        .frame(width: 66, height: 62)
-                        .foregroundColor(.black)
-                        .padding(.bottom, 4)
+                            .font(.system(.largeTitle))
+                            .frame(width: 66, height: 62)
+                            .foregroundColor(.black)
+                            .padding(.bottom, 4)
                     }
                     .background(Color.secondaryColor)
                     .cornerRadius(38.5)
@@ -99,22 +100,22 @@ struct AlarmItem: View {
     var onUpdateDisabled: (Int64, Bool) -> Void
     @State private var isExpanded = false
     @State var disabled: Bool
-    
+
     init(alarm: Alarm, onDelete: @escaping (Int64) -> Void, onUpdateDisabled: @escaping (Int64, Bool) -> Void) {
         self.alarm = alarm
         self.onDelete = onDelete
         self.onUpdateDisabled = onUpdateDisabled
-        self.disabled = (alarm.disabled ?? false) as! Bool
+        disabled = (alarm.disabled ?? false) as! Bool
     }
-    
+
     func toggleDisabled() {
         onUpdateDisabled(alarm.id, disabled)
         disabled.toggle()
-        withAnimation{
+        withAnimation {
             isExpanded.toggle()
         }
     }
-    
+
     var body: some View {
         let backgroundColor = isExpanded ? Color.selectedColor : Color.backgroundColor
         return VStack {
@@ -142,7 +143,7 @@ struct AlarmItem: View {
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                withAnimation{
+                withAnimation {
                     isExpanded.toggle()
                 }
             }
@@ -159,9 +160,10 @@ struct AlarmItem: View {
                             : ("bell.slash", NSLocalizedString("list_deactivate_button", comment: "Deactivate Alarm"))
                         Text(Image(systemName: icon)) + Text(" \(text)")
                     }
-                    Button(action: { onDelete(alarm.id) }) {
-                        Text(Image(systemName: "trash")) + Text(" \(NSLocalizedString("list_delete_button", comment: "Delete Alarm"))")
-                    }
+                    Button(action: { onDelete(alarm.id) }, label: {
+                        Text(Image(systemName: "trash")) +
+                            Text(" \(NSLocalizedString("list_delete_button", comment: "Delete Alarm"))")
+                    })
                     .padding(.leading, 8)
                 }
                 .foregroundColor(.textColor)
@@ -177,20 +179,21 @@ struct AlarmItem: View {
 
 struct WelcomeInfoContent: View {
     var body: some View {
-        VStack {
-             Group {
+        VStack(alignment: .center, spacing: 0) {
+            Group {
                 Text(NSLocalizedString("welcome_p1", comment: "First paragraph"))
                 Text(NSLocalizedString("welcome_p2", comment: "Second paragraph"))
-                (
-                    Text(NSLocalizedString("welcome_p3_1", comment: "Third paragraph part 1"))
+
+                Text(NSLocalizedString("welcome_p3_1", comment: "Third paragraph part 1"))
                     + Text(Image(systemName: "bolt.fill"))
                     + Text(NSLocalizedString("welcome_p3_2", comment: "Third paragraph part 2"))
-                )
+
                 Text(NSLocalizedString("welcome_p4", comment: "Fourth and final paragraph"))
             }
             .multilineTextAlignment(.center)
             .padding(8)
         }
+        .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         .padding()
     }
 }
@@ -222,11 +225,13 @@ struct ListView_Previews: PreviewProvider {
                         kpiValue: 5.5,
                         operation: "lt",
                         disabled: true
-                    )
+                    ),
                 ],
                 onDelete: { _ in },
-                onUpdateDisabled: { _, _ in }
+                onUpdateDisabled: { _, _ in },
+                onResetKey: {}
             )
-        }.previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+        }
+        .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
     }
 }

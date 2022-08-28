@@ -33,8 +33,7 @@ abstract class CallbackViewModel {
     /**
      * Create a [FlowAdapter] from this [Flow] to make it easier to interact with from Swift.
      */
-    fun <T : Any> Flow<T>.asCallbacks() =
-        FlowAdapter(viewModel.viewModelScope, this)
+    fun <T : Any> Flow<T>.asCallbacks() = FlowAdapter(viewModel.viewModelScope, this)
 
     @Suppress("Unused") // Called from Swift
     fun clear() = viewModel.clear()

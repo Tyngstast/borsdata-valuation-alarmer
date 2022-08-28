@@ -1,15 +1,15 @@
-import SwiftUI
 import shared
+import SwiftUI
 
 struct LoginView: View {
-    @ObservedObject var viewModel: LoginViewModel
-    
+    @StateObject var viewModel: LoginViewModel
+
     var body: some View {
         LoginViewContent(
             loading: viewModel.loading,
             error: viewModel.error,
             onVerify: { viewModel.verifyKey($0) },
-            onClearErrror: { viewModel.clearError() }
+            onClearError: { viewModel.clearError() }
         )
     }
 }
@@ -18,16 +18,16 @@ struct LoginViewContent: View {
     var loading: Bool
     var error: ErrorCode?
     var onVerify: (String) -> Void
-    var onClearErrror: () -> Void
-    
+    var onClearError: () -> Void
+
     // Keep track of previous value to detect paste input
     @State var prevValue = ""
     @State var apiKey = ""
-    
+
     var loginDisabled: Bool {
-        return apiKey.count < 20 || loading || error != nil
+        apiKey.count < 20 || loading || error != nil
     }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             SecureInputField(
@@ -35,13 +35,13 @@ struct LoginViewContent: View {
                 loading: loading,
                 password: $apiKey
             )
-                .onChange(of: apiKey) { value in
-                    onClearErrror()
-                    if (value.count - 5 > prevValue.count) {
-                        onVerify(apiKey)
-                    }
-                    prevValue = value
+            .onChange(of: apiKey) { value in
+                onClearError()
+                if value.count - 5 > prevValue.count {
+                    onVerify(apiKey)
                 }
+                prevValue = value
+            }
             if error != nil {
                 HStack {
                     Image(systemName: "exclamationmark.circle.fill")
@@ -71,18 +71,18 @@ struct LoginViewContent: View {
 }
 
 struct SecureInputField: View {
-    @FocusState private var focused: focusedField?
+    @FocusState private var focused: FocusedField?
     @Binding private var password: String
     @State private var showPassword: Bool = false
     private var loading: Bool
     private var title: String
-    
+
     init(_ title: String, loading: Bool, password: Binding<String>) {
         self.title = title
         self.loading = loading
-        self._password = password
+        _password = password
     }
-    
+
     var body: some View {
         ZStack(alignment: .trailing) {
             Group {
@@ -108,7 +108,7 @@ struct SecureInputField: View {
                         style: StrokeStyle(lineWidth: 2.0)
                     )
             )
-            
+
             Button(action: {
                 showPassword.toggle()
                 focused = focused == .secure ? .unSecure : .secure
@@ -124,21 +124,21 @@ struct SecureInputField: View {
             .padding(.trailing, 16)
         }
     }
-    
-    enum focusedField {
+
+    enum FocusedField {
         case secure, unSecure
     }
 }
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-            NavigationView {
-                LoginViewContent(
-                    loading: false,
-                    error: nil,
-                    onVerify: { _ in },
-                    onClearErrror: { }
-                ).previewDevice(PreviewDevice(rawValue: "iPhone 11"))
-            }
+        NavigationView {
+            LoginViewContent(
+                loading: false,
+                error: nil,
+                onVerify: { _ in },
+                onClearError: {}
+            ).previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+        }
     }
 }

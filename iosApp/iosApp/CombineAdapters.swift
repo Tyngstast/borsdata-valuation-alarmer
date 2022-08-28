@@ -38,4 +38,3 @@ class KotlinError: LocalizedError {
         throwable.message
     }
 }
-
