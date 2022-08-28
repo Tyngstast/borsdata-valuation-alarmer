@@ -5,8 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
-open class LoginViewModel(private val loginModel: LoginModel) : ViewModel() {
-
+open class BaseLoginViewModel(private val loginModel: LoginModel) : ViewModel() {
     private val _apiKeyStateFlow = MutableStateFlow<ApiKeyState>(ApiKeyState.Empty)
     val apiKeyStateFlow: StateFlow<ApiKeyState> = _apiKeyStateFlow
 

@@ -49,6 +49,6 @@ class AddAlarmModel(
     }
 }
 
-open class Item(open val id: Long, val name: String)
+open class Item(val id: Long, val name: String)
 class InsItem(id: Long, name: String, val yahooId: String) : Item(id, name)
 class KpiItem(id: Long, name: String, val fluent: Boolean) : Item(id, name)

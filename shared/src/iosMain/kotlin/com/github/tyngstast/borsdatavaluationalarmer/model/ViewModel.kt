@@ -28,6 +28,7 @@ actual abstract class ViewModel {
 }
 
 abstract class CallbackViewModel {
+
     protected abstract val viewModel: ViewModel
 
     /**

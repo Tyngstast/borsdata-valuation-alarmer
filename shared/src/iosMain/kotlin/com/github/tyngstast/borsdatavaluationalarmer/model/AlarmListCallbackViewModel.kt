@@ -1,19 +1,17 @@
 package com.github.tyngstast.borsdatavaluationalarmer.model
 
 @Suppress("unused")
-class AlarmListCallbackViewModel(
-   alarmListModel: AlarmListModel
-) : CallbackViewModel() {
+class AlarmListCallbackViewModel(alarmListModel: AlarmListModel) : CallbackViewModel() {
 
-   override val viewModel = AlarmListViewModel(alarmListModel)
+    override val viewModel = BaseAlarmListViewModel(alarmListModel)
 
-   val alarmListState = viewModel.alarmListStateFlow.asCallbacks()
+    val alarmListState = viewModel.alarmListStateFlow.asCallbacks()
 
-   fun updateDisableAlarm(id: Long, disable: Boolean) {
-      viewModel.updateDisableAlarm(id, disable)
-   }
+    fun updateDisableAlarm(id: Long, disable: Boolean) {
+        viewModel.updateDisableAlarm(id, disable)
+    }
 
-   fun deleteAlarm(id: Long) {
-      viewModel.deleteAlarm(id)
-   }
+    fun deleteAlarm(id: Long) {
+        viewModel.deleteAlarm(id)
+    }
 }

@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-open class AlarmListViewModel(
+open class BaseAlarmListViewModel(
     private val alarmListModel: AlarmListModel
 ) : ViewModel() {
 

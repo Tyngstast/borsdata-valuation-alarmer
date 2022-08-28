@@ -4,11 +4,11 @@ import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.android.messaging.TriggerWorkerMessagingService.Companion.TRIGGER_TOPIC
 import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListState
+import com.github.tyngstast.borsdatavaluationalarmer.model.BaseAlarmListViewModel
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
-import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListViewModel as BaseAlarmListViewModel
 
 class AlarmListViewModel(
     private val log: Logger,

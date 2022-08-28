@@ -1,23 +1,21 @@
 package com.github.tyngstast.borsdatavaluationalarmer.model
 
 @Suppress("unused")
-class LoginCallbackViewModel(
-   loginModel: LoginModel
-) : CallbackViewModel() {
+class LoginCallbackViewModel(loginModel: LoginModel) : CallbackViewModel() {
 
-   override val viewModel = LoginViewModel(loginModel)
+    override val viewModel = BaseLoginViewModel(loginModel)
 
-   val apiKeyState = viewModel.apiKeyStateFlow.asCallbacks()
+    val apiKeyState = viewModel.apiKeyStateFlow.asCallbacks()
 
-   fun clearKey() {
-      viewModel.clearKey()
-   }
+    fun clearKey() {
+        viewModel.clearKey()
+    }
 
-   fun clearError() {
-       viewModel.clearError()
-   }
+    fun clearError() {
+        viewModel.clearError()
+    }
 
-   fun verifyKey(key: String) {
-       viewModel.verifyKey(key)
-   }
+    fun verifyKey(key: String) {
+        viewModel.verifyKey(key)
+    }
 }

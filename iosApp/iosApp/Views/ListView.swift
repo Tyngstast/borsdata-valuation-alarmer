@@ -47,15 +47,15 @@ struct ListViewContent: View {
                             .foregroundColor(.black)
                             .padding(.bottom, 4)
                     }
-                        .background(Color.secondaryColor)
-                        .cornerRadius(38.5)
-                        .padding()
-                        .shadow(
-                            color: Color.black.opacity(0.3),
-                            radius: 3,
-                            x: 3,
-                            y: 3
-                        )
+                    .background(Color.secondaryColor)
+                    .cornerRadius(38.5)
+                    .padding()
+                    .shadow(
+                        color: Color.black.opacity(0.3),
+                        radius: 3,
+                        x: 3,
+                        y: 3
+                    )
                 }
             }
         }
@@ -151,18 +151,18 @@ struct AlarmItem: View {
             if isExpanded {
                 HStack {
                     NavigationLink(destination: EditView(id: alarm.id)) {
-                        Text(Image(systemName: "pencil")) + Text(" \(NSLocalizedString("list_edit_button", comment: "Edit Alarm"))")
+                        Text(Image(systemName: "pencil")) + Text(NSLocalizedString("list_edit_button", comment: "Edit Alarm"))
                     }
                     Spacer()
                     Button(action: toggleDisabled) {
                         let (icon, text) = disabled
                             ? ("bell", NSLocalizedString("list_reactivate_button", comment: "Reactivate alarm"))
                             : ("bell.slash", NSLocalizedString("list_deactivate_button", comment: "Deactivate Alarm"))
-                        Text(Image(systemName: icon)) + Text(" \(text)")
+                        Text(Image(systemName: icon)) + Text(text)
                     }
                     Button(action: { onDelete(alarm.id) }, label: {
                         Text(Image(systemName: "trash")) +
-                            Text(" \(NSLocalizedString("list_delete_button", comment: "Delete Alarm"))")
+                            Text(NSLocalizedString("list_delete_button", comment: "Delete Alarm"))
                     })
                     .padding(.leading, 8)
                 }
@@ -225,7 +225,7 @@ struct ListView_Previews: PreviewProvider {
                         kpiValue: 5.5,
                         operation: "lt",
                         disabled: true
-                    )
+                    ),
                 ],
                 onDelete: { _ in },
                 onUpdateDisabled: { _, _ in },
