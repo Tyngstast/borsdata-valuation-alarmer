@@ -62,5 +62,15 @@ Get/Generate `.jks` keystore and create `keystore.properties` in project root di
 
 ## TODO 
 ### iOS
-ViewModels have been extracted to `shared` and wrappers created to translate flows in swift. GUI, Firebase Messaging and BG workers is the bulk of the remaining work.
+  * GUI
+    * Add
+      * Clear suggestions after navigating back to list view
+      * Autofocus first field
+      * Show suggestions again if new input is entered
+      * Color highlighting on focused field
+      * Keyboard navigation / actions
+    * Edit
+  * Firebase messaging
+  * BG Worker for jobs
+
 

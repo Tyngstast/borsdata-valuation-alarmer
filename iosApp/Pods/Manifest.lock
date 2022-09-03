@@ -1,16 +1,23 @@
 PODS:
+  - AlertToast (1.3.7)
   - shared (0.0.1)
 
 DEPENDENCIES:
+  - AlertToast
   - shared (from `../shared`)
+
+SPEC REPOS:
+  trunk:
+    - AlertToast
 
 EXTERNAL SOURCES:
   shared:
     :path: "../shared"
 
 SPEC CHECKSUMS:
+  AlertToast: 8c9d5efb2df6ea728b32b62bce99d876ec3e5393
   shared: 99f54fc6a39e431f2e5dbd92646da02e8de1e50c
 
-PODFILE CHECKSUM: b09caeeb5af1616d7c90e8eec228b7efa72ad31a
+PODFILE CHECKSUM: e66735c9049dfb17fc73b6b83345356c287b633c
 
 COCOAPODS: 1.11.3

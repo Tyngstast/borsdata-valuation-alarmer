@@ -1,3 +1,4 @@
+import AlertToast
 import shared
 import SwiftUI
 
@@ -7,12 +8,10 @@ struct AddView: View {
     @StateObject var viewModel = AddViewModel()
 
     func onInsNameChange(value: String) {
-        log.d(message: { "onInsNameChange: \(value)" })
         viewModel.getInstruments(value: value)
     }
 
     func onKpiNameChange(value: String) {
-        log.d(message: { "onKpiNameChange: \(value)" })
         viewModel.getKpis(value: value)
     }
 
@@ -30,66 +29,66 @@ struct AddView: View {
 }
 
 struct AddViewContent: View {
-    private let log = koin.loggerWithTag(tag: "AddViewContent")
+    @Environment(\.dismiss) var dismissView
+
     var instruments: [Item]
     var kpis: [Item]
     var onInsNameChange: (String) -> Void
     var onKpiNameChange: (String) -> Void
     var onAdd: (Double) -> Void
 
+    @FocusState private var isFocused: Bool
+    @State var showToast = false
+    @State var toastMsg = ""
     @State var insName = ""
     @State var kpiName = ""
     @State var kpiValue = ""
 
-    // TODO: Fix alignment of input + suggestions
-    // TODO: click on suggestion autocompletes
-    // TODO: shift focus hides suggestions
-    // TODO: actually add
-    // TODO: clean up styling implementation
-    // TODO: renaming and move to subpackages of Views
     func addAlarm() {
-        log.d(message: { "add alarm: \(kpiValue)" })
-        guard let value = Double(kpiValue.replacingOccurrences(of: ",", with: ".")) else {
-            log.e(message: { "value is not double: \(kpiValue)" })
+        guard !insName.isEmpty, !kpiName.isEmpty, !kpiValue.isEmpty else {
+            toastMsg = NSLocalizedString("add_toast_empty_input", comment: "Empty input toast")
+            showToast = true
             return
         }
-        log.d(message: { "value parsed: \(value)" })
-//        onAdd(value)
+        guard let value = Double(kpiValue.replacingOccurrences(of: ",", with: ".")) else {
+            toastMsg = NSLocalizedString("add_toast_invalid_kpi_value", comment: "Invalid trigger value toast")
+            showToast = true
+            return
+        }
+        onAdd(value)
+        dismissView()
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            VStack(alignment: .leading, spacing: 0) {
-                TextField(NSLocalizedString("company_label", comment: "Company name"), text: $insName)
-                    .onChange(of: insName, perform: onInsNameChange)
-                ForEach(instruments, id: \.id) { instrument in
-                    Text(instrument.name)
+            SuggestionInputField(
+                items: instruments,
+                label: NSLocalizedString("company_label", comment: "Company name"),
+                text: $insName,
+                onInputChange: { v in
+                    insName = v
+                    onInsNameChange(v)
                 }
-            }
-            .frame(minHeight: 60)
-            .padding(.horizontal, 12)
-            Divider()
-                .frame(height: 2)
-                .background(Color(.systemGray5))
-            VStack(alignment: .leading, spacing: 0) {
-                TextField(NSLocalizedString("kpi_label", comment: "KPI name"), text: $kpiName)
-                    .onChange(of: kpiName, perform: onKpiNameChange)
-                ForEach(kpis, id: \.id) { kpi in
-                    Text(kpi.name)
+            )
+            SuggestionInputField(
+                items: kpis,
+                label: NSLocalizedString("kpi_label", comment: "KPI name"),
+                text: $kpiName,
+                onInputChange: { v in
+                    kpiName = v
+                    onKpiNameChange(v)
                 }
-            }
-            .frame(minHeight: 60)
-            .padding(.horizontal, 12)
-            Divider()
-                .frame(height: 2)
-                .background(Color(.systemGray5))
-            VStack {
-                TextField(NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"), text: $kpiValue)
-                    .onChange(of: kpiValue, perform: { _ in })
-                    .keyboardType(.numbersAndPunctuation)
-            }
-            .frame(minHeight: 60)
-            .padding(.horizontal, 12)
+            )
+            TextField(NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"), text: $kpiValue)
+                .onChange(of: kpiValue, perform: { _ in })
+                .focused($isFocused)
+                .onTapGesture {
+                    isFocused = true
+                }
+                .keyboardType(.numbersAndPunctuation)
+                .frame(minHeight: 50)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
             Divider()
                 .frame(height: 2)
                 .background(Color(.systemGray5))
@@ -103,7 +102,56 @@ struct AddViewContent: View {
                 }
             }
         }
+        .toast(isPresenting: $showToast, duration: 2.0, alert: {
+            AlertToast(type: .regular, title: toastMsg)
+        }, completion: {
+            showToast = false
+        })
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+    }
+}
+
+struct SuggestionInputField: View {
+    var items: [Item]
+    var label: String
+    @Binding var text: String
+    var onInputChange: (String) -> Void
+    @State var showSuggestions = true
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            TextField(label, text: $text)
+                .onChange(of: text, perform: onInputChange)
+                .focused($isFocused)
+                .onTapGesture {
+                    isFocused = true
+                }
+                .frame(minHeight: 50)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+            Divider()
+                .frame(height: 2)
+                .background(Color(.systemGray5))
+            if showSuggestions {
+                ForEach(items, id: \.id) { item in
+                    HStack {
+                        Text(item.name)
+                            .onTapGesture {
+                                onInputChange(item.name)
+                                showSuggestions = false
+                            }
+                            .padding(.vertical, 6)
+                        Spacer()
+                        if item is KpiItem && (item as! KpiItem).fluent {
+                            Image(systemName: "bolt.fill")
+                        }
+                    }
+                }
+                .padding(.horizontal, 12)
+            }
+        }
+        .animation(.interactiveSpring(), value: items)
     }
 }
 

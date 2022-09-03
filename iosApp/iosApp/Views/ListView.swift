@@ -14,7 +14,6 @@ struct ListView: View {
             onResetKey: onResetKey
         )
         .onAppear(perform: viewModel.activate)
-        .onDisappear(perform: viewModel.deactivate)
     }
 }
 
@@ -109,8 +108,8 @@ struct AlarmItem: View {
     }
 
     func toggleDisabled() {
-        onUpdateDisabled(alarm.id, disabled)
         disabled.toggle()
+        onUpdateDisabled(alarm.id, disabled)
         withAnimation {
             isExpanded.toggle()
         }
@@ -139,35 +138,48 @@ struct AlarmItem: View {
                         .font(.appFont(size: 14))
                     Text(String(format: "%.1f", alarm.kpiValue))
                 }
-                .padding(.leading, 12)
+                    .padding(.leading, 12)
             }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                withAnimation {
-                    isExpanded.toggle()
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation {
+                        isExpanded.toggle()
+                    }
                 }
-            }
-            .frame(height: 50)
+                .frame(height: 50)
             if isExpanded {
                 HStack {
                     NavigationLink(destination: EditView(id: alarm.id)) {
-                        Text(Image(systemName: "pencil")) + Text(NSLocalizedString("list_edit_button", comment: "Edit Alarm"))
+                        HStack(spacing: 0) {
+                            Image(systemName: "pencil")
+                                .padding(.trailing, 4)
+                            Text(NSLocalizedString("list_edit_button", comment: "Edit Alarm"))
+                        }
                     }
                     Spacer()
                     Button(action: toggleDisabled) {
                         let (icon, text) = disabled
                             ? ("bell", NSLocalizedString("list_reactivate_button", comment: "Reactivate alarm"))
                             : ("bell.slash", NSLocalizedString("list_deactivate_button", comment: "Deactivate Alarm"))
-                        Text(Image(systemName: icon)) + Text(text)
+                        HStack(spacing: 0) {
+                            Image(systemName: icon)
+                                .padding(.trailing, 4)
+                            Text(text)
+                        }
                     }
-                    Button(action: { onDelete(alarm.id) }, label: {
-                        Text(Image(systemName: "trash")) +
+                    Button(action: {
+                        onDelete(alarm.id)
+                    }, label: {
+                        HStack(spacing: 0) {
+                            Image(systemName: "trash")
+                                .padding(.trailing, 4)
                             Text(NSLocalizedString("list_delete_button", comment: "Delete Alarm"))
+                        }
                     })
-                    .padding(.leading, 8)
+                        .padding(.leading, 8)
                 }
-                .foregroundColor(.textColor)
-                .padding(.vertical, 4)
+                    .foregroundColor(.textColor)
+                    .padding(.vertical, 4)
             }
         }
         .padding(.horizontal)

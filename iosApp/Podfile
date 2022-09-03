@@ -1,5 +1,6 @@
 target 'iosApp' do
   use_frameworks!
   platform :ios, '15.1'
+  pod 'AlertToast'
   pod 'shared', :path => '../shared'
 end

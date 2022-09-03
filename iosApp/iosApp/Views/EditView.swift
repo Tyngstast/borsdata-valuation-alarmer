@@ -1,13 +1,13 @@
-import SwiftUI
 import shared
+import SwiftUI
 
 struct EditView: View {
     var alarm: Alarm?
-    
-    init(id: Int64) {
+
+    init(id _: Int64) {
         print("todo: get alarm from id as pass to content")
     }
-    
+
     var body: some View {
         EditViewContent()
     }

@@ -98,6 +98,9 @@ struct SecureInputField: View {
                     .opacity(showPassword ? 0 : 1)
             }
             .padding()
+            .onTapGesture {
+                focused = focused == nil ? .secure : focused
+            }
             .autocapitalization(.none)
             .disableAutocorrection(true)
             .frame(height: 60)
