@@ -75,6 +75,7 @@ struct AlarmListContent: View {
     var alarms: [Alarm]
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
+    @State var selectedRow: Alarm?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -82,7 +83,8 @@ struct AlarmListContent: View {
                 AlarmItem(
                     alarm: alarm,
                     onDelete: onDelete,
-                    onUpdateDisabled: onUpdateDisabled
+                    onUpdateDisabled: onUpdateDisabled,
+                    selectedRow: $selectedRow
                 )
                 Divider()
                     .frame(height: 2)
@@ -97,13 +99,18 @@ struct AlarmItem: View {
     var alarm: Alarm
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
-    @State private var isExpanded = false
+    @Binding var selectedRow: Alarm?
     @State var disabled: Bool
 
-    init(alarm: Alarm, onDelete: @escaping (Int64) -> Void, onUpdateDisabled: @escaping (Int64, Bool) -> Void) {
+    func isExpanded() -> Bool {
+        alarm == selectedRow
+    }
+
+    init(alarm: Alarm, onDelete: @escaping (Int64) -> Void, onUpdateDisabled: @escaping (Int64, Bool) -> Void, selectedRow: Binding<Alarm?>) {
         self.alarm = alarm
         self.onDelete = onDelete
         self.onUpdateDisabled = onUpdateDisabled
+        _selectedRow = selectedRow
         disabled = (alarm.disabled ?? false) as! Bool
     }
 
@@ -111,12 +118,12 @@ struct AlarmItem: View {
         disabled.toggle()
         onUpdateDisabled(alarm.id, disabled)
         withAnimation {
-            isExpanded.toggle()
+            selectedRow = nil
         }
     }
 
     var body: some View {
-        let backgroundColor = isExpanded ? Color.selectedColor : Color.backgroundColor
+        let backgroundColor = isExpanded() ? Color.selectedColor : Color.backgroundColor
         return VStack {
             HStack {
                 VStack(alignment: .leading) {
@@ -143,11 +150,11 @@ struct AlarmItem: View {
             .contentShape(Rectangle())
             .onTapGesture {
                 withAnimation {
-                    isExpanded.toggle()
+                    selectedRow = selectedRow == alarm ? nil : alarm
                 }
             }
             .frame(height: 50)
-            if isExpanded {
+            if isExpanded() {
                 HStack {
                     NavigationLink(destination: NavigationLazyView(EditView(alarm: alarm))) {
                         HStack(spacing: 0) {
@@ -182,7 +189,7 @@ struct AlarmItem: View {
                 .padding(.vertical, 4)
             }
         }
-        .onAppear { isExpanded = false }
+        .onAppear { selectedRow = nil }
         .padding(.horizontal)
         .padding(.vertical, 8)
         .background(backgroundColor)
