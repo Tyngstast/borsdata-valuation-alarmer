@@ -69,7 +69,7 @@ fun EditAlarmScreen(
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            viewModel.editAlarm(id, kpiValue.text)
+            viewModel.editAlarm(id, kpiValue.text.replace(",", ".").toDouble())
             Toast.makeText(
                 context,
                 context.getString(R.string.edit_toast_save_success),

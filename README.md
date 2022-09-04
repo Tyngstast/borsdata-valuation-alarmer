@@ -66,6 +66,7 @@ Get/Generate `.jks` keystore and create `keystore.properties` in project root di
     * Add
       * Keyboard navigation / actions (need physical iPhone)
     * Edit
+  * Refactoring
   * Firebase messaging
   * BG Worker for jobs
 

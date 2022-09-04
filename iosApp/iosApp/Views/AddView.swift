@@ -64,7 +64,7 @@ struct AddViewContent: View {
             SuggestionInputField(
                 items: instruments,
                 label: NSLocalizedString("company_label", comment: "Company name"),
-                text: $insName,
+                value: $insName,
                 onInputChange: { v in
                     insName = v
                     onInsNameChange(v)
@@ -81,7 +81,7 @@ struct AddViewContent: View {
             SuggestionInputField(
                 items: kpis,
                 label: NSLocalizedString("kpi_label", comment: "KPI name"),
-                text: $kpiName,
+                value: $kpiName,
                 onInputChange: { v in
                     kpiName = v
                     onKpiNameChange(v)
@@ -97,7 +97,7 @@ struct AddViewContent: View {
             .focused($focused, equals: .kpi)
             InputField(
                 label: NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
-                text: $kpiValue,
+                value: $kpiValue,
                 onInputChange: { v in
                     kpiValue = v
                 },
@@ -135,7 +135,7 @@ struct AddViewContent: View {
 struct SuggestionInputField: View {
     var items: [Item]
     var label: String
-    @Binding var text: String
+    @Binding var value: String
     var onInputChange: (String) -> Void
     var setFocus: () -> Void
     var focusNext: () -> Void
@@ -146,7 +146,7 @@ struct SuggestionInputField: View {
         VStack(alignment: .leading, spacing: 0) {
             InputField(
                 label: label,
-                text: $text,
+                value: $value,
                 onInputChange: { v in
                     onInputChange(v)
                     showSuggestions = true
@@ -154,7 +154,7 @@ struct SuggestionInputField: View {
                 setFocus: setFocus,
                 isFocused: isFocused
             )
-            if !text.isEmpty && showSuggestions && isFocused {
+            if !value.isEmpty && showSuggestions && isFocused {
                 ForEach(items, id: \.id) { item in
                     HStack {
                         Text(item.name)
@@ -174,29 +174,6 @@ struct SuggestionInputField: View {
             }
         }
         .animation(.interactiveSpring(), value: items)
-    }
-}
-
-struct InputField: View {
-    private let log = koin.loggerWithTag(tag: "InputField")
-    var label: String
-    @Binding var text: String
-    var onInputChange: (String) -> Void
-    var setFocus: () -> Void
-    var isFocused: Bool
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            TextField(label, text: $text)
-                .onChange(of: text, perform: onInputChange)
-                .frame(minHeight: 50)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-            Divider()
-                .frame(height: isFocused ? 2.5 : 2)
-                .background(Color(isFocused ? .primaryColor : .systemGray5))
-        }
-        .onTapGesture(perform: setFocus)
     }
 }
 

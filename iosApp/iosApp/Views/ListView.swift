@@ -39,7 +39,7 @@ struct ListViewContent: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    NavigationLink(destination: AddView()) {
+                    NavigationLink(destination: NavigationLazyView(AddView())) {
                         Text("+")
                             .font(.system(.largeTitle))
                             .frame(width: 66, height: 62)
@@ -138,18 +138,18 @@ struct AlarmItem: View {
                         .font(.appFont(size: 14))
                     Text(String(format: "%.1f", alarm.kpiValue))
                 }
-                    .padding(.leading, 12)
+                .padding(.leading, 12)
             }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    withAnimation {
-                        isExpanded.toggle()
-                    }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                withAnimation {
+                    isExpanded.toggle()
                 }
-                .frame(height: 50)
+            }
+            .frame(height: 50)
             if isExpanded {
                 HStack {
-                    NavigationLink(destination: EditView(id: alarm.id)) {
+                    NavigationLink(destination: NavigationLazyView(EditView(alarm: alarm))) {
                         HStack(spacing: 0) {
                             Image(systemName: "pencil")
                                 .padding(.trailing, 4)
@@ -176,12 +176,13 @@ struct AlarmItem: View {
                             Text(NSLocalizedString("list_delete_button", comment: "Delete Alarm"))
                         }
                     })
-                        .padding(.leading, 8)
+                    .padding(.leading, 8)
                 }
-                    .foregroundColor(.textColor)
-                    .padding(.vertical, 4)
+                .foregroundColor(.textColor)
+                .padding(.vertical, 4)
             }
         }
+        .onAppear { isExpanded = false }
         .padding(.horizontal)
         .padding(.vertical, 8)
         .background(backgroundColor)
