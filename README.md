@@ -64,11 +64,7 @@ Get/Generate `.jks` keystore and create `keystore.properties` in project root di
 ### iOS
   * GUI
     * Add
-      * Clear suggestions after navigating back to list view
-      * Autofocus first field
-      * Show suggestions again if new input is entered
-      * Color highlighting on focused field
-      * Keyboard navigation / actions
+      * Keyboard navigation / actions (need physical iPhone)
     * Edit
   * Firebase messaging
   * BG Worker for jobs

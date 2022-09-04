@@ -37,7 +37,7 @@ struct AddViewContent: View {
     var onKpiNameChange: (String) -> Void
     var onAdd: (Double) -> Void
 
-    @FocusState private var isFocused: Bool
+    @FocusState private var focused: FocusField?
     @State var showToast = false
     @State var toastMsg = ""
     @State var insName = ""
@@ -68,8 +68,16 @@ struct AddViewContent: View {
                 onInputChange: { v in
                     insName = v
                     onInsNameChange(v)
-                }
+                },
+                setFocus: {
+                    focused = .ins
+                },
+                focusNext: {
+                    focused = .kpi
+                },
+                isFocused: focused == .ins
             )
+            .focused($focused, equals: .ins)
             SuggestionInputField(
                 items: kpis,
                 label: NSLocalizedString("kpi_label", comment: "KPI name"),
@@ -77,21 +85,34 @@ struct AddViewContent: View {
                 onInputChange: { v in
                     kpiName = v
                     onKpiNameChange(v)
-                }
+                },
+                setFocus: {
+                    focused = .kpi
+                },
+                focusNext: {
+                    focused = .kpiValue
+                },
+                isFocused: focused == .kpi
             )
-            TextField(NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"), text: $kpiValue)
-                .onChange(of: kpiValue, perform: { _ in })
-                .focused($isFocused)
-                .onTapGesture {
-                    isFocused = true
-                }
-                .keyboardType(.numbersAndPunctuation)
-                .frame(minHeight: 50)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-            Divider()
-                .frame(height: 2)
-                .background(Color(.systemGray5))
+            .focused($focused, equals: .kpi)
+            InputField(
+                label: NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
+                text: $kpiValue,
+                onInputChange: { v in
+                    kpiValue = v
+                },
+                setFocus: {
+                    focused = .kpiValue
+                },
+                isFocused: focused == .kpiValue
+            )
+            .keyboardType(.numbersAndPunctuation)
+            .focused($focused, equals: .kpiValue)
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.focused = .ins
+            }
         }
         .navigationTitle(NSLocalizedString("add_text_title", comment: "Add alarm title"))
         .toolbar {
@@ -116,36 +137,37 @@ struct SuggestionInputField: View {
     var label: String
     @Binding var text: String
     var onInputChange: (String) -> Void
+    var setFocus: () -> Void
+    var focusNext: () -> Void
     @State var showSuggestions = true
-    @FocusState private var isFocused: Bool
+    var isFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            TextField(label, text: $text)
-                .onChange(of: text, perform: onInputChange)
-                .focused($isFocused)
-                .onTapGesture {
-                    isFocused = true
-                }
-                .frame(minHeight: 50)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-            Divider()
-                .frame(height: 2)
-                .background(Color(.systemGray5))
-            if showSuggestions {
+            InputField(
+                label: label,
+                text: $text,
+                onInputChange: { v in
+                    onInputChange(v)
+                    showSuggestions = true
+                },
+                setFocus: setFocus,
+                isFocused: isFocused
+            )
+            if !text.isEmpty && showSuggestions && isFocused {
                 ForEach(items, id: \.id) { item in
                     HStack {
                         Text(item.name)
-                            .onTapGesture {
-                                onInputChange(item.name)
-                                showSuggestions = false
-                            }
                             .padding(.vertical, 6)
                         Spacer()
                         if item is KpiItem && (item as! KpiItem).fluent {
                             Image(systemName: "bolt.fill")
                         }
+                    }
+                    .onTapGesture {
+                        onInputChange(item.name)
+                        showSuggestions = false
+                        focusNext()
                     }
                 }
                 .padding(.horizontal, 12)
@@ -153,6 +175,33 @@ struct SuggestionInputField: View {
         }
         .animation(.interactiveSpring(), value: items)
     }
+}
+
+struct InputField: View {
+    private let log = koin.loggerWithTag(tag: "InputField")
+    var label: String
+    @Binding var text: String
+    var onInputChange: (String) -> Void
+    var setFocus: () -> Void
+    var isFocused: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            TextField(label, text: $text)
+                .onChange(of: text, perform: onInputChange)
+                .frame(minHeight: 50)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+            Divider()
+                .frame(height: isFocused ? 2.5 : 2)
+                .background(Color(isFocused ? .primaryColor : .systemGray5))
+        }
+        .onTapGesture(perform: setFocus)
+    }
+}
+
+enum FocusField {
+    case ins, kpi, kpiValue
 }
 
 struct AddView_Previews: PreviewProvider {
