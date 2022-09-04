@@ -164,6 +164,7 @@ struct SuggestionInputField: View {
                             Image(systemName: "bolt.fill")
                         }
                     }
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         onInputChange(item.name)
                         showSuggestions = false
