@@ -5,6 +5,7 @@ struct InputField: View {
     var label: String
     @Binding var value: String
     var onInputChange: (String) -> Void
+    var onSubmit: () -> Void
     var setFocus: () -> Void
     var isFocused: Bool
 
@@ -17,6 +18,7 @@ struct InputField: View {
         }
         .disableAutocorrection(true)
         .onTapGesture(perform: setFocus)
+        .onSubmit(onSubmit)
     }
 }
 

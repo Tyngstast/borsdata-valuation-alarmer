@@ -39,8 +39,8 @@ struct EditViewContent: View {
         _value = State(initialValue: String(format: "%.1f", alarm.kpiValue))
     }
 
-    func onEdit(kpiValue: String) {
-        guard let kpiDoubleValue = Double(kpiValue.replacingOccurrences(of: ",", with: ".")) else {
+    func onEditAlarm() {
+        guard let kpiDoubleValue = Double(value.replacingOccurrences(of: ",", with: ".")) else {
             showToast = true
             return
         }
@@ -66,11 +66,13 @@ struct EditViewContent: View {
                 label: NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
                 value: $value,
                 onInputChange: { _ in },
+                onSubmit: onEditAlarm,
                 setFocus: {
                     focused = true
                 },
                 isFocused: focused
             )
+            .keyboardType(.numbersAndPunctuation)
             .focused($focused)
         }
         .onAppear {
@@ -81,9 +83,7 @@ struct EditViewContent: View {
         .navigationTitle(NSLocalizedString("edit_text_title", comment: "Edit alarm title"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    onEdit(kpiValue: value)
-                }, label: {
+                Button(action: onEditAlarm, label: {
                     Image(systemName: "checkmark")
                         .foregroundColor(Color.secondaryColor)
                 })

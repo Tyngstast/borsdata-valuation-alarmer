@@ -69,6 +69,9 @@ struct AddViewContent: View {
                     insName = v
                     onInsNameChange(v)
                 },
+                onSubmit: {
+                    focused = .kpi
+                },
                 setFocus: {
                     focused = .ins
                 },
@@ -86,6 +89,9 @@ struct AddViewContent: View {
                     kpiName = v
                     onKpiNameChange(v)
                 },
+                onSubmit: {
+                    focused = .kpiValue
+                },
                 setFocus: {
                     focused = .kpi
                 },
@@ -98,15 +104,14 @@ struct AddViewContent: View {
             InputField(
                 label: NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
                 value: $kpiValue,
-                onInputChange: { v in
-                    kpiValue = v
-                },
+                onInputChange: { _ in},
+                onSubmit: addAlarm,
                 setFocus: {
                     focused = .kpiValue
                 },
                 isFocused: focused == .kpiValue
             )
-            .keyboardType(.numbersAndPunctuation)
+            .keyboardType(.decimalPad)
             .focused($focused, equals: .kpiValue)
         }
         .onAppear {
@@ -137,6 +142,7 @@ struct SuggestionInputField: View {
     var label: String
     @Binding var value: String
     var onInputChange: (String) -> Void
+    var onSubmit: () -> Void
     var setFocus: () -> Void
     var focusNext: () -> Void
     @State var showSuggestions = true
@@ -151,6 +157,7 @@ struct SuggestionInputField: View {
                     onInputChange(v)
                     showSuggestions = true
                 },
+                onSubmit: onSubmit,
                 setFocus: setFocus,
                 isFocused: isFocused
             )
