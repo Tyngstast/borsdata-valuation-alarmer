@@ -9,8 +9,9 @@ import com.github.tyngstast.borsdatavaluationalarmer.model.ResetAppException
 import com.github.tyngstast.borsdatavaluationalarmer.settings.AlarmerSettings
 import com.github.tyngstast.borsdatavaluationalarmer.settings.Vault
 import com.github.tyngstast.db.Alarm
-import io.ktor.client.features.*
-import io.ktor.http.*
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.ResponseException
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

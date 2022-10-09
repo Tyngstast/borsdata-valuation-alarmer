@@ -20,12 +20,11 @@ kotlin {
     val lifecycleVersion: String by project
     val sqlDelightVersion: String by project
     val koinVersion: String by project
-    val serializationVersion = "1.3.2"
-    val ktorVersion = "1.6.7"
+    val serializationVersion = "1.3.3"
+    val ktorVersion = "2.1.2"
     val kVaultVersion = "1.7.0"
     val settingsVersion = "0.8.1"
-    val datetimeVersion = "0.3.2"
-    val statelyVersion = "1.2.1"
+    val datetimeVersion = "0.3.3"
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -44,7 +43,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
@@ -52,7 +52,6 @@ kotlin {
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
                 implementation("co.touchlab:kermit:$kermitVersion")
-                implementation("co.touchlab:stately-common:$statelyVersion")
 //                implementation("co.touchlab:kermit-crashlytics:$kermitVersion")
             }
         }

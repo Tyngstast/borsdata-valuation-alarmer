@@ -1,32 +1,31 @@
 package com.github.tyngstast.borsdatavaluationalarmer.client
 
 import co.touchlab.kermit.Logger
-import co.touchlab.stately.ensureNeverFrozen
-import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.client.features.logging.Logger as KtorLogger
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.http.URLProtocol
+import io.ktor.http.path
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
+import io.ktor.client.plugins.logging.Logger as KtorLogger
 
 abstract class Client(
     baseUrl: String,
+    basePath: String,
     log: Logger,
     vararg params: Pair<String, () -> String?>
 ) {
-
-    init {
-        ensureNeverFrozen()
-    }
-
     val httpClient = HttpClient {
-        install(JsonFeature) {
-            val json = kotlinx.serialization.json.Json {
+        // Throw exception on non 2xx to keep code compatible with ktor 2.x
+        expectSuccess = true
+        install(ContentNegotiation) {
+            json(Json {
                 ignoreUnknownKeys = true
-            }
-            serializer = KotlinxSerializer(json)
+            })
         }
         install(Logging) {
             level = LogLevel.INFO
@@ -43,11 +42,16 @@ abstract class Client(
             socketTimeoutMillis = timeout
         }
         defaultRequest {
-            host = baseUrl
             url {
                 protocol = URLProtocol.HTTPS
+                host = baseUrl
+                path("$basePath/")
+                params.forEach { (key, getter) ->
+                    getter.invoke()?.run {
+                        parameters.append(key, this)
+                    }
+                }
             }
-            params.map { (key, getter) -> parameter(key, getter.invoke()) }
         }
     }
 }

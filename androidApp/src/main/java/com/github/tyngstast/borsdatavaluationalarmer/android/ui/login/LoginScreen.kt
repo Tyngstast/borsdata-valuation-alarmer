@@ -1,5 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.login
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -44,6 +45,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.model.ApiKeyState
 import kotlinx.coroutines.Job
 import org.koin.androidx.compose.getViewModel
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(

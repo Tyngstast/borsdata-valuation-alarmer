@@ -13,7 +13,7 @@ plugins {
 }
 
 android {
-    val composeVersion: String by project
+    val composeCompilerVersion: String by project
 
     compileSdk = 32
     defaultConfig {
@@ -51,7 +51,7 @@ android {
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = composeVersion
+        kotlinCompilerExtensionVersion = composeCompilerVersion
     }
 }
 
@@ -63,6 +63,7 @@ dependencies {
     val lifecycleVersion: String by project
     val activityComposeVersion = "1.4.0"
     val composeVersion: String by project
+    val composeCompilerVersion: String by project
     val navComposeVersion = "2.4.2"
     val accompanistVersion = "0.23.0"
 
@@ -83,7 +84,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.activity:activity-compose:$activityComposeVersion")
-    implementation("androidx.compose.compiler:compiler:$composeVersion")
+    implementation("androidx.compose.compiler:compiler:$composeCompilerVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-graphics:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
