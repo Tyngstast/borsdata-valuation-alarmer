@@ -12,11 +12,13 @@
 		2152FB042600AC8F00CF470E /* IOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* IOSApp.swift */; };
 		36566BE6A7E9FFB763668CB6 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AD0E6DBF9901663F6AFF9C6 /* Pods_iosApp.framework */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
+		809F81DDC06E13648F261461 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 809F820237CE413B4ADDD625 /* GoogleService-Info.plist */; };
 		809F84F2470F58C4F6D75607 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8F88641D8881BC4F4D5A /* LoginView.swift */; };
 		809F875CD6C81D4D036391C4 /* NavigationLazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F815B96537DF6DE1491EA /* NavigationLazyView.swift */; };
 		809F892D4F091CEB1B726453 /* AddAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8DC4B3548D8DFBAFD775 /* AddAlarmView.swift */; };
 		809F8985C74A9B22294E850D /* ListAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F89059C5E5D20DBB799A5 /* ListAlarmView.swift */; };
 		809F89BA6B02EE21D14B4A60 /* EditAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F811CCC70935A8C441CA1 /* EditAlarmView.swift */; };
+		809F8D3673589F65B5413F86 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 809F803A24223C8E54A85CC0 /* .gitignore */; };
 		809F8D4FC2E3C1D9BED2C304 /* AddAlarmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F899CE3DF9C1163FD7B0E /* AddAlarmViewModel.swift */; };
 		809F8D5990000D1C78F0F766 /* InputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8D2436AC17E5047EE3FD /* InputField.swift */; };
 		809F8D7B62BA6C4E53531D93 /* EditAlarmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F82E725D220D1027BD420 /* EditAlarmViewModel.swift */; };
@@ -49,9 +51,11 @@
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		809F803A24223C8E54A85CC0 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = file.gitignore; path = .gitignore; sourceTree = "<group>"; };
 		809F811CCC70935A8C441CA1 /* EditAlarmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAlarmView.swift; sourceTree = "<group>"; };
 		809F815B96537DF6DE1491EA /* NavigationLazyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationLazyView.swift; sourceTree = "<group>"; };
 		809F8185F00D48953CE2DB61 /* AlarmListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmListViewModel.swift; sourceTree = "<group>"; };
+		809F820237CE413B4ADDD625 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		809F82E725D220D1027BD420 /* EditAlarmViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAlarmViewModel.swift; sourceTree = "<group>"; };
 		809F89059C5E5D20DBB799A5 /* ListAlarmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAlarmView.swift; sourceTree = "<group>"; };
 		809F899CE3DF9C1163FD7B0E /* AddAlarmViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmViewModel.swift; sourceTree = "<group>"; };
@@ -60,6 +64,7 @@
 		809F8DC4B3548D8DFBAFD775 /* AddAlarmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmView.swift; sourceTree = "<group>"; };
 		809F8F88641D8881BC4F4D5A /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8FDA6E1E462E69A5569652D0 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
+		A61F2D4B28F2CB020035F8A3 /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
 		B20BFD042819CEE30010CAB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B20BFD062819CFCC0010CAB9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B20BFD0A2819D1A30010CAB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -130,6 +135,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				A61F2D4B28F2CB020035F8A3 /* iosApp.entitlements */,
 				B2EDCB0128171450000A0088 /* fonts */,
 				B2EDCB24281717A7000A0088 /* Theme */,
 				B2E057AE28156E94002E1059 /* Views */,
@@ -141,6 +147,8 @@
 				B20BFD0B2819D1A30010CAB9 /* InfoPlist.strings */,
 				B20BFD052819CEE30010CAB9 /* Localizable.strings */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				809F820237CE413B4ADDD625 /* GoogleService-Info.plist */,
+				809F803A24223C8E54A85CC0 /* .gitignore */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -308,6 +316,8 @@
 				B2EDCB3C28172FA0000A0088 /* Montserrat-MediumItalic.ttf in Resources */,
 				B2EDCB3B28172FA0000A0088 /* Montserrat-Light.ttf in Resources */,
 				B20BFD092819D1A30010CAB9 /* InfoPlist.strings in Resources */,
+				809F81DDC06E13648F261461 /* GoogleService-Info.plist in Resources */,
+				809F8D3673589F65B5413F86 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,9 +473,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"\"-Xlinker -interposable\"",
-				);
+				OTHER_LDFLAGS = "\"-Xlinker -interposable\"";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -521,9 +529,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"\"-Xlinker -interposable\"",
-				);
+				OTHER_LDFLAGS = "\"-Xlinker -interposable\"";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -536,6 +542,7 @@
 			baseConfigurationReference = 5D1B3660055ED13973AD9015 /* Pods-iosApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
@@ -564,6 +571,7 @@
 			baseConfigurationReference = 8FDA6E1E462E69A5569652D0 /* Pods-iosApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;

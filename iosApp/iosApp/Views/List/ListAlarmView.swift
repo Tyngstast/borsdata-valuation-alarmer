@@ -1,9 +1,32 @@
+import FirebaseMessaging
 import shared
 import SwiftUI
 
+let TOPIC = "triggerValuationAlarmWorker"
+
 struct ListView: View {
     @StateObject var viewModel = AlarmListViewModel()
+    var alarmWorkerModel = Models.shared.getValuationAlarmWorkerModel()
     var onResetKey: () -> Void
+
+    func logout() {
+        Messaging.messaging().unsubscribe(fromTopic: TOPIC)
+        onResetKey()
+    }
+    
+    init(onResetKey: @escaping () -> Void) {
+        self.onResetKey = onResetKey
+        // Works without freeze exception after upgrade to new kotlin native memory manager!
+        alarmWorkerModel.triggeredAlarms { (alarms: [KotlinPair]?, err) in
+            guard let actualAlarms = alarms else {
+                print("error handling \(err)")
+                return
+            }
+            actualAlarms.forEach { alarmTuple in
+                print("alarm: \(alarmTuple.first) kpiValue: \(alarmTuple.second)")
+            }
+        }
+    }
 
     var body: some View {
         ListViewContent(
@@ -11,9 +34,12 @@ struct ListView: View {
             alarms: viewModel.alarms,
             onDelete: viewModel.deleteAlarm,
             onUpdateDisabled: viewModel.updateDisabled,
-            onResetKey: onResetKey
+            onResetKey: logout
         )
-        .onAppear(perform: viewModel.activate)
+        .onAppear(perform: {
+            Messaging.messaging().subscribe(toTopic: TOPIC)
+            viewModel.activate()
+        })
     }
 }
 

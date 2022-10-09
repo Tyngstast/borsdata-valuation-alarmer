@@ -2,5 +2,7 @@ target 'iosApp' do
   use_frameworks!
   platform :ios, '15.1'
   pod 'AlertToast'
+  pod 'Firebase/AnalyticsWithoutAdIdSupport'
+  pod 'FirebaseMessaging'
   pod 'shared', :path => '../shared'
 end

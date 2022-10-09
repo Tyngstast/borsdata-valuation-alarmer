@@ -49,3 +49,8 @@ object ViewModels : KoinComponent {
     fun getAddAlarmViewModel() = get<AddAlarmCallbackViewModel>()
     fun getEditAlarmViewModel() = get<EditAlarmCallbackViewModel>()
 }
+
+@Suppress("unused") // Called from Swift
+object Models : KoinComponent {
+    fun getValuationAlarmWorkerModel() = get<ValuationAlarmWorkerModel>()
+}
