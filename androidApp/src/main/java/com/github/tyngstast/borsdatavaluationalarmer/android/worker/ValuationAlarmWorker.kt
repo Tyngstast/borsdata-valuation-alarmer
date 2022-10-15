@@ -5,6 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.ValuationAlarmWorkerModel
+import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.messaging.TriggerWorkerMessagingService
 import com.github.tyngstast.borsdatavaluationalarmer.android.util.NotificationFactory
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
@@ -34,7 +35,8 @@ class ValuationAlarmWorker(
                 val alarm = it.first
                 val kpiValue = String.format("%.1f", it.second)
 
-                val message = "${alarm.insName}: ${alarm.kpiName} $kpiValue under ${alarm.kpiValue}"
+                val triggeredWord = context.getString(R.string.notification_message_trigger_word)
+                val message = "${alarm.insName}: ${alarm.kpiName} $kpiValue $triggeredWord ${alarm.kpiValue}"
                 NotificationFactory(context).makeAlarmTriggerNotification(message)
                 delay(500)
             }

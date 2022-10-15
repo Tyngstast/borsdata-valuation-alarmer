@@ -1,5 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.edit
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -40,7 +41,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputFiel
 import com.github.tyngstast.borsdatavaluationalarmer.util.isDouble
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalComposeUiApi::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun EditAlarmScreen(
     id: Long,

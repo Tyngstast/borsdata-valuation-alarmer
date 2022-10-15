@@ -1,5 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -58,6 +59,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListState
 import com.github.tyngstast.db.Alarm
 import org.koin.androidx.compose.getViewModel
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AlarmListScreen(
     onAdd: () -> Unit,

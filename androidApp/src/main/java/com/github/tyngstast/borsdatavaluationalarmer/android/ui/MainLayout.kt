@@ -1,5 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -34,6 +35,7 @@ sealed class Screen(val title: String) {
     object EditAlarm : Screen("edit")
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainLayout(

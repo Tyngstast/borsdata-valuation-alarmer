@@ -19,18 +19,18 @@ class NotificationFactory(private val context: Context) {
         private const val CHANNEL_NAME = "Valuation Alarmer Notifications"
         private const val CHANNEL_DESCRIPTION = "Show notification from valuation alarmer"
         private val notificationId = AtomicInteger(0)
-
-        private const val TRIGGER_NOTIFICATION_TITLE = "Värderingslarm triggades!"
-        private const val NOTIFICATION_ERROR_TITLE = "Appen verkar ha stött på oväntade problem!";
-        private const val NOTIFICATION_ERROR_MESSAGE = "Öppna appen för att synka på nytt";
     }
 
+    private val triggerNotificationTitle = context.getString(R.string.notification_alarm_triggered_title)
+    private val notificationErrorTitle = context.getString(R.string.notification_error_title)
+    private val notificationErrorMessage = context.getString(R.string.notification_error_message)
+
     fun makeErrorNotification() {
-        makeStatusNotification(NOTIFICATION_ERROR_TITLE, NOTIFICATION_ERROR_MESSAGE)
+        makeStatusNotification(notificationErrorTitle, notificationErrorMessage)
     }
 
     fun makeAlarmTriggerNotification(message: String) {
-        makeStatusNotification(TRIGGER_NOTIFICATION_TITLE, message)
+        makeStatusNotification(triggerNotificationTitle, message)
     }
 
     private fun makeStatusNotification(title: String, message: String) {

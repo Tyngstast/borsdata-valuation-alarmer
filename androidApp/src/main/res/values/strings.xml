@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Börsdata Valuation Alarm</string>
+    <string name="app_name">Borsdata Valuation Alarm</string>
 
     <string name="contact_email">bd.varderingslarm@gmail.com</string>
 
@@ -12,7 +12,7 @@
     <string name="kpi_value">Value</string>
 
     <!-- Login -->
-    <string name="login_text_title">Requires Börsdata Pro</string>
+    <string name="login_text_title">Requires Borsdata Pro</string>
     <string name="login_text_input_label">API Key</string>
     <string name="login_text_submit_button">VERIFY</string>
     <string name="login_cd_toggle_visibility">Toggle API key visibility</string>
@@ -55,4 +55,10 @@
     <string name="edit_text_title">Edit Alarm</string>
     <string name="edit_toast_invalid_kpi_value">Please enter a valid KPI value</string>
     <string name="edit_toast_save_success">Updated alarm</string>
+
+    <!-- Notification -->
+    <string name="notification_alarm_triggered_title">Valuation Alarm Triggered!</string>
+    <string name="notification_message_trigger_word">below</string>
+    <string name="notification_error_title">The App seems to have encountered an unexpected error!</string>
+    <string name="notification_error_message">Open the app to re-sync</string>
 </resources>

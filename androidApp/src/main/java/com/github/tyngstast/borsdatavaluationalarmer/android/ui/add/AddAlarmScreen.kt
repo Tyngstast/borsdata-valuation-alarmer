@@ -1,5 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.add
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -38,6 +39,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.util.isDouble
 import org.koin.androidx.compose.getViewModel
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddAlarmScreen(
     onSuccess: () -> Unit,

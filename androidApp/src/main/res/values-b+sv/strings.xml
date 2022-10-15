@@ -55,4 +55,10 @@
     <string name="edit_text_title">Redigera alarm</string>
     <string name="edit_toast_invalid_kpi_value">Var god fyll i ett giltigt värde</string>
     <string name="edit_toast_save_success">Uppdaterade alarm</string>
+
+    <!-- Notification -->
+    <string name="notification_alarm_triggered_title">Värderingslarm triggades!</string>
+    <string name="notification_message_trigger_word">under</string>
+    <string name="notification_error_title">Appen verkar ha stött på oväntade problem!</string>
+    <string name="notification_error_message">Öppna appen för att synka på nytt</string>
 </resources>
