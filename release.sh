@@ -1,2 +1,3 @@
 #!/bin/bash
-./gradlew bundleRelease -DreleaseBuild=true
+cd "$(dirname "$0")"
+./gradlew bundleRelease -DreleaseBuild=true && open androidApp/build/outputs/bundle/release/
