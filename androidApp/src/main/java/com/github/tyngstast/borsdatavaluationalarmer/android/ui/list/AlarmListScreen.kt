@@ -1,12 +1,21 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.ui.list
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,9 +28,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
@@ -36,7 +46,9 @@ import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.UpdateDisabled
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +56,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -52,6 +66,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.divider
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.selectedColor
@@ -99,19 +116,57 @@ fun AlarmListContent(
     updateDisableAlarm: (Long, Boolean) -> Unit,
     deleteAlarm: (Long) -> Unit
 ) {
-    if (alarmListState is AlarmListState.Success && alarmListState.alarms.isNotEmpty()) {
-        AlarmList(
-            alarms = alarmListState.alarms,
-            onEdit = onEdit,
-            updateDisableAlarm = updateDisableAlarm,
-            deleteAlarm = deleteAlarm
-        )
-    } else if (alarmListState !is AlarmListState.Loading) {
-        WelcomeInfo()
+    val context = LocalContext.current
+    fun isGranted(): Boolean {
+        return Build.VERSION.SDK_INT < 33 || ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS,
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    var hasNotificationPermission by remember {
+        mutableStateOf(isGranted())
+    }
+    val permissionsLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            hasNotificationPermission = isGranted
+        }
+    )
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_CREATE && Build.VERSION.SDK_INT >= 33) {
+                permissionsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else if (event == Lifecycle.Event.ON_START) {
+                hasNotificationPermission = isGranted()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    Column {
+        if (!hasNotificationPermission) {
+            NotificationPermissionWarning()
+        }
+
+        if (alarmListState is AlarmListState.Success && alarmListState.alarms.isNotEmpty()) {
+            AlarmList(
+                alarms = alarmListState.alarms,
+                onEdit = onEdit,
+                updateDisableAlarm = updateDisableAlarm,
+                deleteAlarm = deleteAlarm
+            )
+        } else if (alarmListState !is AlarmListState.Loading) {
+            WelcomeInfo()
+        }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AlarmList(
     alarms: List<Alarm>,
@@ -321,11 +376,54 @@ fun WelcomeInfo() {
                         placeholderVerticalAlign = PlaceholderVerticalAlign.Center
                     )
                 ) {
-                    Icon(Icons.Filled.Bolt, contentDescription = stringResource(R.string.welcome_p3_icon_cd))
+                    Icon(
+                        Icons.Filled.Bolt,
+                        contentDescription = stringResource(R.string.welcome_p3_icon_cd)
+                    )
                 }
             )
         )
         Spacer(Modifier.height(16.dp))
         Text(stringResource(R.string.welcome_p4), textAlign = TextAlign.Center)
+    }
+}
+
+@Composable
+fun NotificationPermissionWarning() {
+    val context = LocalContext.current
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(6.dp)
+            .wrapContentSize(Alignment.Center),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        Button(
+            onClick = {
+                val settingsIntent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
+                settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val uri = Uri.fromParts("package", context.packageName, null);
+                settingsIntent.data = uri;
+                context.startActivity(settingsIntent)
+            },
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow),
+            contentPadding = PaddingValues(vertical = 16.dp, horizontal = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Row {
+                Icon(
+                    Icons.Outlined.Notifications,
+                    contentDescription = stringResource(R.string.enable_notifications_warning_icon_cd),
+                    Modifier.size(28.dp)
+                )
+                Text(
+                    stringResource(R.string.enable_notifications_warning),
+                    textAlign = TextAlign.Center,
+                    fontSize = 16.sp
+                )
+            }
+        }
     }
 }

@@ -21,6 +21,10 @@
     <string name="login_unauthorized">Invalid API Key</string>
     <string name="login_service_error">Unexpected error during Borsdata integration.</string>
 
+    <!-- Info Boxes -->
+    <string name="enable_notifications_warning">Enable notifications to get any use of the application!</string>
+    <string name="enable_notifications_warning_icon_cd">Enable notifications warning icon</string>
+
     <!-- List -->
     <string name="list_edit_button">Edit</string>
     <string name="list_deactiveate_button">Deactivate</string>

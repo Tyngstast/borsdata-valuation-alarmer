@@ -21,6 +21,10 @@
     <string name="login_unauthorized">Felaktig API-nyckel</string>
     <string name="login_service_error">Oväntat fel vid anrop mot Börsdata</string>
 
+    <!-- Info Boxes -->
+    <string name="enable_notifications_warning">Aktivera notifikationer för att få användning av applikationen!</string>
+    <string name="enable_notifications_warning_icon_cd">Aktivera notifikationer varningsikon</string>
+
     <!-- List -->
     <string name="list_edit_button">Redigera</string>
     <string name="list_deactiveate_button">Inaktivera</string>

@@ -15,11 +15,11 @@ plugins {
 android {
     val composeCompilerVersion: String by project
 
-    compileSdk = 32
+    compileSdk = 33
     defaultConfig {
         applicationId = "com.github.tyngstast.borsdatavaluationalarmer.android"
         minSdk = 23
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 14
         versionName = "1.0.0"
     }
