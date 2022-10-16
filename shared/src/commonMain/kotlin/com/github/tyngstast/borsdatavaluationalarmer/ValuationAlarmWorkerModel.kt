@@ -29,7 +29,24 @@ class ValuationAlarmWorkerModel(
     private val clock: Clock
 ) {
 
-    suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> = coroutineScope {
+    suspend fun run(translatedSeparatorWord: String, onFailure: () -> Unit): List<String>? =
+        kotlin.runCatching {
+            triggeredAlarms().map {
+                val alarm = it.first
+                val kpiValue = it.second.format("%.1f")
+
+                "${alarm.insName}: ${alarm.kpiName} $kpiValue $translatedSeparatorWord ${alarm.kpiValue}"
+            }
+        }.onFailure {
+            log.e(it) { "Error running worker: ${it.message.toString()}" }
+            if (it is ResetAppException) {
+                log.e(it) { "Critical error, likely 401 response. Resetting app and notifying user" }
+                onFailure()
+            }
+        }.getOrNull()
+
+
+    private suspend fun triggeredAlarms(): List<Pair<Alarm, Double>> = coroutineScope {
         val alarms = alarmDao.getAllEnabledAlarms()
         log.d { "Enabled alarms: $alarms" }
 
@@ -139,4 +156,3 @@ class ValuationAlarmWorkerModel(
 
     private fun today() = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 }
-
