@@ -1,6 +1,6 @@
 target 'iosApp' do
   use_frameworks!
-  platform :ios, '15.1'
+  platform :ios, '16.0'
   pod 'AlertToast'
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   pod 'FirebaseMessaging'

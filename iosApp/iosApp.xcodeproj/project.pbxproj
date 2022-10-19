@@ -11,7 +11,9 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* IOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* IOSApp.swift */; };
 		36566BE6A7E9FFB763668CB6 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AD0E6DBF9901663F6AFF9C6 /* Pods_iosApp.framework */; };
+		53886FD2392E69CEABBEC936 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6941DED28FB24F7002CA329 /* Pods_iosApp.framework */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
+		809F8008E9178EEC9CEBB574 /* NotificationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8146E14D5965D5BC2118 /* NotificationFactory.swift */; };
 		809F81DDC06E13648F261461 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 809F820237CE413B4ADDD625 /* GoogleService-Info.plist */; };
 		809F84F2470F58C4F6D75607 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8F88641D8881BC4F4D5A /* LoginView.swift */; };
 		809F875CD6C81D4D036391C4 /* NavigationLazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F815B96537DF6DE1491EA /* NavigationLazyView.swift */; };
@@ -23,7 +25,10 @@
 		809F8D5990000D1C78F0F766 /* InputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8D2436AC17E5047EE3FD /* InputField.swift */; };
 		809F8D7B62BA6C4E53531D93 /* EditAlarmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F82E725D220D1027BD420 /* EditAlarmViewModel.swift */; };
 		809F8E53F9B1785516F754B1 /* AlarmListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8185F00D48953CE2DB61 /* AlarmListViewModel.swift */; };
+		809F8EC4C566AC9025CCBEFD /* ValuationAlarmWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8CDDA4C6FD46A0F90555 /* ValuationAlarmWorker.swift */; };
 		809F8FC0943788D25B5E0E64 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8AA4A661061E32C91D24 /* LoginViewModel.swift */; };
+		A623371028FB2835003C540F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A623370F28FB2835003C540F /* NotificationService.swift */; };
+		A623371428FB2835003C540F /* Alarm Notifcation Service.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A623370D28FB2835003C540F /* Alarm Notifcation Service.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B20BFD032819CEE30010CAB9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B20BFD052819CEE30010CAB9 /* Localizable.strings */; };
 		B20BFD092819D1A30010CAB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B20BFD0B2819D1A30010CAB9 /* InfoPlist.strings */; };
 		B233AA3A2815BE24003160C8 /* CombineAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233AA392815BE24003160C8 /* CombineAdapters.swift */; };
@@ -42,6 +47,30 @@
 		B2EDCB4628174C01000A0088 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDCB4528174C01000A0088 /* AppRootView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A623371228FB2835003C540F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7555FF73242A565900829871 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A623370C28FB2835003C540F;
+			remoteInfo = "Alarm Notifcation Service";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A6D8B95528FB01E7005919D2 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A623371428FB2835003C540F /* Alarm Notifcation Service.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -53,6 +82,7 @@
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		809F803A24223C8E54A85CC0 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = file.gitignore; path = .gitignore; sourceTree = "<group>"; };
 		809F811CCC70935A8C441CA1 /* EditAlarmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAlarmView.swift; sourceTree = "<group>"; };
+		809F8146E14D5965D5BC2118 /* NotificationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationFactory.swift; sourceTree = "<group>"; };
 		809F815B96537DF6DE1491EA /* NavigationLazyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationLazyView.swift; sourceTree = "<group>"; };
 		809F8185F00D48953CE2DB61 /* AlarmListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmListViewModel.swift; sourceTree = "<group>"; };
 		809F820237CE413B4ADDD625 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -60,11 +90,26 @@
 		809F89059C5E5D20DBB799A5 /* ListAlarmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAlarmView.swift; sourceTree = "<group>"; };
 		809F899CE3DF9C1163FD7B0E /* AddAlarmViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmViewModel.swift; sourceTree = "<group>"; };
 		809F8AA4A661061E32C91D24 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		809F8CDDA4C6FD46A0F90555 /* ValuationAlarmWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuationAlarmWorker.swift; sourceTree = "<group>"; };
 		809F8D2436AC17E5047EE3FD /* InputField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputField.swift; sourceTree = "<group>"; };
 		809F8DC4B3548D8DFBAFD775 /* AddAlarmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmView.swift; sourceTree = "<group>"; };
 		809F8F88641D8881BC4F4D5A /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8FDA6E1E462E69A5569652D0 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 		A61F2D4B28F2CB020035F8A3 /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
+		A623370D28FB2835003C540F /* Alarm Notifcation Service.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Alarm Notifcation Service.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A623370F28FB2835003C540F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		A623371128FB2835003C540F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A691EFAB28FB04570009FA42 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DAC28FB0832002CA329 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DDB28FB23F5002CA329 /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DDC28FB23F5002CA329 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DDD28FB23F5002CA329 /* FirebaseCoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DDE28FB23F5002CA329 /* FirebaseInstallations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseInstallations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DDF28FB23F5002CA329 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DEB28FB2455002CA329 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DED28FB24F7002CA329 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6941DF028FB2793002CA329 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6D8B95928FB0213005919D2 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B20BFD042819CEE30010CAB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B20BFD062819CFCC0010CAB9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B20BFD0A2819D1A30010CAB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -83,6 +128,7 @@
 		B2EDCB4128173E68000A0088 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		B2EDCB4328174719000A0088 /* RootNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationBar.swift; sourceTree = "<group>"; };
 		B2EDCB4528174C01000A0088 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
+		EF0C64AD22AC1FE92799A0A4 /* Pods_iosApp_Trigger_Alarm_Notifications.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp_Trigger_Alarm_Notifications.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +137,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				36566BE6A7E9FFB763668CB6 /* Pods_iosApp.framework in Frameworks */,
+				53886FD2392E69CEABBEC936 /* Pods_iosApp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A623370A28FB2835003C540F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				7555FF7D242A565900829871 /* iosApp */,
+				A623370E28FB2835003C540F /* Alarm Notifcation Service */,
 				7555FF7C242A565900829871 /* Products */,
 				69BFFDA82AEF7501C2551C53 /* Pods */,
 				FC00596E8419EF6FAE16AA49 /* Frameworks */,
@@ -128,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				7555FF7B242A565900829871 /* iosApp.app */,
+				A623370D28FB2835003C540F /* Alarm Notifcation Service.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,6 +205,8 @@
 				058557D7273AAEEB004C7B11 /* Preview Content */,
 				809F820237CE413B4ADDD625 /* GoogleService-Info.plist */,
 				809F803A24223C8E54A85CC0 /* .gitignore */,
+				809F8146E14D5965D5BC2118 /* NotificationFactory.swift */,
+				809F8CDDA4C6FD46A0F90555 /* ValuationAlarmWorker.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -198,6 +256,15 @@
 			path = List;
 			sourceTree = "<group>";
 		};
+		A623370E28FB2835003C540F /* Alarm Notifcation Service */ = {
+			isa = PBXGroup;
+			children = (
+				A623370F28FB2835003C540F /* NotificationService.swift */,
+				A623371128FB2835003C540F /* Info.plist */,
+			);
+			path = "Alarm Notifcation Service";
+			sourceTree = "<group>";
+		};
 		B2E057AE28156E94002E1059 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,7 +307,19 @@
 		FC00596E8419EF6FAE16AA49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6941DF028FB2793002CA329 /* FirebaseMessaging.framework */,
+				A6941DED28FB24F7002CA329 /* Pods_iosApp.framework */,
+				A6941DEB28FB2455002CA329 /* Pods_iosApp.framework */,
+				A6941DDB28FB23F5002CA329 /* FirebaseCore.framework */,
+				A6941DDC28FB23F5002CA329 /* FirebaseCoreDiagnostics.framework */,
+				A6941DDD28FB23F5002CA329 /* FirebaseCoreInternal.framework */,
+				A6941DDE28FB23F5002CA329 /* FirebaseInstallations.framework */,
+				A6941DDF28FB23F5002CA329 /* FirebaseMessaging.framework */,
+				A6941DAC28FB0832002CA329 /* FirebaseMessaging.framework */,
+				A691EFAB28FB04570009FA42 /* FirebaseMessaging.framework */,
+				A6D8B95928FB0213005919D2 /* FirebaseMessaging.framework */,
 				2AD0E6DBF9901663F6AFF9C6 /* Pods_iosApp.framework */,
+				EF0C64AD22AC1FE92799A0A4 /* Pods_iosApp_Trigger_Alarm_Notifications.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -257,15 +336,34 @@
 				7555FF79242A565900829871 /* Resources */,
 				2AEA183D27736C8CC22067C7 /* Frameworks */,
 				714B4D95AFF50A6BB325F739 /* [CP] Embed Pods Frameworks */,
+				A6D8B95528FB01E7005919D2 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A623371328FB2835003C540F /* PBXTargetDependency */,
 			);
 			name = iosApp;
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* iosApp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A623370C28FB2835003C540F /* Alarm Notifcation Service */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A623371728FB2835003C540F /* Build configuration list for PBXNativeTarget "Alarm Notifcation Service" */;
+			buildPhases = (
+				A623370928FB2835003C540F /* Sources */,
+				A623370A28FB2835003C540F /* Frameworks */,
+				A623370B28FB2835003C540F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Alarm Notifcation Service";
+			productName = "Alarm Notifcation Service";
+			productReference = A623370D28FB2835003C540F /* Alarm Notifcation Service.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -273,12 +371,15 @@
 		7555FF73242A565900829871 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1400;
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = orgName;
 				TargetAttributes = {
 					7555FF7A242A565900829871 = {
 						CreatedOnToolsVersion = 11.3.1;
+					};
+					A623370C28FB2835003C540F = {
+						CreatedOnToolsVersion = 14.0.1;
 					};
 				};
 			};
@@ -297,6 +398,7 @@
 			projectRoot = "";
 			targets = (
 				7555FF7A242A565900829871 /* iosApp */,
+				A623370C28FB2835003C540F /* Alarm Notifcation Service */,
 			);
 		};
 /* End PBXProject section */
@@ -318,6 +420,13 @@
 				B20BFD092819D1A30010CAB9 /* InfoPlist.strings in Resources */,
 				809F81DDC06E13648F261461 /* GoogleService-Info.plist in Resources */,
 				809F8D3673589F65B5413F86 /* .gitignore in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A623370B28FB2835003C540F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,10 +499,28 @@
 				809F89BA6B02EE21D14B4A60 /* EditAlarmView.swift in Sources */,
 				809F8D5990000D1C78F0F766 /* InputField.swift in Sources */,
 				809F875CD6C81D4D036391C4 /* NavigationLazyView.swift in Sources */,
+				809F8008E9178EEC9CEBB574 /* NotificationFactory.swift in Sources */,
+				809F8EC4C566AC9025CCBEFD /* ValuationAlarmWorker.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A623370928FB2835003C540F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A623371028FB2835003C540F /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A623371328FB2835003C540F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A623370C28FB2835003C540F /* Alarm Notifcation Service */;
+			targetProxy = A623371228FB2835003C540F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B20BFD052819CEE30010CAB9 /* Localizable.strings */ = {
@@ -541,16 +668,20 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5D1B3660055ED13973AD9015 /* Pods-iosApp.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -570,16 +701,20 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8FDA6E1E462E69A5569652D0 /* Pods-iosApp.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -590,6 +725,59 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = orgIdentifier.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A623371528FB2835003C540F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Alarm Notifcation Service/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Alarm Notifcation Service";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 orgName. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "orgIdentifier.iosApp.Alarm-Notifcation-Service";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A623371628FB2835003C540F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Alarm Notifcation Service/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Alarm Notifcation Service";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 orgName. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "orgIdentifier.iosApp.Alarm-Notifcation-Service";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -612,6 +800,15 @@
 			buildConfigurations = (
 				7555FFA6242A565B00829871 /* Debug */,
 				7555FFA7242A565B00829871 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A623371728FB2835003C540F /* Build configuration list for PBXNativeTarget "Alarm Notifcation Service" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A623371528FB2835003C540F /* Debug */,
+				A623371628FB2835003C540F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

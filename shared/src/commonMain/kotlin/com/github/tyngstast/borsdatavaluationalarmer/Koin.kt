@@ -75,6 +75,9 @@ val coreModule = module {
             clock = get()
         )
     }
+    single {
+        SchedulingModel(alarmerSettings = get(), vault = get())
+    }
 }
 
 inline fun <reified T> Scope.getWith(vararg params: Any?): T =

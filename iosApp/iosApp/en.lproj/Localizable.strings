@@ -50,3 +50,10 @@
 "edit_text_title" = "Edit Alarm";
 "edit_toast_invalid_kpi_value" = "Please enter a valid KPI value";
 "edit_toast_save_success" = "Updated alarm";
+
+/* Notification */
+"notification_alarm_triggered_title" = "Valuation Alarm Triggered!";
+"notification_message_trigger_word" = "below";
+"notification_error_title" = "The App seems to have encountered an unexpected error!";
+"notification_error_message" = "Open the app to re-sync";
+

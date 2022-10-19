@@ -14,31 +14,6 @@ struct ListView: View {
         onResetKey()
     }
     
-    init(onResetKey: @escaping () -> Void) {
-        self.onResetKey = onResetKey
-        // Works without freeze exception after upgrade to new kotlin native memory manager!
-        // TODO 1: trigger manual notification
-        alarmWorkerModel.triggeredAlarms { (alarms: [KotlinPair]?, err) in
-            guard let actualAlarms = alarms else {
-                print("error handling \(err)")
-                return
-            }
-            actualAlarms.forEach { alarmTuple in
-                print("alarm: \(alarmTuple.first) kpiValue: \(alarmTuple.second)")
-                let center = UNUserNotificationCenter.current()
-    
-                let content = UNMutableNotificationContent()
-                content.title = "Late wake up call"
-                content.body = "The early bird catches the worm, but the second mouse gets the cheese."
-                
-                let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 15, repeats: false)
-    
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                center.add(request)
-            }
-        }
-    }
-
     var body: some View {
         ListViewContent(
             loading: viewModel.loading,

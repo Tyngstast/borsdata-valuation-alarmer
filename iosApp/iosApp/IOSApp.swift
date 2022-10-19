@@ -1,13 +1,14 @@
-import SwiftUI
+import BackgroundTasks
+import FirebaseAnalytics
 import FirebaseCore
 import FirebaseMessaging
-import FirebaseAnalytics
 import shared
+import SwiftUI
 
 @main
 struct IOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
+
     var body: some Scene {
         WindowGroup {
             AppRootView {
@@ -18,71 +19,86 @@ struct IOSApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    var alarmWorkerModel: ValuationAlarmWorkerModel?
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        
+
         startKoin()
-        alarmWorkerModel = Models.shared.getValuationAlarmWorkerModel()
-        
+
         UNUserNotificationCenter.current().delegate = self
-        let authOptions: UNAuthorizationOptions = [.alert, .badge]
-        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { _, _ in }
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge]) { _, _ in }
         application.registerForRemoteNotifications()
-    
+
         Messaging.messaging().delegate = self
-        // TODO: create multiple notifications for job results
-        // TODO: scheduleNext() otherwise unsubscribe
-        // TODO: shared model for scheduling logic that can be injected
-        // iphone 14 emulator deviceId: windows -> simulators
     
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: ValuationAlarmWorker.VALUATION_PROCESSING_TASK, using: nil) { task in
+            task.expirationHandler = {
+                task.setTaskCompleted(success: false)
+            }
+
+            ValuationAlarmWorker.process(task: task as! BGProcessingTask)
+        }
+        
         return true
     }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     // Required when swizzling is disabled
-    func application(_ application: UIApplication,
+    func application(_: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("*** didRegisterForRemoteNotificationsWithDeviceToken ***")
         Messaging.messaging().apnsToken = deviceToken
     }
-    
-    // User taps notification?
-    // TODO: Open app or could possibly remove?
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse,
+
+    // User taps notification
+    func userNotificationCenter(_: UNUserNotificationCenter,
+                                didReceive _: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         print("*** didReceive ***")
+        // TODO: this should be triggered from FCM when app is in both background and foreground.
+        ValuationAlarmWorker.onMessageReceived()
+    
         completionHandler()
     }
-    
+
     // App in foreground
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                willPresent notification: UNNotification,
+    func userNotificationCenter(_: UNUserNotificationCenter,
+                                willPresent _: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("*** willPresent ***")
+
         completionHandler([[.banner]])
     }
-
-    // App in background
+    
+    // App in background ?
     func application(_: UIApplication,
-                     didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async -> UIBackgroundFetchResult {
-        print("*** didReceiveRemoteNotification ***")
-        // Print full message.
+                     didReceiveNotificationResponse userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("*** didReceiveNotificationResponse ***")
         print(userInfo)
 
         Messaging.messaging().appDidReceiveMessage(userInfo)
-    
-        // if scheduleNext() -> run
 
-        return UIBackgroundFetchResult.newData
+        completionHandler(.newData)
+    }
+
+    // App in background ?
+    func application(_: UIApplication,
+                     didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("*** didReceiveRemoteNotification ***")
+        print(userInfo)
+
+        Messaging.messaging().appDidReceiveMessage(userInfo)
+
+        completionHandler(.newData)
     }
 }
 
 extension AppDelegate: MessagingDelegate {
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+    func messaging(_: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("*** FirebaseMessaging Token: \(fcmToken ?? "")")
         let tokenDict = ["token": fcmToken ?? ""]
         NotificationCenter.default.post(
             name: Notification.Name("FCMToken"),

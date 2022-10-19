@@ -21,6 +21,9 @@ class ValuationAlarmWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
 
     private val log: Logger by injectLogger("ValuationAlarmWorker")
+
+    private val separatorString = context.getString(R.string.notification_message_trigger_word)
+
     private val valuationAlarmWorkerModel: ValuationAlarmWorkerModel by inject()
 
     override suspend fun doWork(): Result {
@@ -32,7 +35,6 @@ class ValuationAlarmWorker(
             NotificationFactory(context).makeErrorNotification()
         }
 
-        val separatorString = context.getString(R.string.notification_message_trigger_word)
         val result = valuationAlarmWorkerModel.run(separatorString, onFailure)
         return result?.forEach {
             NotificationFactory(context).makeAlarmTriggerNotification(it)

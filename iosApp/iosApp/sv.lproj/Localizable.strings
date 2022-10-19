@@ -50,3 +50,9 @@
 "edit_text_title" = "Redigera alarm";
 "edit_toast_invalid_kpi_value" = "Var god fyll i ett giltigt värde";
 "edit_toast_save_success" = "Uppdaterade alarm";
+
+/* Notification */
+"notification_alarm_triggered_title" = "Värderingslarm triggades!";
+"notification_message_trigger_word" = "under";
+"notification_error_title" = "Appen verkar ha stött på oväntade problem!";
+"notification_error_message" = "Öppna appen för att synka på nytt";

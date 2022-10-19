@@ -53,4 +53,5 @@ object ViewModels : KoinComponent {
 @Suppress("unused") // Called from Swift
 object Models : KoinComponent {
     fun getValuationAlarmWorkerModel() = get<ValuationAlarmWorkerModel>()
+    fun getSchedulingModel() = get<SchedulingModel>()
 }
