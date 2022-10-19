@@ -65,7 +65,8 @@ Get/Generate `.jks` keystore and create `keystore.properties` in project root di
   * GUI
     * Add
       * Select first suggestion on keyboard return
-  * Firebase messaging
-  * BG Worker for jobs
+  * Test Background Workers on real device
+  * Register for APN key
+    * Test Firebase Messaging implementation for real
 
 
