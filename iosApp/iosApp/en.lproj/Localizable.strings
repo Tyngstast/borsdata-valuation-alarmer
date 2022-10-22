@@ -1,6 +1,6 @@
+"contact_email" = "bd.varderingslarm@gmail.com";
+
 /* Multi use */
-"icon_cd_back" = "Back";
-"icon_cd_save" = "Save";
 "company_label" = "Company";
 "kpi_label" = "KPI";
 "kpi_below_threshold_label" = "Trigger Below Value";

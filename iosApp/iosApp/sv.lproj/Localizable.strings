@@ -1,9 +1,9 @@
+"contact_email" = "bd.varderingslarm@gmail.com";
+
 /* Multi use */
 "company_label" = "Bolag";
 "kpi_label" = "Nyckeltal";
 "kpi_below_threshold_label" = "Går under värde";
-"icon_cd_back" = "Bakåt";
-"icon_cd_save" = "Spara";
 "kpi_value" = "Värde";
 
 /* Login */

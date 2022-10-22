@@ -37,6 +37,13 @@ struct ListViewContent: View {
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
     var onResetKey: () -> Void
+    
+    func onSendFeedback() {
+        let email = NSLocalizedString("contact_email", comment: "Contact email")
+        if let url = URL(string: "mailto:\(email)?subject=Feedback") {
+            UIApplication.shared.open(url)
+        }
+    }
 
     var body: some View {
         VStack {
@@ -75,6 +82,9 @@ struct ListViewContent: View {
         .navigationTitle(NSLocalizedString("list_text_title", comment: "List alarms title"))
         .toolbar {
             Menu {
+                Button(action: onSendFeedback) {
+                    Text(NSLocalizedString("menu_feedback", comment: "Send Feedback by Email"))
+                }
                 Button(action: onResetKey) {
                     Text(NSLocalizedString("menu_reset", comment: "Reset API key"))
                 }
