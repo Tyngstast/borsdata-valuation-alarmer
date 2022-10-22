@@ -13,7 +13,7 @@ struct ListView: View {
         Messaging.messaging().unsubscribe(fromTopic: TOPIC)
         onResetKey()
     }
-    
+
     var body: some View {
         ListViewContent(
             loading: viewModel.loading,
@@ -133,7 +133,7 @@ struct AlarmItem: View {
             selectedRow = nil
         }
     }
-    
+
     func labelText(_ text: String) -> some View {
         Text(text)
             .foregroundColor(.labelColor)
@@ -149,15 +149,20 @@ struct AlarmItem: View {
                     Text(alarm.insName)
                 }
                 Spacer()
-                VStack(alignment: .leading) {
-                    labelText(NSLocalizedString("kpi_label", comment: "KPI Name"))
-                    Text(alarm.kpiName)
+                HStack {
+                    VStack(alignment: .leading) {
+                        labelText(NSLocalizedString("kpi_label", comment: "KPI Name"))
+                        Text(alarm.kpiName)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(2)
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        labelText(NSLocalizedString("kpi_value", comment: "KPI Value"))
+                        Text(String(format: "%.1f", alarm.kpiValue))
+                    }
                 }
-                VStack(alignment: .trailing) {
-                    labelText(NSLocalizedString("kpi_value", comment: "KPI Value"))
-                    Text(String(format: "%.1f", alarm.kpiValue))
-                }
-                .padding(.leading, 12)
+                .frame(width: 150)
             }
             .contentShape(Rectangle())
             .onTapGesture {
@@ -165,7 +170,7 @@ struct AlarmItem: View {
                     selectedRow = selectedRow == alarm ? nil : alarm
                 }
             }
-            .frame(height: 50)
+            .frame(minHeight: 50, maxHeight: 150)
             if isExpanded() {
                 HStack {
                     NavigationLink(destination: NavigationLazyView(EditView(alarm: alarm))) {
@@ -201,8 +206,10 @@ struct AlarmItem: View {
                 .padding(.vertical, 4)
             }
         }
-        .onAppear { selectedRow = nil }
-        .padding(.horizontal)
+        .onAppear {
+            selectedRow = nil
+        }
+        .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .background(backgroundColor)
         .opacity(disabled ? 0.38 : 1.0)

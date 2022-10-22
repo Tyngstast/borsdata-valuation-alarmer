@@ -76,12 +76,14 @@ PODS:
   - nanopb/encode (2.30909.0)
   - PromisesObjC (2.1.1)
   - shared (0.0.1)
+  - SwiftLint (0.49.1)
 
 DEPENDENCIES:
   - AlertToast
   - Firebase/AnalyticsWithoutAdIdSupport
   - FirebaseMessaging
   - shared (from `../shared`)
+  - SwiftLint
 
 SPEC REPOS:
   trunk:
@@ -98,6 +100,7 @@ SPEC REPOS:
     - GoogleUtilities
     - nanopb
     - PromisesObjC
+    - SwiftLint
 
 EXTERNAL SOURCES:
   shared:
@@ -118,7 +121,8 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   shared: 4dab30a6056be29410a30c7f3b5b814bdd48b238
+  SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
 
-PODFILE CHECKSUM: 8a78d24fa6b6638ab84d0364837fc5c5f274ea2f
+PODFILE CHECKSUM: 662f832ce80115ffdb7940abb471d27ffcfdcc0e
 
 COCOAPODS: 1.11.3
