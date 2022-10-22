@@ -172,7 +172,7 @@ struct AlarmItem: View {
                     selectedRow = selectedRow == alarm ? nil : alarm
                 }
             }
-            .frame(minHeight: 50, maxHeight: 150)
+            .frame(height: 50)
             if isExpanded() {
                 HStack {
                     NavigationLink(destination: NavigationLazyView(EditView(alarm: alarm))) {
