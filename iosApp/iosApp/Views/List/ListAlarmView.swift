@@ -6,8 +6,10 @@ let TOPIC = "triggerValuationAlarmWorker"
 
 struct ListView: View {
     @StateObject var viewModel = AlarmListViewModel()
+    let notificationCenter = UNUserNotificationCenter.current()
     var alarmWorkerModel = Models.shared.getValuationAlarmWorkerModel()
     var onResetKey: () -> Void
+    @State var notificationsAllowed: Bool? = nil
 
     func logout() {
         Messaging.messaging().unsubscribe(fromTopic: TOPIC)
@@ -20,14 +22,25 @@ struct ListView: View {
             alarms: viewModel.alarms,
             onDelete: viewModel.deleteAlarm,
             onUpdateDisabled: viewModel.updateDisabled,
-            onResetKey: logout
+            onResetKey: logout,
+            notificationsAllowed: $notificationsAllowed
         )
         .onAppear(perform: {
-            UNUserNotificationCenter.current()
-                .requestAuthorization(options: [.alert, .badge]) { _, _ in }
+            notificationCenter.requestAuthorization(options: [.alert, .badge]) { accepted, _ in
+                notificationsAllowed = accepted
+            }
             Messaging.messaging().subscribe(toTopic: TOPIC)
             viewModel.activate()
         })
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            notificationCenter.getNotificationSettings { settings in
+                if settings.authorizationStatus == .authorized {
+                    notificationsAllowed = true
+                } else if settings.authorizationStatus == .denied {
+                    notificationsAllowed = false
+                }
+            }
+        }
     }
 }
 
@@ -37,7 +50,8 @@ struct ListViewContent: View {
     var onDelete: (Int64) -> Void
     var onUpdateDisabled: (Int64, Bool) -> Void
     var onResetKey: () -> Void
-    
+    @Binding var notificationsAllowed: Bool?
+
     func onSendFeedback() {
         let email = NSLocalizedString("contact_email", comment: "Contact email")
         if let url = URL(string: "mailto:\(email)?subject=Feedback") {
@@ -46,6 +60,9 @@ struct ListViewContent: View {
     }
 
     var body: some View {
+        if notificationsAllowed != nil && notificationsAllowed == false {
+            Text("TODO: notifications are not allowed card")
+        }
         VStack {
             if !alarms.isEmpty {
                 AlarmListContent(
@@ -246,43 +263,5 @@ struct WelcomeInfoContent: View {
         }
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         .padding()
-    }
-}
-
-struct ListView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            ListViewContent(
-                loading: false,
-                alarms: [
-                    Alarm(
-                        id: 1,
-                        insId: 1,
-                        insName: "Evolution",
-                        yahooId: "1",
-                        kpiId: 1,
-                        kpiName: "P/E",
-                        kpiValue: 30.0,
-                        operation: "lt",
-                        disabled: false
-                    ),
-                    Alarm(
-                        id: 2,
-                        insId: 2,
-                        insName: "Brdr. A&O Johansen",
-                        yahooId: "2",
-                        kpiId: 2,
-                        kpiName: "EV/EBITDA",
-                        kpiValue: 5.5,
-                        operation: "lt",
-                        disabled: true
-                    ),
-                ],
-                onDelete: { _ in },
-                onUpdateDisabled: { _, _ in },
-                onResetKey: {}
-            )
-        }
-        .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
     }
 }
