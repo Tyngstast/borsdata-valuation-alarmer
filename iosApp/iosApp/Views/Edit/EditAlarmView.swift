@@ -16,6 +16,7 @@ struct EditView: View {
                 viewModel.editAlarm(id: alarm.id, kpiValue: v)
             }
         )
+        .background(.backgrounShapeStyle)
         .onAppear(perform: viewModel.activate)
         .onDisappear(perform: viewModel.deactivate)
     }

@@ -28,6 +28,7 @@ struct AppRootView<Content: View>: View {
         RootView {
             content
                 .font(.appFont())
+                .background(.backgrounShapeStyle)
         }
         .statusBarStyle(.lightContent)
         .navigationBarStyle(font: .navigationTitleFont, backgroundColor: .primaryColor, titleColor: .white)

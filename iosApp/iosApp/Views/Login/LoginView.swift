@@ -27,7 +27,7 @@ struct LoginViewContent: View {
     var loginDisabled: Bool {
         apiKey.count < 20 || loading || error != nil
     }
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             SecureInputField(
@@ -57,11 +57,12 @@ struct LoginViewContent: View {
             }, label: {
                 Text(NSLocalizedString("login_text_submit_button", comment: "Verify login button"))
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 50)
-                    .background(loginDisabled ? Color.gray : Color.primaryColor)
+                    .background(loginDisabled ? Color.gray : Color.highlightColor)
                     .foregroundColor(loginDisabled ? .paleWhite : .white)
                     .cornerRadius(5.0)
                     .padding(.top, 7.5)
             })
+            .padding(.top, 4)
             .disabled(loginDisabled)
         }
         .navigationTitle(NSLocalizedString("login_text_title", comment: "List alarms title"))
@@ -98,6 +99,7 @@ struct SecureInputField: View {
                     .opacity(showPassword ? 0 : 1)
             }
             .padding()
+            .accentColor(.foregroundItemColor)
             .onTapGesture {
                 focused = focused == nil ? .secure : focused
             }
@@ -107,7 +109,7 @@ struct SecureInputField: View {
             .overlay(
                 RoundedRectangle(cornerRadius: 5.0)
                     .strokeBorder(
-                        Color.gray,
+                        focused != nil ? Color.highlightColor : Color.gray,
                         style: StrokeStyle(lineWidth: 2.0)
                     )
             )

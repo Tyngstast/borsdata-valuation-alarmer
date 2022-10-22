@@ -13,6 +13,7 @@ struct ContentView: View {
                     LoginView(viewModel: viewModel)
                 }
             }
+            .background(.backgrounShapeStyle)
         }
         .onAppear(perform: viewModel.activate)
         .onDisappear(perform: viewModel.deactivate)

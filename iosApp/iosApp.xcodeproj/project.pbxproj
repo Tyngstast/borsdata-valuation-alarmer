@@ -27,8 +27,6 @@
 		809F8E53F9B1785516F754B1 /* AlarmListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8185F00D48953CE2DB61 /* AlarmListViewModel.swift */; };
 		809F8EC4C566AC9025CCBEFD /* ValuationAlarmWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8CDDA4C6FD46A0F90555 /* ValuationAlarmWorker.swift */; };
 		809F8FC0943788D25B5E0E64 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8AA4A661061E32C91D24 /* LoginViewModel.swift */; };
-		A623371028FB2835003C540F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A623370F28FB2835003C540F /* NotificationService.swift */; };
-		A623371428FB2835003C540F /* Alarm Notifcation Service.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A623370D28FB2835003C540F /* Alarm Notifcation Service.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B20BFD032819CEE30010CAB9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B20BFD052819CEE30010CAB9 /* Localizable.strings */; };
 		B20BFD092819D1A30010CAB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B20BFD0B2819D1A30010CAB9 /* InfoPlist.strings */; };
 		B233AA3A2815BE24003160C8 /* CombineAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233AA392815BE24003160C8 /* CombineAdapters.swift */; };
@@ -47,16 +45,6 @@
 		B2EDCB4628174C01000A0088 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EDCB4528174C01000A0088 /* AppRootView.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A623371228FB2835003C540F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7555FF73242A565900829871 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A623370C28FB2835003C540F;
-			remoteInfo = "Alarm Notifcation Service";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		A6D8B95528FB01E7005919D2 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -64,7 +52,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A623371428FB2835003C540F /* Alarm Notifcation Service.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,9 +83,6 @@
 		809F8F88641D8881BC4F4D5A /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8FDA6E1E462E69A5569652D0 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 		A61F2D4B28F2CB020035F8A3 /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
-		A623370D28FB2835003C540F /* Alarm Notifcation Service.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Alarm Notifcation Service.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A623370F28FB2835003C540F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		A623371128FB2835003C540F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A691EFAB28FB04570009FA42 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6941DAC28FB0832002CA329 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6941DDB28FB23F5002CA329 /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,13 +125,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A623370A28FB2835003C540F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -172,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				7555FF7D242A565900829871 /* iosApp */,
-				A623370E28FB2835003C540F /* Alarm Notifcation Service */,
 				7555FF7C242A565900829871 /* Products */,
 				69BFFDA82AEF7501C2551C53 /* Pods */,
 				FC00596E8419EF6FAE16AA49 /* Frameworks */,
@@ -183,7 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				7555FF7B242A565900829871 /* iosApp.app */,
-				A623370D28FB2835003C540F /* Alarm Notifcation Service.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -254,15 +229,6 @@
 				809F8185F00D48953CE2DB61 /* AlarmListViewModel.swift */,
 			);
 			path = List;
-			sourceTree = "<group>";
-		};
-		A623370E28FB2835003C540F /* Alarm Notifcation Service */ = {
-			isa = PBXGroup;
-			children = (
-				A623370F28FB2835003C540F /* NotificationService.swift */,
-				A623371128FB2835003C540F /* Info.plist */,
-			);
-			path = "Alarm Notifcation Service";
 			sourceTree = "<group>";
 		};
 		B2E057AE28156E94002E1059 /* Views */ = {
@@ -341,29 +307,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				A623371328FB2835003C540F /* PBXTargetDependency */,
 			);
 			name = iosApp;
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* iosApp.app */;
 			productType = "com.apple.product-type.application";
-		};
-		A623370C28FB2835003C540F /* Alarm Notifcation Service */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A623371728FB2835003C540F /* Build configuration list for PBXNativeTarget "Alarm Notifcation Service" */;
-			buildPhases = (
-				A623370928FB2835003C540F /* Sources */,
-				A623370A28FB2835003C540F /* Frameworks */,
-				A623370B28FB2835003C540F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Alarm Notifcation Service";
-			productName = "Alarm Notifcation Service";
-			productReference = A623370D28FB2835003C540F /* Alarm Notifcation Service.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -377,9 +325,6 @@
 				TargetAttributes = {
 					7555FF7A242A565900829871 = {
 						CreatedOnToolsVersion = 11.3.1;
-					};
-					A623370C28FB2835003C540F = {
-						CreatedOnToolsVersion = 14.0.1;
 					};
 				};
 			};
@@ -398,7 +343,6 @@
 			projectRoot = "";
 			targets = (
 				7555FF7A242A565900829871 /* iosApp */,
-				A623370C28FB2835003C540F /* Alarm Notifcation Service */,
 			);
 		};
 /* End PBXProject section */
@@ -420,13 +364,6 @@
 				B20BFD092819D1A30010CAB9 /* InfoPlist.strings in Resources */,
 				809F81DDC06E13648F261461 /* GoogleService-Info.plist in Resources */,
 				809F8D3673589F65B5413F86 /* .gitignore in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A623370B28FB2835003C540F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,23 +441,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A623370928FB2835003C540F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A623371028FB2835003C540F /* NotificationService.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A623371328FB2835003C540F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A623370C28FB2835003C540F /* Alarm Notifcation Service */;
-			targetProxy = A623371228FB2835003C540F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B20BFD052819CEE30010CAB9 /* Localizable.strings */ = {
@@ -676,7 +597,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -690,7 +612,7 @@
 					"\"shared\"",
 					"-lsqlite3",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = orgIdentifier.iosApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.tyngstast.borsdatavaluationalarmer.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -709,7 +631,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -723,61 +646,8 @@
 					"\"shared\"",
 					"-lsqlite3",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = orgIdentifier.iosApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.tyngstast.borsdatavaluationalarmer.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		A623371528FB2835003C540F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Alarm Notifcation Service/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Alarm Notifcation Service";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 orgName. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "orgIdentifier.iosApp.Alarm-Notifcation-Service";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A623371628FB2835003C540F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Alarm Notifcation Service/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Alarm Notifcation Service";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 orgName. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "orgIdentifier.iosApp.Alarm-Notifcation-Service";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -800,15 +670,6 @@
 			buildConfigurations = (
 				7555FFA6242A565B00829871 /* Debug */,
 				7555FFA7242A565B00829871 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A623371728FB2835003C540F /* Build configuration list for PBXNativeTarget "Alarm Notifcation Service" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A623371528FB2835003C540F /* Debug */,
-				A623371628FB2835003C540F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

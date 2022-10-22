@@ -55,7 +55,7 @@ struct ListViewContent: View {
                         Text("+")
                             .font(.system(.largeTitle))
                             .frame(width: 66, height: 62)
-                            .foregroundColor(.black)
+                            .foregroundColor(.foregroundItemColor)
                             .padding(.bottom, 4)
                     }
                     .background(Color.secondaryColor)
@@ -100,7 +100,7 @@ struct AlarmListContent: View {
                 )
                 Divider()
                     .frame(height: 2)
-                    .background(Color(.systemGray5))
+                    .background(Color(.systemGray4))
             }
         }
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
@@ -133,28 +133,28 @@ struct AlarmItem: View {
             selectedRow = nil
         }
     }
+    
+    func labelText(_ text: String) -> some View {
+        Text(text)
+            .foregroundColor(.labelColor)
+            .font(.appFont(size: 14))
+    }
 
     var body: some View {
         let backgroundColor = isExpanded() ? Color.selectedColor : Color.backgroundColor
         return VStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(NSLocalizedString("company_label", comment: "Company name"))
-                        .foregroundColor(Color(UIColor.darkGray))
-                        .font(.appFont(size: 14))
+                    labelText(NSLocalizedString("company_label", comment: "Company name"))
                     Text(alarm.insName)
                 }
                 Spacer()
                 VStack(alignment: .leading) {
-                    Text(NSLocalizedString("kpi_label", comment: "KPI Name"))
-                        .foregroundColor(Color(UIColor.darkGray))
-                        .font(.appFont(size: 14))
+                    labelText(NSLocalizedString("kpi_label", comment: "KPI Name"))
                     Text(alarm.kpiName)
                 }
                 VStack(alignment: .trailing) {
-                    Text(NSLocalizedString("kpi_value", comment: "KPI Value"))
-                        .foregroundColor(Color(UIColor.darkGray))
-                        .font(.appFont(size: 14))
+                    labelText(NSLocalizedString("kpi_value", comment: "KPI Value"))
                     Text(String(format: "%.1f", alarm.kpiValue))
                 }
                 .padding(.leading, 12)

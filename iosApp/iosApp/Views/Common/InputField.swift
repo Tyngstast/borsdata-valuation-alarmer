@@ -12,6 +12,7 @@ struct InputField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             TextField(label, text: $value)
+                .accentColor(.foregroundItemColor)
                 .onChange(of: value, perform: onInputChange)
                 .textFieldStyle(InputFieldStyle())
             InputFieldDivider(isFocused: isFocused)
@@ -28,7 +29,7 @@ struct InputFieldDivider: View {
     var body: some View {
         Divider()
             .frame(height: isFocused ? 2.5 : 2)
-            .background(Color(isFocused ? .primaryColor : .systemGray5))
+            .background(Color(isFocused ? .highlightColor : .systemGray5))
     }
 }
 

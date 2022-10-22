@@ -13,6 +13,9 @@ extension Font {
 extension Color {
     static let primaryColor = Color("Primary")
     static let secondaryColor = Color("Secondary")
+    static let highlightColor = Color("Highlight")
+    static let foregroundItemColor = Color("ForegroundItem")
+    static let labelColor = Color("LabelColor")
     static let backgroundColor = Color("Background")
     static let selectedColor = Color("SelectedRow")
     static let textColor = Color("TextColor")
@@ -23,8 +26,15 @@ extension Color {
 extension UIColor {
     static let primaryColor = UIColor(.primaryColor)
     static let secondaryColor = UIColor(.secondaryColor)
+    static let highlightColor = UIColor(.highlightColor)
     static let backgroundColor = UIColor(.backgroundColor)
     static let textColor = UIColor(.textColor)
+}
+
+extension ShapeStyle where Self == Color {
+    static var backgrounShapeStyle: Color {
+        .backgroundColor
+    }
 }
 
 extension UIFont {

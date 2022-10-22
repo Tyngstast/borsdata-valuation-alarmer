@@ -23,6 +23,7 @@ struct AddView: View {
             onKpiNameChange: onKpiNameChange,
             onAdd: viewModel.addAlarm
         )
+        .background(.backgrounShapeStyle)
         .onAppear(perform: viewModel.activate)
         .onDisappear(perform: viewModel.deactivate)
     }
