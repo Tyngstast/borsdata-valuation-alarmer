@@ -26,7 +26,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         startKoin()
 
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge]) { _, _ in }
         application.registerForRemoteNotifications()
 
         Messaging.messaging().delegate = self

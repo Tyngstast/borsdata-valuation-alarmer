@@ -23,6 +23,8 @@ struct ListView: View {
             onResetKey: logout
         )
         .onAppear(perform: {
+            UNUserNotificationCenter.current()
+                .requestAuthorization(options: [.alert, .badge]) { _, _ in }
             Messaging.messaging().subscribe(toTopic: TOPIC)
             viewModel.activate()
         })
