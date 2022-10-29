@@ -27,7 +27,7 @@ struct LoginViewContent: View {
     var loginDisabled: Bool {
         apiKey.count < 20 || loading || error != nil
     }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             SecureInputField(
@@ -42,6 +42,7 @@ struct LoginViewContent: View {
                 }
                 prevValue = value
             }
+            .padding(.top, 16)
             if error != nil {
                 HStack {
                     Image(systemName: "exclamationmark.circle.fill")
@@ -122,7 +123,7 @@ struct SecureInputField: View {
                     ProgressView()
                         .accentColor(.gray)
                 } else {
-                    Image(systemName: self.showPassword ? "eye.slash.fill" : "eye.fill")
+                    Image(systemName: self.showPassword ? "eye.fill" : "eye.slash.fill")
                         .accentColor(.gray)
                 }
             })
