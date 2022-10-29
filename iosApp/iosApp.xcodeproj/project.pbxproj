@@ -27,6 +27,7 @@
 		809F8E53F9B1785516F754B1 /* AlarmListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8185F00D48953CE2DB61 /* AlarmListViewModel.swift */; };
 		809F8EC4C566AC9025CCBEFD /* ValuationAlarmWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8CDDA4C6FD46A0F90555 /* ValuationAlarmWorker.swift */; };
 		809F8FC0943788D25B5E0E64 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8AA4A661061E32C91D24 /* LoginViewModel.swift */; };
+		A6F25A86290D506200106843 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6F25A85290D506200106843 /* Launch Screen.storyboard */; };
 		B20BFD032819CEE30010CAB9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B20BFD052819CEE30010CAB9 /* Localizable.strings */; };
 		B20BFD092819D1A30010CAB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B20BFD0B2819D1A30010CAB9 /* InfoPlist.strings */; };
 		B233AA3A2815BE24003160C8 /* CombineAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233AA392815BE24003160C8 /* CombineAdapters.swift */; };
@@ -94,6 +95,7 @@
 		A6941DED28FB24F7002CA329 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6941DF028FB2793002CA329 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D8B95928FB0213005919D2 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6F25A85290D506200106843 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B20BFD042819CEE30010CAB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B20BFD062819CFCC0010CAB9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B20BFD0A2819D1A30010CAB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 		7555FF72242A565900829871 = {
 			isa = PBXGroup;
 			children = (
+				A6F25A85290D506200106843 /* Launch Screen.storyboard */,
 				7555FF7D242A565900829871 /* iosApp */,
 				7555FF7C242A565900829871 /* Products */,
 				69BFFDA82AEF7501C2551C53 /* Pods */,
@@ -356,6 +359,7 @@
 				B2EDCB3A28172FA0000A0088 /* Montserrat-Medium.ttf in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
+				A6F25A86290D506200106843 /* Launch Screen.storyboard in Resources */,
 				B20BFD032819CEE30010CAB9 /* Localizable.strings in Resources */,
 				B2EDCB3D28172FA0000A0088 /* Montserrat-Regular.ttf in Resources */,
 				B2EDCB3928172FA0000A0088 /* Montserrat-Italic.ttf in Resources */,
@@ -591,6 +595,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -626,6 +631,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
