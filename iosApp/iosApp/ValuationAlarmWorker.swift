@@ -20,7 +20,7 @@ class ValuationAlarmWorker {
     static func onMessageReceived() {
         log.d { "Message received" }
         
-        if (schedulingModel.scheduleNext()) {
+        if schedulingModel.scheduleNext() {
             log.d { "Scheduling next worker execution" }
             let request = BGProcessingTaskRequest(identifier: VALUATION_PROCESSING_TASK)
             request.earliestBeginDate = Date(timeIntervalSinceNow: randomInitialDelay())
@@ -55,7 +55,7 @@ class ValuationAlarmWorker {
         }
     }
     
-    // Delay between 30 seconds and 5 minutes to not ddos backend
+    /// Delay between 30 seconds and 5 minutes to not ddos backend
     static func randomInitialDelay() -> Double {
         Double.random(in: 30..<300)
     }

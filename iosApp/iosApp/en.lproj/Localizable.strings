@@ -57,3 +57,6 @@
 "notification_error_title" = "The App seems to have encountered an unexpected error!";
 "notification_error_message" = "Open the app to re-sync";
 
+/* Info Boxes */
+"enable_notifications_warning" = "Enable notifications to get any use of the application!";
+

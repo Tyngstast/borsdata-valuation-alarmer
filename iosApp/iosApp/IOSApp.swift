@@ -43,14 +43,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    // Required when swizzling is disabled
+    /// Required when swizzling is disabled
     func application(_: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("*** didRegisterForRemoteNotificationsWithDeviceToken ***")
         Messaging.messaging().apnsToken = deviceToken
     }
 
-    // User taps notification
+    /// User taps notification
     func userNotificationCenter(_: UNUserNotificationCenter,
                                 didReceive _: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
@@ -61,7 +61,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler()
     }
 
-    // App in foreground
+    /// App in foreground
     func userNotificationCenter(_: UNUserNotificationCenter,
                                 willPresent _: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -70,7 +70,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler([[.banner]])
     }
     
-    // App in background ?
+    /// App in background ?
     func application(_: UIApplication,
                      didReceiveNotificationResponse userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -82,7 +82,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler(.newData)
     }
 
-    // App in background ?
+    /// App in background ?
     func application(_: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {

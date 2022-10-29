@@ -29,7 +29,7 @@ class LoginViewModel: BaseViewModel<LoginCallbackViewModel> {
             }
             // all cases except Loading should stop loading
             self?.loading = false
-            // All cases except Success is not signedIn
+            // All cases except Success are not signedIn
             self?.signedIn = false
         }
         .store(in: &cancellables)

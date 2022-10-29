@@ -60,10 +60,10 @@ struct ListViewContent: View {
     }
 
     var body: some View {
-        if notificationsAllowed != nil && notificationsAllowed == false {
-            Text("TODO: notifications are not allowed card")
-        }
-        VStack {
+        VStack(spacing: 0) {
+            if notificationsAllowed != nil && notificationsAllowed == false {
+                NotificationPermissionsWarning()
+            }
             if !alarms.isEmpty {
                 AlarmListContent(
                     alarms: alarms,
@@ -263,5 +263,25 @@ struct WelcomeInfoContent: View {
         }
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         .padding()
+    }
+}
+
+struct NotificationPermissionsWarning: View {
+    var body: some View {
+        Button(action: {
+            if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsUrl)
+            }
+        }, label: {
+            HStack {
+                Image(systemName: "bell")
+                    .padding(.horizontal, 4)
+                Text(NSLocalizedString("enable_notifications_warning", comment: "Notification permissions needed text"))
+            }
+            .foregroundColor(.black)
+            .padding()
+        })
+        .frame(maxWidth: .infinity)
+        .background(.yellow)
     }
 }

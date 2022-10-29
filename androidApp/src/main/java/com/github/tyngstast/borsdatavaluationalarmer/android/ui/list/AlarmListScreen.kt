@@ -409,8 +409,7 @@ fun NotificationPermissionWarning() {
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow),
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 24.dp),
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row {
                 Icon(
