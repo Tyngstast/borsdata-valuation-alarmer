@@ -33,6 +33,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -116,6 +117,7 @@ fun LoginContent(
     toggleVisibility: () -> Unit,
     evaluateKey: () -> Job
 ) {
+    val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -142,7 +144,7 @@ fun LoginContent(
             enabled = state !is ApiKeyState.Loading,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
-            keyboardActions = KeyboardActions(onDone = { evaluateKey() }),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
         )
         if (state is ApiKeyState.Error) {
@@ -166,7 +168,7 @@ fun LoginContent(
                 .fillMaxWidth()
                 .padding(horizontal = 0.dp, vertical = 12.dp),
             contentPadding = PaddingValues(all = 12.dp),
-            enabled = apiKey.length > 20 && state !is ApiKeyState.Loading,
+            enabled = apiKey.length > 10 && state !is ApiKeyState.Loading && state !is ApiKeyState.Error,
             onClick = { evaluateKey() }
         ) {
             Text(stringResource(R.string.login_text_submit_button))

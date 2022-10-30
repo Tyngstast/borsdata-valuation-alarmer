@@ -25,7 +25,7 @@ struct LoginViewContent: View {
     @State var apiKey = ""
 
     var loginDisabled: Bool {
-        apiKey.count < 20 || loading || error != nil
+        apiKey.count < 10 || loading || error != nil
     }
 
     var body: some View {
@@ -114,7 +114,6 @@ struct SecureInputField: View {
                         style: StrokeStyle(lineWidth: 2.0)
                     )
             )
-
             Button(action: {
                 showPassword.toggle()
                 focused = focused == .secure ? .unSecure : .secure
