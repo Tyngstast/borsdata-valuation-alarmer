@@ -67,7 +67,8 @@
 ### Release
 #### Android
 1. Get/Generate `.jks` keystore and create `keystore.properties` in project root dir.
-2. `./gradlew bundleRelease -DreleaseBuild=true`
+2. Bump versionName and versionCode.
+3. `./release.sh` and upload to play console.
 
 #### iOS
 1. TODO

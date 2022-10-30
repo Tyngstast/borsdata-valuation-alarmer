@@ -20,8 +20,8 @@ android {
         applicationId = "com.github.tyngstast.borsdatavaluationalarmer.android"
         minSdk = 24
         targetSdk = 33
-        versionCode = 16
-        versionName = "2.0.1"
+        versionCode = 17
+        versionName = "2.1.0"
     }
     packagingOptions {
         resources.excludes.add("META-INF/*.kotlin_module")
