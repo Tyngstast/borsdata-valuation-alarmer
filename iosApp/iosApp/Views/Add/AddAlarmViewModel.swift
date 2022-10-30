@@ -29,7 +29,7 @@ class AddViewModel: BaseViewModel<AddAlarmCallbackViewModel> {
         super.viewModel?.getKpis(value: value)
     }
 
-    func addAlarm(kpiValue: Double) {
-        super.viewModel?.addAlarm(kpiValue: kpiValue)
+    func addAlarm(kpiValue: Double, isAbove: Bool) {
+        super.viewModel?.addAlarm(kpiValue: kpiValue, isAbove: isAbove)
     }
 }

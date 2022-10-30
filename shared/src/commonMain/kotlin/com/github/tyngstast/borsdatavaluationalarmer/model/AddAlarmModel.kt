@@ -36,7 +36,7 @@ class AddAlarmModel(
             .map { KpiItem(it.kpidId, it.name, FluentKpi.stringValues.contains(it.name)) }
     }
 
-    fun addAlarm(kpiValue: Double, instrument: InsItem, kpi: Item) {
+    fun addAlarm(kpiValue: Double, instrument: InsItem, kpi: Item, isAbove: Boolean) {
         alarmDao.insertAlarm(
             instrument.id,
             instrument.name,
@@ -44,7 +44,7 @@ class AddAlarmModel(
             kpi.id,
             kpi.name,
             kpiValue,
-            "lt"
+            if (isAbove) "gt" else "lt"
         )
     }
 }

@@ -7,11 +7,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,59 +50,50 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
         ) {
             Column(
                 Modifier
-                    .padding(horizontal = 8.dp)
-                    .width(col.times(6).dp)
+                    .padding(start = 8.dp)
+                    .width(col.times(7).dp)
             ) {
-                Column {
+                Text(
+                    text = stringResource(R.string.company_label),
+                    style = LocalTextStyle.current.copy(
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colors.textLabel
+                    )
+                )
+                Text(
+                    text = alarm.insName,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top,
+                modifier = Modifier.width(col.times(5).dp)
+            ) {
+                Column(
+                    Modifier.width(col.times(3.0).dp)
+                ) {
                     Text(
-                        text = stringResource(R.string.company_label),
+                        text = stringResource(R.string.kpi_label),
                         style = LocalTextStyle.current.copy(
                             fontSize = 12.sp,
                             color = MaterialTheme.colors.textLabel
                         )
                     )
-                }
-                Column {
                     Text(
-                        text = alarm.insName,
+                        text = alarm.kpiName,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-            }
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top,
-                modifier = Modifier
-                    .width(col.times(6).dp)
-            ) {
-                Column(
-                    Modifier.width(col.times(3.1).dp)
-                ) {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.kpi_label),
-                            style = LocalTextStyle.current.copy(
-                                fontSize = 12.sp,
-                                color = MaterialTheme.colors.textLabel
-                            )
-                        )
-                    }
-                    Column {
-                        Text(
-                            text = alarm.kpiName,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                }
                 Column(
                     Modifier
                         .padding(horizontal = 8.dp)
-                        .width(col.times(2.9).dp),
+                        .width(col.times(2.0).dp),
                     horizontalAlignment = Alignment.End
                 ) {
-                    Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = stringResource(R.string.kpi_value),
                             style = LocalTextStyle.current.copy(
@@ -105,14 +101,21 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
                                 color = MaterialTheme.colors.textLabel
                             )
                         )
-                    }
-                    Column {
-                        Text(
-                            text = alarm.kpiValue.toString(),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                        val (icon, cd) =
+                            if (alarm.operation == "gt") Icons.Default.ArrowUpward to R.string.kpi_above_threshold_icon_cd
+                            else Icons.Default.ArrowDownward to R.string.kpi_below_threshold_icon_cd
+                        Icon(
+                            icon,
+                            stringResource(cd),
+                            tint = MaterialTheme.colors.textLabel,
+                            modifier = Modifier.size(14.dp)
                         )
                     }
+                    Text(
+                        text = alarm.kpiValue.toString(),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
         }

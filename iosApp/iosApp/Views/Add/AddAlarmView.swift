@@ -36,7 +36,7 @@ struct AddViewContent: View {
     var kpis: [Item]
     var onInsNameChange: (String) -> Void
     var onKpiNameChange: (String) -> Void
-    var onAdd: (Double) -> Void
+    var onAdd: (Double, Bool) -> Void
 
     @FocusState private var focused: FocusField?
     @State var showToast = false
@@ -44,6 +44,7 @@ struct AddViewContent: View {
     @State var insName = ""
     @State var kpiName = ""
     @State var kpiValue = ""
+    @State var isAbove = false
 
     func addAlarm() {
         guard !insName.isEmpty, !kpiName.isEmpty, !kpiValue.isEmpty else {
@@ -56,7 +57,7 @@ struct AddViewContent: View {
             showToast = true
             return
         }
-        onAdd(value)
+        onAdd(value, isAbove)
         dismissView()
     }
 
@@ -102,17 +103,16 @@ struct AddViewContent: View {
                 isFocused: focused == .kpi
             )
             .focused($focused, equals: .kpi)
-            InputField(
+            ValueInputField(
                 label: NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
                 value: $kpiValue,
-                onInputChange: { _ in},
+                isAbove: $isAbove,
                 onSubmit: addAlarm,
                 setFocus: {
                     focused = .kpiValue
                 },
                 isFocused: focused == .kpiValue
             )
-            .keyboardType(.decimalPad)
             .focused($focused, equals: .kpiValue)
         }
         .onAppear {
@@ -183,6 +183,38 @@ struct SuggestionInputField: View {
             }
         }
         .animation(.interactiveSpring(), value: items)
+    }
+}
+
+struct ValueInputField: View {
+    var label: String
+    @Binding var value: String
+    @Binding var isAbove: Bool
+    var onSubmit: () -> Void
+    var setFocus: () -> Void
+    var isFocused: Bool
+
+    var body: some View {
+        ZStack(alignment: .trailing) {
+            InputField(
+                label: isAbove
+                    ? NSLocalizedString("kpi_above_threshold_label", comment: "Trigger when KPI above value")
+                    : NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
+                value: $value,
+                onInputChange: { _ in },
+                onSubmit: onSubmit,
+                setFocus: setFocus,
+                isFocused: isFocused
+            )
+            .keyboardType(.decimalPad)
+            Button(action: {
+                    isAbove.toggle()
+            }, label: {
+                Image(systemName: self.isAbove ? "arrow.up" : "arrow.down")
+                    .accentColor(.gray)
+            })
+            .padding(.trailing, 16)
+        }
     }
 }
 

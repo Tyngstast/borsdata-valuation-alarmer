@@ -6,7 +6,10 @@
     <!-- Multi use -->
     <string name="company_label">Bolag</string>
     <string name="kpi_label">Nyckeltal</string>
+    <string name="kpi_above_threshold_label">Går över värde</string>
+    <string name="kpi_above_threshold_icon_cd">Uppåt pil</string>
     <string name="kpi_below_threshold_label">Går under värde</string>
+    <string name="kpi_below_threshold_icon_cd">Nedåt pil</string>
     <string name="icon_cd_back">Bakåt</string>
     <string name="icon_cd_save">Spara</string>
     <string name="kpi_value">Värde</string>

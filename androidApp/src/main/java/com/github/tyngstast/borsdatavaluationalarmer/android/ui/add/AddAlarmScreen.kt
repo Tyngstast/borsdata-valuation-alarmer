@@ -32,7 +32,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.tyngstast.borsdatavaluationalarmer.android.R
-import com.github.tyngstast.borsdatavaluationalarmer.android.ui.common.InputField
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.theme.AppTheme
 import com.github.tyngstast.borsdatavaluationalarmer.model.Item
 import com.github.tyngstast.borsdatavaluationalarmer.util.isDouble
@@ -50,6 +49,7 @@ fun AddAlarmScreen(
     var insName: String by remember { mutableStateOf("") }
     var kpiName: String by remember { mutableStateOf("") }
     var kpiValue: String by remember { mutableStateOf("") }
+    var isAbove: Boolean by remember { mutableStateOf(false) }
 
     val setInsName: (String) -> Unit = { value: String ->
         insName = value
@@ -80,7 +80,7 @@ fun AddAlarmScreen(
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            viewModel.addAlarm(kpiValue.replace(",", ".").toDouble())
+            viewModel.addAlarm(kpiValue.replace(",", ".").toDouble(), isAbove)
             Toast.makeText(
                 context,
                 context.getString(R.string.add_toast_save_success),
@@ -115,11 +115,13 @@ fun AddAlarmScreen(
             insName = insName,
             kpiName = kpiName,
             kpiValue = kpiValue,
+            isAbove = isAbove,
             instruments = instruments.value,
             kpis = kpis.value,
             setInsName = setInsName,
             setKpiName = setKpiName,
             setKpiValue = setKpiValue,
+            toggleIsAbove = { isAbove = !isAbove },
             addAlarm = addAlarm
         )
     }
@@ -131,12 +133,14 @@ fun AddAlarmContent(
     insName: String,
     kpiName: String,
     kpiValue: String,
+    isAbove: Boolean,
     instruments: List<Item>,
     kpis: List<Item>,
     setInsName: (String) -> Unit,
     setKpiName: (String) -> Unit,
     setKpiValue: (String) -> Unit,
-    addAlarm: () -> Unit
+    toggleIsAbove: () -> Unit,
+    addAlarm: () -> Unit,
 ) {
     val (insNameFr, kpiNameFr, kpiValueFr) = FocusRequester.createRefs()
 
@@ -177,9 +181,10 @@ fun AddAlarmContent(
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
             focusRequester = kpiNameFr
         )
-        InputField(
+        ValueInputField(
             value = kpiValue,
-            label = stringResource(R.string.kpi_below_threshold_label),
+            isAbove = isAbove,
+            toggleIsAbove = toggleIsAbove,
             onValueChange = setKpiValue,
             keyboardActions = KeyboardActions(
                 onDone = { addAlarm() }
@@ -201,11 +206,13 @@ fun AddAlarmPreview() {
             insName = "Evolution",
             kpiName = "P/E",
             kpiValue = "20.5",
+            isAbove = false,
             instruments = listOf(),
             kpis = listOf(),
             setInsName = {},
             setKpiName = {},
             setKpiValue = {},
+            toggleIsAbove = {},
             addAlarm = {}
         )
     }

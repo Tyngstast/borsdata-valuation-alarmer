@@ -18,7 +18,7 @@ class AddAlarmCallbackViewModel(addAlarmModel: AddAlarmModel) : CallbackViewMode
         viewModel.getKpis(value)
     }
 
-    fun addAlarm(kpiValue: Double) {
-        viewModel.addAlarm(kpiValue)
+    fun addAlarm(kpiValue: Double, isAbove: Boolean) {
+        viewModel.addAlarm(kpiValue, isAbove)
     }
 }

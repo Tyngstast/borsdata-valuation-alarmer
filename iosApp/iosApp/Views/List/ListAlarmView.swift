@@ -187,7 +187,13 @@ struct AlarmItem: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
-                        labelText(NSLocalizedString("kpi_value", comment: "KPI Value"))
+                        HStack(spacing: 2) {
+                            Text(NSLocalizedString("kpi_value", comment: "KPI Value"))
+                                .font(.appFont(size: 14))
+                            Image(systemName: alarm.operation == "gt" ? "arrow.up" : "arrow.down")
+                                .font(.appFont(size: 10))
+                        }
+                        .foregroundColor(.labelColor)
                         Text(String(format: "%.1f", alarm.kpiValue))
                     }
                 }

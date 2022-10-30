@@ -18,7 +18,7 @@ android {
     compileSdk = 33
     defaultConfig {
         applicationId = "com.github.tyngstast.borsdatavaluationalarmer.android"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 33
         versionCode = 16
         versionName = "2.0.1"

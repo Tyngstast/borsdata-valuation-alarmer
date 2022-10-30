@@ -3,6 +3,7 @@
 /* Multi use */
 "company_label" = "Company";
 "kpi_label" = "KPI";
+"kpi_above_threshold_label" = "Trigger Above Value";
 "kpi_below_threshold_label" = "Trigger Below Value";
 "kpi_value" = "Value";
 

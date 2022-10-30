@@ -3,6 +3,7 @@
 /* Multi use */
 "company_label" = "Bolag";
 "kpi_label" = "Nyckeltal";
+"kpi_above_threshold_label" = "Går över värde";
 "kpi_below_threshold_label" = "Går under värde";
 "kpi_value" = "Värde";
 

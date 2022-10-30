@@ -39,8 +39,10 @@ class ValuationAlarmWorker {
     
     static func process(task: BGProcessingTask) {
         log.d { "Processing Alarm Sync" }
-        
-        alarmWorkerModel.run(translatedSeparatorWord: separatorString, onFailure: onFailure) { triggerMessages, err in
+    
+        // sv or en
+        let lang = Locale.autoupdatingCurrent.languageCode
+        alarmWorkerModel.run(lang: lang, onFailure: onFailure) { triggerMessages, err in
             guard let actualTriggerMessages = triggerMessages else {
                 NotificationFactory.sendErrorNotification()
                 task.setTaskCompleted(success: false)

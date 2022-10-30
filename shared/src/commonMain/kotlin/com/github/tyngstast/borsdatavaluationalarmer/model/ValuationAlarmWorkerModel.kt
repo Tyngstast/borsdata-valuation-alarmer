@@ -1,13 +1,13 @@
-package com.github.tyngstast.borsdatavaluationalarmer
+package com.github.tyngstast.borsdatavaluationalarmer.model
 
 import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.client.BorsdataClient
 import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
-import com.github.tyngstast.borsdatavaluationalarmer.model.FluentKpi
-import com.github.tyngstast.borsdatavaluationalarmer.model.ResetAppException
+import com.github.tyngstast.borsdatavaluationalarmer.format
 import com.github.tyngstast.borsdatavaluationalarmer.settings.AlarmerSettings
 import com.github.tyngstast.borsdatavaluationalarmer.settings.Vault
+import com.github.tyngstast.borsdatavaluationalarmer.util.evaluate
 import com.github.tyngstast.db.Alarm
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ResponseException
@@ -29,11 +29,17 @@ class ValuationAlarmWorkerModel(
     private val clock: Clock
 ) {
 
-    suspend fun run(translatedSeparatorWord: String, onFailure: () -> Unit): List<String>? =
+    suspend fun run(lang: String?, onFailure: () -> Unit): List<String>? =
         kotlin.runCatching {
             triggeredAlarms().map {
                 val alarm = it.first
                 val kpiValue = it.second.format("%.1f")
+
+                val translatedSeparatorWord = if (alarm.operation == "gt") {
+                    if (lang == "sv") "över" else "above"
+                } else {
+                    if (lang == "sv") "under" else "below"
+                }
 
                 "${alarm.insName}: ${alarm.kpiName} $kpiValue $translatedSeparatorWord ${alarm.kpiValue}"
             }
@@ -78,7 +84,7 @@ class ValuationAlarmWorkerModel(
             }
             // Update before filtering. We should not keep fetching just because alarm did not trigger
             .onEach { updateLastRun(it.first.id) }
-            .filter { (alarm, kpiValue) -> kpiValue.compareTo(alarm.kpiValue) <= 0 }
+            .filter { (alarm, kpiValue) -> alarm.evaluate(kpiValue) }
             .map { (alarm, kpiValue) -> alarm to kpiValue }
             .also { alarmerSettings.resetFailureCounter() }
 

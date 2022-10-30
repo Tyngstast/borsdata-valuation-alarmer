@@ -1,4 +1,4 @@
-package com.github.tyngstast.borsdatavaluationalarmer
+package com.github.tyngstast.borsdatavaluationalarmer.model
 
 import com.github.tyngstast.borsdatavaluationalarmer.settings.AlarmerSettings
 import com.github.tyngstast.borsdatavaluationalarmer.settings.Vault

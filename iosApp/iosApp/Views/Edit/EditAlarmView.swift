@@ -64,7 +64,9 @@ struct EditViewContent: View {
                 .padding(.vertical, 6)
             InputFieldDivider(isFocused: false)
             InputField(
-                label: NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
+                label: alarm.operation == "gt"
+                    ? NSLocalizedString("kpi_above_threshold_label", comment: "Trigger when KPI above value")
+                    : NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
                 value: $value,
                 onInputChange: { _ in },
                 onSubmit: onEditAlarm,

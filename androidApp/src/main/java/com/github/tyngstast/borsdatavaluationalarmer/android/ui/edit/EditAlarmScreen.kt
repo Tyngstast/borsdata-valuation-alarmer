@@ -24,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -86,7 +85,10 @@ fun EditAlarmScreen(
                 title = { Text(stringResource(R.string.edit_text_title)) },
                 navigationIcon = {
                     IconButton(onClick = { onSuccess() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.icon_cd_back))
+                        Icon(
+                            Icons.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.icon_cd_back)
+                        )
                     }
                 },
                 actions = {
@@ -125,7 +127,12 @@ fun EditAlarmScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(kpiValueFr),
-                label = { Text(stringResource(R.string.kpi_below_threshold_label), fontSize = 16.sp) },
+                label = {
+                    Text(
+                        stringResource(if (alarm.operation == "gt") R.string.kpi_above_threshold_label else R.string.kpi_below_threshold_label),
+                        fontSize = 16.sp
+                    )
+                },
                 onValueChange = { kpiValue = it },
                 keyboardActions = KeyboardActions(
                     onDone = { editAlarm() }

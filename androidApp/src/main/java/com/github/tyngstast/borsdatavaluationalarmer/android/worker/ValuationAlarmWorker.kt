@@ -4,8 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import co.touchlab.kermit.Logger
-import com.github.tyngstast.borsdatavaluationalarmer.ValuationAlarmWorkerModel
-import com.github.tyngstast.borsdatavaluationalarmer.android.R
+import com.github.tyngstast.borsdatavaluationalarmer.model.ValuationAlarmWorkerModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.messaging.TriggerWorkerMessagingService
 import com.github.tyngstast.borsdatavaluationalarmer.android.util.NotificationFactory
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger
@@ -22,8 +21,6 @@ class ValuationAlarmWorker(
 
     private val log: Logger by injectLogger("ValuationAlarmWorker")
 
-    private val separatorString = context.getString(R.string.notification_message_trigger_word)
-
     private val valuationAlarmWorkerModel: ValuationAlarmWorkerModel by inject()
 
     override suspend fun doWork(): Result {
@@ -35,7 +32,9 @@ class ValuationAlarmWorker(
             NotificationFactory(context).makeErrorNotification()
         }
 
-        val result = valuationAlarmWorkerModel.run(separatorString, onFailure)
+        // sv or other
+        val lang = context.resources.configuration.locales[0].language
+        val result = valuationAlarmWorkerModel.run(lang, onFailure)
         return result?.forEach {
             NotificationFactory(context).makeAlarmTriggerNotification(it)
             delay(1000)

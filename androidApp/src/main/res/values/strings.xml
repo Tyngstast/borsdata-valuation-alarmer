@@ -8,7 +8,10 @@
     <string name="icon_cd_save">Save</string>
     <string name="company_label">Company</string>
     <string name="kpi_label">KPI</string>
+    <string name="kpi_above_threshold_label">Trigger Above Value</string>
+    <string name="kpi_above_threshold_icon_cd">Arrow Up</string>
     <string name="kpi_below_threshold_label">Trigger Below Value</string>
+    <string name="kpi_below_threshold_icon_cd">Arrow Down</string>
     <string name="kpi_value">Value</string>
 
     <!-- Login -->

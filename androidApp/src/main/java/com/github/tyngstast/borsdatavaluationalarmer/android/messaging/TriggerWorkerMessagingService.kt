@@ -1,7 +1,7 @@
 package com.github.tyngstast.borsdatavaluationalarmer.android.messaging
 
 import co.touchlab.kermit.Logger
-import com.github.tyngstast.borsdatavaluationalarmer.SchedulingModel
+import com.github.tyngstast.borsdatavaluationalarmer.model.SchedulingModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.util.NotificationFactory
 import com.github.tyngstast.borsdatavaluationalarmer.android.util.ValuationAlarmWorkerFactory
 import com.github.tyngstast.borsdatavaluationalarmer.injectLogger

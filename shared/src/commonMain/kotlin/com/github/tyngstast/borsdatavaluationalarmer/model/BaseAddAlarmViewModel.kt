@@ -20,10 +20,10 @@ open class BaseAddAlarmViewModel(private val addAlarmModel: AddAlarmModel) : Vie
         _kpis.value = addAlarmModel.getSortedKpis(value)
     }
 
-    fun addAlarm(kpiValue: Double) = viewModelScope.launch {
+    fun addAlarm(kpiValue: Double, isAbove: Boolean) = viewModelScope.launch {
         // First should always be closest, or exact, match after sorting.
         val insItem = instrumentStateFlow.value.first() as InsItem
         val kpiItem = kpiStateFlow.value.first()
-        addAlarmModel.addAlarm(kpiValue, insItem, kpiItem)
+        addAlarmModel.addAlarm(kpiValue, insItem, kpiItem, isAbove)
     }
 }

@@ -27,6 +27,7 @@ fun InputField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     focusRequester: FocusRequester = FocusRequester.Default,
     disabled: Boolean = false,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     TextField(
         modifier = Modifier
@@ -41,7 +42,8 @@ fun InputField(
         label = { Text(label, fontSize = 16.sp) },
         onValueChange = onValueChange,
         keyboardActions = keyboardActions,
-        keyboardOptions = keyboardOptions
+        keyboardOptions = keyboardOptions,
+        trailingIcon = trailingIcon
     )
 }
 

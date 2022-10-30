@@ -77,6 +77,8 @@
   * GUI
     * Add
       * Select first suggestion on keyboard return
+    * Add/Edit
+      * Show `%` sign for percentage type value inputs
   * Test Background Workers on real device
   * Register for APN key
     * Test Firebase Messaging implementation for real
