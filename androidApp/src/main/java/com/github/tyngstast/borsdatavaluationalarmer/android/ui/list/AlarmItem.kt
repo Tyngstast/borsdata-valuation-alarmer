@@ -51,7 +51,7 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
             Column(
                 Modifier
                     .padding(start = 8.dp)
-                    .width(col.times(7).dp)
+                    .width(col.times(6.9).dp)
             ) {
                 Text(
                     text = stringResource(R.string.company_label),
@@ -69,10 +69,10 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top,
-                modifier = Modifier.width(col.times(5).dp)
+                modifier = Modifier.width(col.times(5.1).dp)
             ) {
                 Column(
-                    Modifier.width(col.times(3.0).dp)
+                    Modifier.width(col.times(2.9).dp)
                 ) {
                     Text(
                         text = stringResource(R.string.kpi_label),
@@ -89,8 +89,8 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
                 }
                 Column(
                     Modifier
-                        .padding(horizontal = 8.dp)
-                        .width(col.times(2.0).dp),
+                        .padding(end = 8.dp)
+                        .width(col.times(2.2).dp),
                     horizontalAlignment = Alignment.End
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -108,7 +108,7 @@ fun AlarmItem(alarm: Alarm, backgroundColor: Color = MaterialTheme.colors.backgr
                             icon,
                             stringResource(cd),
                             tint = MaterialTheme.colors.textLabel,
-                            modifier = Modifier.size(14.dp)
+                            modifier = Modifier.size(12.dp)
                         )
                     }
                     Text(
