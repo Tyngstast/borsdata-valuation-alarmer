@@ -2,6 +2,8 @@ import BackgroundTasks
 import FirebaseMessaging
 import shared
 
+let TOPIC = "triggerValuationAlarmWorker"
+
 class ValuationAlarmWorker {
     private static let log = koin.loggerWithTag(tag: "ValuationAlarmWorker")
     

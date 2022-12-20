@@ -2,8 +2,6 @@ import FirebaseMessaging
 import shared
 import SwiftUI
 
-let TOPIC = "triggerValuationAlarmWorker"
-
 struct ListView: View {
     private let log = koin.loggerWithTag(tag: "ListView")
     

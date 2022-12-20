@@ -61,7 +61,7 @@ const devMessage = {
 exports.devTriggerWorkers = functions
   .region("europe-west1")
   .pubsub
-  .schedule("0 09-18 * * 1-5")
+  .schedule("0 09-23 * * *")
   .timeZone("Europe/Stockholm")
   .onRun((context) => {
     functions.logger.info("DEV schedule... Executing", context);
