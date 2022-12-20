@@ -8,12 +8,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
 import com.github.tyngstast.borsdatavaluationalarmer.db.AlarmDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.InstrumentDao
 import com.github.tyngstast.borsdatavaluationalarmer.db.KpiDao
-import com.github.tyngstast.borsdatavaluationalarmer.model.AddAlarmModel
-import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListModel
-import com.github.tyngstast.borsdatavaluationalarmer.model.EditAlarmModel
-import com.github.tyngstast.borsdatavaluationalarmer.model.LoginModel
-import com.github.tyngstast.borsdatavaluationalarmer.model.SchedulingModel
-import com.github.tyngstast.borsdatavaluationalarmer.model.ValuationAlarmWorkerModel
+import com.github.tyngstast.borsdatavaluationalarmer.model.*
 import com.github.tyngstast.borsdatavaluationalarmer.settings.AlarmerSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
@@ -63,7 +58,7 @@ val coreModule = module {
             clock = get()
         )
     }
-    single { AddAlarmModel(instrumentDao = get(), kpiDao = get(), alarmDao = get()) }
+    single { AddAlarmModel(instrumentDao = get(), kpiDao = get(), alarmDao = get(), appLanguage = get()) }
     single { EditAlarmModel(alarmDao = get()) }
     single { LoginModel(vault = get(), borsdataClient = get()) }
     single {
@@ -74,7 +69,8 @@ val coreModule = module {
             yahooClient = get(),
             alarmerSettings = get(),
             vault = get(),
-            clock = get()
+            clock = get(),
+            appLanguage = get()
         )
     }
     single {

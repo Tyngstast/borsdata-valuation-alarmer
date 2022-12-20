@@ -45,9 +45,13 @@ selectKpis:
 SELECT * FROM Kpi
 WHERE name LIKE ('%' || :name || '%');
 
+selectKpisEn:
+SELECT * FROM Kpi
+WHERE nameEn LIKE ('%' || :name || '%');
+
 insertKpi:
-INSERT INTO Kpi(id, kpidId, name, format)
-VALUES (?, ?, ?, ?);
+INSERT INTO Kpi(id, kpidId, name, nameEn, format)
+VALUES (?, ?, ?, ?, ?);
 
 deleteAllKpis:
 DELETE FROM Kpi;

@@ -21,6 +21,7 @@ data class KpiResponse(val kpiHistoryMetadatas: List<KpiDto>)
 data class KpiDto(
     val kpiId: Long,
     val nameSv: String,
+    val nameEn: String,
     val format: String? = null
 )
 

@@ -32,9 +32,7 @@ class ValuationAlarmWorker(
             NotificationFactory(context).makeErrorNotification()
         }
 
-        // sv or other
-        val lang = context.resources.configuration.locales[0].language
-        val result = valuationAlarmWorkerModel.run(lang, onFailure)
+        val result = valuationAlarmWorkerModel.run(onFailure)
         return result?.forEach {
             NotificationFactory(context).makeAlarmTriggerNotification(it)
             delay(1000)

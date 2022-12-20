@@ -3,6 +3,7 @@ package com.github.tyngstast.borsdatavaluationalarmer
 import co.touchlab.kermit.Logger
 import com.github.tyngstast.borsdatavaluationalarmer.model.AddAlarmCallbackViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListCallbackViewModel
+import com.github.tyngstast.borsdatavaluationalarmer.model.AppLanguage
 import com.github.tyngstast.borsdatavaluationalarmer.model.EditAlarmCallbackViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.LoginCallbackViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.SchedulingModel
@@ -24,7 +25,7 @@ import platform.Foundation.NSUserDefaults
 
 actual val platformModule = module {
     single<SqlDriver> { NativeSqliteDriver(ValueAlarmerDb.Schema, "ValueAlarmerDb") }
-    single { Vault(KVault(null, null)) }
+    single { Vault(KVault()) }
     single { LoginCallbackViewModel(get()) }
     single { AlarmListCallbackViewModel(get()) }
     single { AddAlarmCallbackViewModel(get()) }
@@ -34,9 +35,13 @@ actual val platformModule = module {
 @Suppress("unused") // Called from Swift
 fun initKoinIos(
     userDefaults: NSUserDefaults,
+    langStr: String?
 ): KoinApplication = initKoin(
     module {
         single<Settings> { AppleSettings(userDefaults) }
+        single {
+            if (langStr.isNullOrBlank()) AppLanguage.SV else AppLanguage.fromString(langStr)
+        }
     }
 )
 

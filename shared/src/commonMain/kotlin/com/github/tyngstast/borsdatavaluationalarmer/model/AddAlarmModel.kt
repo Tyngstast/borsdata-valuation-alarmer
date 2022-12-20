@@ -8,6 +8,7 @@ class AddAlarmModel(
     private val instrumentDao: InstrumentDao,
     private val kpiDao: KpiDao,
     private val alarmDao: AlarmDao,
+    private val appLanguage: AppLanguage
 ) {
 
     suspend fun getSortedInstruments(value: String): List<Item> {
@@ -30,10 +31,18 @@ class AddAlarmModel(
             return emptyList()
         }
 
-        return kpiDao.getKpis(value)
+        val kpis = if (appLanguage == AppLanguage.SV) kpiDao.getKpis(value) else kpiDao.getKpisEn(value)
+
+        return kpis
             .sortedByDescending { it.name.startsWith(value, ignoreCase = true) }
             .take(3)
-            .map { KpiItem(it.kpidId, it.name, FluentKpi.stringValues.contains(it.name)) }
+            .map {
+                KpiItem(
+                    it.kpidId,
+                    if (appLanguage == AppLanguage.SV || it.nameEn == null) it.name else it.nameEn,
+                    FluentKpi.stringValues.contains(it.name)
+                )
+            }
     }
 
     fun addAlarm(kpiValue: Double, instrument: InsItem, kpi: Item, isAbove: Boolean) {

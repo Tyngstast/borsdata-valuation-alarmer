@@ -26,19 +26,20 @@ class ValuationAlarmWorkerModel(
     private val yahooClient: YahooClient,
     private val alarmerSettings: AlarmerSettings,
     private val vault: Vault,
-    private val clock: Clock
+    private val clock: Clock,
+    private val appLanguage: AppLanguage
 ) {
 
-    suspend fun run(lang: String?, onFailure: () -> Unit): List<String>? =
+    suspend fun run(onFailure: () -> Unit): List<String>? =
         kotlin.runCatching {
             triggeredAlarms().map {
                 val alarm = it.first
                 val kpiValue = it.second.format("%.1f")
 
                 val translatedSeparatorWord = if (alarm.operation == "gt") {
-                    if (lang == "sv") "över" else "above"
+                    if (appLanguage == AppLanguage.SV) "över" else "above"
                 } else {
-                    if (lang == "sv") "under" else "below"
+                    if (appLanguage == AppLanguage.SV) "under" else "below"
                 }
 
                 "${alarm.insName}: ${alarm.kpiName} $kpiValue $translatedSeparatorWord ${alarm.kpiValue}"

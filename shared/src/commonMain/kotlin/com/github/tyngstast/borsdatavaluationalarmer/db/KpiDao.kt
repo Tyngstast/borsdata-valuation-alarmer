@@ -17,6 +17,12 @@ class KpiDao(
         }
     }
 
+    suspend fun getKpisEn(name: String): List<Kpi> {
+        return withContext(backgroundDispatcher) {
+            dbQuery.selectKpisEn(name).executeAsList()
+        }
+    }
+
     suspend fun resetKpis(kpis: List<KpiDto>) {
         dbQuery.transactionWithContext(backgroundDispatcher) {
             dbQuery.deleteAllKpis()
@@ -25,6 +31,7 @@ class KpiDao(
                     id = null,
                     kpidId = it.kpiId,
                     name = it.nameSv,
+                    nameEn = it.nameEn,
                     format = it.format
                 )
             }

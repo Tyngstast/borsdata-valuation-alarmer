@@ -7,13 +7,13 @@ class ValuationAlarmWorker {
     
     static let VALUATION_PROCESSING_TASK = "com.github.tyngstast.valuationProcessing"
     
-    static let separatorString = NSLocalizedString("notification_message_trigger_word", comment: "notification alarm triggered separator word")
-    
     static let alarmWorkerModel = Models.shared.getValuationAlarmWorkerModel()
     static let schedulingModel = Models.shared.getSchedulingModel()
     
     static func onFailure() {
-        Messaging.messaging().unsubscribe(fromTopic: TOPIC)
+        Messaging.messaging().unsubscribe(fromTopic: TOPIC, completion: { error in
+            log.d { "Unsubscribed from topic: \(TOPIC)" }
+        })
         NotificationFactory.sendErrorNotification()
     }
     
@@ -40,11 +40,10 @@ class ValuationAlarmWorker {
     static func process(task: BGProcessingTask) {
         log.d { "Processing Alarm Sync" }
     
-        // sv or en
-        let lang = Locale.autoupdatingCurrent.languageCode
-        alarmWorkerModel.run(lang: lang, onFailure: onFailure) { triggerMessages, err in
+        alarmWorkerModel.run(onFailure: onFailure) { triggerMessages, err in
             guard let actualTriggerMessages = triggerMessages else {
-                NotificationFactory.sendErrorNotification()
+                log.e { "Error during worker run: \(err)" }
+                onFailure()
                 task.setTaskCompleted(success: false)
                 return
             }

@@ -14,7 +14,6 @@
 		53886FD2392E69CEABBEC936 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6941DED28FB24F7002CA329 /* Pods_iosApp.framework */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		809F8008E9178EEC9CEBB574 /* NotificationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8146E14D5965D5BC2118 /* NotificationFactory.swift */; };
-		809F81DDC06E13648F261461 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 809F820237CE413B4ADDD625 /* GoogleService-Info.plist */; };
 		809F84F2470F58C4F6D75607 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8F88641D8881BC4F4D5A /* LoginView.swift */; };
 		809F875CD6C81D4D036391C4 /* NavigationLazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F815B96537DF6DE1491EA /* NavigationLazyView.swift */; };
 		809F892D4F091CEB1B726453 /* AddAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8DC4B3548D8DFBAFD775 /* AddAlarmView.swift */; };
@@ -27,6 +26,7 @@
 		809F8E53F9B1785516F754B1 /* AlarmListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8185F00D48953CE2DB61 /* AlarmListViewModel.swift */; };
 		809F8EC4C566AC9025CCBEFD /* ValuationAlarmWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8CDDA4C6FD46A0F90555 /* ValuationAlarmWorker.swift */; };
 		809F8FC0943788D25B5E0E64 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8AA4A661061E32C91D24 /* LoginViewModel.swift */; };
+		A6A461A42917CDCE003DD257 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6A461A32917CDCE003DD257 /* GoogleService-Info.plist */; };
 		A6F25A86290D506200106843 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6F25A85290D506200106843 /* Launch Screen.storyboard */; };
 		B20BFD032819CEE30010CAB9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B20BFD052819CEE30010CAB9 /* Localizable.strings */; };
 		B20BFD092819D1A30010CAB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B20BFD0B2819D1A30010CAB9 /* InfoPlist.strings */; };
@@ -73,7 +73,6 @@
 		809F8146E14D5965D5BC2118 /* NotificationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationFactory.swift; sourceTree = "<group>"; };
 		809F815B96537DF6DE1491EA /* NavigationLazyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationLazyView.swift; sourceTree = "<group>"; };
 		809F8185F00D48953CE2DB61 /* AlarmListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmListViewModel.swift; sourceTree = "<group>"; };
-		809F820237CE413B4ADDD625 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		809F82E725D220D1027BD420 /* EditAlarmViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAlarmViewModel.swift; sourceTree = "<group>"; };
 		809F89059C5E5D20DBB799A5 /* ListAlarmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAlarmView.swift; sourceTree = "<group>"; };
 		809F899CE3DF9C1163FD7B0E /* AddAlarmViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlarmViewModel.swift; sourceTree = "<group>"; };
@@ -94,6 +93,7 @@
 		A6941DEB28FB2455002CA329 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6941DED28FB24F7002CA329 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6941DF028FB2793002CA329 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6A461A32917CDCE003DD257 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A6D8B95928FB0213005919D2 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F25A85290D506200106843 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B20BFD042819CEE30010CAB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -178,10 +178,10 @@
 				2152FB032600AC8F00CF470E /* IOSApp.swift */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF8C242A565B00829871 /* Info.plist */,
+				A6A461A32917CDCE003DD257 /* GoogleService-Info.plist */,
 				B20BFD0B2819D1A30010CAB9 /* InfoPlist.strings */,
 				B20BFD052819CEE30010CAB9 /* Localizable.strings */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
-				809F820237CE413B4ADDD625 /* GoogleService-Info.plist */,
 				809F803A24223C8E54A85CC0 /* .gitignore */,
 				809F8146E14D5965D5BC2118 /* NotificationFactory.swift */,
 				809F8CDDA4C6FD46A0F90555 /* ValuationAlarmWorker.swift */,
@@ -355,6 +355,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6A461A42917CDCE003DD257 /* GoogleService-Info.plist in Resources */,
 				B2EDCB3E28172FA0000A0088 /* Montserrat-Thin.ttf in Resources */,
 				B2EDCB3A28172FA0000A0088 /* Montserrat-Medium.ttf in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
@@ -366,7 +367,6 @@
 				B2EDCB3C28172FA0000A0088 /* Montserrat-MediumItalic.ttf in Resources */,
 				B2EDCB3B28172FA0000A0088 /* Montserrat-Light.ttf in Resources */,
 				B20BFD092819D1A30010CAB9 /* InfoPlist.strings in Resources */,
-				809F81DDC06E13648F261461 /* GoogleService-Info.plist in Resources */,
 				809F8D3673589F65B5413F86 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -14,6 +14,7 @@ import com.github.tyngstast.borsdatavaluationalarmer.android.ui.login.LoginViewM
 import com.github.tyngstast.borsdatavaluationalarmer.getWith
 import com.github.tyngstast.borsdatavaluationalarmer.initKoin
 import com.github.tyngstast.borsdatavaluationalarmer.isDebug
+import com.github.tyngstast.borsdatavaluationalarmer.model.AppLanguage
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -70,6 +71,10 @@ class MainApp : Application() {
         initKoin(
             module {
                 single<Context> { this@MainApp }
+                single {
+                    val langStr = get<Context>().resources.configuration.locales[0].language
+                    if (langStr.isNullOrBlank()) AppLanguage.SV else AppLanguage.fromString(langStr)
+                }
                 single<SharedPreferences> {
                     get<Context>().getSharedPreferences(
                         "VALUATION_ALARMER_SETTINGS",
