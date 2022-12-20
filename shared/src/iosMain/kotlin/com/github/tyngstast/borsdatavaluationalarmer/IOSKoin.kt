@@ -1,7 +1,6 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
 import co.touchlab.kermit.Logger
-import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
 import com.github.tyngstast.borsdatavaluationalarmer.model.AddAlarmCallbackViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListCallbackViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.AppLanguage

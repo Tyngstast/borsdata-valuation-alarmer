@@ -10,6 +10,16 @@ const message = {
     trigger: "true",
   },
   topic,
+  apns: {
+    headers: {
+      "apns-priority": "5",
+    },
+    payload: {
+      aps: {
+        contentAvailable: true,
+      },
+    },
+  },
 };
 
 exports.triggerWorkers = functions
