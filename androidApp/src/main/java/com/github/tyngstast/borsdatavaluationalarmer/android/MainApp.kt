@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.StrictMode
+import com.github.tyngstast.borsdatavaluationalarmer.AppInfo
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.add.AddAlarmViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.edit.EditAlarmViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.android.ui.list.AlarmListViewModel
@@ -81,6 +82,7 @@ class MainApp : Application() {
                         Context.MODE_PRIVATE
                     )
                 }
+                single<AppInfo> { AndroidAppInfo }
                 viewModel { AlarmListViewModel(getWith("AlarmListViewModel"), get()) }
                 viewModel { AddAlarmViewModel(get()) }
                 viewModel { EditAlarmViewModel(get()) }
@@ -88,4 +90,8 @@ class MainApp : Application() {
             }
         )
     }
+}
+
+object AndroidAppInfo : AppInfo {
+    override val appVersion: Int = BuildConfig.VERSION_CODE
 }

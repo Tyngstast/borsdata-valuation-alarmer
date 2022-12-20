@@ -40,7 +40,7 @@ class AlarmListModel(
         val oneWeekInMillis = 7 * 24 * 60 * 60 * 1000
         val stale = latestFetch + oneWeekInMillis < currentTimeInMillis
 
-        if (!stale) {
+        if (!alarmerSettings.newInstallVersion() && !stale) {
             return@coroutineScope
         }
 

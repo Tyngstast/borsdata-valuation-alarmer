@@ -35,13 +35,15 @@ actual val platformModule = module {
 @Suppress("unused") // Called from Swift
 fun initKoinIos(
     userDefaults: NSUserDefaults,
-    langStr: String?
+    langStr: String?,
+    appInfo: AppInfo
 ): KoinApplication = initKoin(
     module {
         single<Settings> { AppleSettings(userDefaults) }
         single {
             if (langStr.isNullOrBlank()) AppLanguage.SV else AppLanguage.fromString(langStr)
         }
+        single { appInfo }
     }
 )
 

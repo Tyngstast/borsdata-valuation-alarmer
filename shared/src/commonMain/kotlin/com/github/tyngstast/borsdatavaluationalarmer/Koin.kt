@@ -36,7 +36,7 @@ val coreModule = module {
     single { KpiDao(get(), Dispatchers.Default) }
     single { BorsdataClient(get(), getWith("BorsdataClient")) }
     single { YahooClient(getWith("YahooClient")) }
-    single { AlarmerSettings(get()) }
+    single { AlarmerSettings(get(), get()) }
     single<Clock> { Clock.System }
 
 //    val logger = if (isDebug) platformLogWriter() else CrashlyticsLogWriter()

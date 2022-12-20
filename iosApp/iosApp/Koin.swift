@@ -7,12 +7,17 @@ func startKoin() {
 
     let koinApplication = IOSKoinKt.doInitKoinIos(
         userDefaults: userDefaults,
-        langStr: langStr
+        langStr: langStr,
+        appInfo: IosAppInfo()
     )
     _koin = koinApplication.koin
 }
 
 private var _koin: Koin_coreKoin?
 var koin: Koin_coreKoin {
-    return _koin!
+    _koin!
+}
+
+class IosAppInfo: AppInfo {
+    let appVersion: Int32 = Int32(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "0") ?? 0
 }
