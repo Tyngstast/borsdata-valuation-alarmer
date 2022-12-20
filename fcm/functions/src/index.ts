@@ -30,3 +30,39 @@ exports.triggerWorkers = functions
 
     return null;
   });
+
+const devMessage = {
+  topic: "devTriggerValuationAlarmWorker",
+  data: {
+    trigger: "true",
+  },
+  apns: {
+    headers: {
+      "apns-priority": "5",
+    },
+    payload: {
+      aps: {
+        contentAvailable: true,
+      },
+    },
+  },
+};
+
+exports.devTriggerWorkers = functions
+  .region("europe-west1")
+  .pubsub
+  .schedule("0 09-18 * * 1-5")
+  .timeZone("Europe/Stockholm")
+  .onRun((context) => {
+    functions.logger.info("DEV schedule... Executing", context);
+    getMessaging()
+      .send(devMessage)
+      .then((response) => {
+        functions.logger.info("DEV Successfully sent message", response);
+      })
+      .catch((error) => {
+        functions.logger.error("DEV Error sending message", error);
+      });
+
+    return null;
+  });

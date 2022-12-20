@@ -22,7 +22,7 @@ kotlin {
     val koinVersion: String by project
     val serializationVersion = "1.3.3"
     val ktorVersion = "2.1.2"
-    val kVaultVersion = "1.7.0"
+    val kVaultVersion = "1.10.0"
     val settingsVersion = "0.8.1"
     val datetimeVersion = "0.3.3"
 

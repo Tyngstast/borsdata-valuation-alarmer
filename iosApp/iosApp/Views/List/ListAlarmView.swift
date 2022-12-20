@@ -2,9 +2,12 @@ import FirebaseMessaging
 import shared
 import SwiftUI
 
-let TOPIC = "triggerValuationAlarmWorker"
+// let TOPIC = "triggerValuationAlarmWorker"
+let TOPIC = "devTriggerValuationAlarmWorker"
 
 struct ListView: View {
+    private let log = koin.loggerWithTag(tag: "ListView")
+    
     @StateObject var viewModel = AlarmListViewModel()
     let notificationCenter = UNUserNotificationCenter.current()
     var alarmWorkerModel = Models.shared.getValuationAlarmWorkerModel()
@@ -29,7 +32,9 @@ struct ListView: View {
             notificationCenter.requestAuthorization(options: [.alert, .badge]) { accepted, _ in
                 notificationsAllowed = accepted
             }
-            Messaging.messaging().subscribe(toTopic: TOPIC)
+            Messaging.messaging().subscribe(toTopic: TOPIC) { error in
+                log.d { "Subscribed to topic: \(TOPIC)" }
+            }
             viewModel.activate()
         })
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in

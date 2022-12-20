@@ -1,6 +1,7 @@
 package com.github.tyngstast.borsdatavaluationalarmer
 
 import co.touchlab.kermit.Logger
+import com.github.tyngstast.borsdatavaluationalarmer.client.YahooClient
 import com.github.tyngstast.borsdatavaluationalarmer.model.AddAlarmCallbackViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.AlarmListCallbackViewModel
 import com.github.tyngstast.borsdatavaluationalarmer.model.AppLanguage
@@ -25,7 +26,7 @@ import platform.Foundation.NSUserDefaults
 
 actual val platformModule = module {
     single<SqlDriver> { NativeSqliteDriver(ValueAlarmerDb.Schema, "ValueAlarmerDb") }
-    single { Vault(KVault()) }
+    single { Vault(KVault(accessibility = KVault.Accessible.AfterFirstUnlockThisDeviceOnly)) }
     single { LoginCallbackViewModel(get()) }
     single { AlarmListCallbackViewModel(get()) }
     single { AddAlarmCallbackViewModel(get()) }

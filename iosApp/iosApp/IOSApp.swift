@@ -46,7 +46,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     /// Required when swizzling is disabled
     func application(_: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("*** didRegisterForRemoteNotificationsWithDeviceToken ***")
         Messaging.messaging().apnsToken = deviceToken
     }
 
@@ -54,10 +53,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_: UNUserNotificationCenter,
                                 didReceive _: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("*** didReceive ***")
-        // TODO: this should be triggered from FCM when app is in both background and foreground.
-        ValuationAlarmWorker.onMessageReceived()
-    
         completionHandler()
     }
 
@@ -65,39 +60,21 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_: UNUserNotificationCenter,
                                 willPresent _: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("*** willPresent ***")
-
         completionHandler([[.banner]])
     }
-    
-    /// App in background ?
-    func application(_: UIApplication,
-                     didReceiveNotificationResponse userInfo: [AnyHashable: Any],
-                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("*** didReceiveNotificationResponse ***")
-        print(userInfo)
 
-        Messaging.messaging().appDidReceiveMessage(userInfo)
-
-        completionHandler(.newData)
-    }
-
-    /// App in background ?
+    /// Triggered by FCM when content-available: 1
     func application(_: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("*** didReceiveRemoteNotification ***")
-        print(userInfo)
-
         Messaging.messaging().appDidReceiveMessage(userInfo)
-
+        ValuationAlarmWorker.onMessageReceived()
         completionHandler(.newData)
     }
 }
 
 extension AppDelegate: MessagingDelegate {
     func messaging(_: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("*** FirebaseMessaging Token: \(fcmToken ?? "")")
         let tokenDict = ["token": fcmToken ?? ""]
         NotificationCenter.default.post(
             name: Notification.Name("FCMToken"),
