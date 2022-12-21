@@ -32,8 +32,8 @@ struct AddView: View {
 struct AddViewContent: View {
     @Environment(\.dismiss) var dismissView
 
-    var instruments: [Item]
-    var kpis: [Item]
+    var instruments: [InsItem]
+    var kpis: [KpiItem]
     var onInsNameChange: (String) -> Void
     var onKpiNameChange: (String) -> Void
     var onAdd: (Double, Bool) -> Void
@@ -45,6 +45,7 @@ struct AddViewContent: View {
     @State var kpiName = ""
     @State var kpiValue = ""
     @State var isAbove = false
+    @State var selectedKpi: KpiItem?
 
     func addAlarm() {
         guard !insName.isEmpty, !kpiName.isEmpty, !kpiValue.isEmpty else {
@@ -63,7 +64,7 @@ struct AddViewContent: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            SuggestionInputField(
+            SuggestionInputField<InsItem>(
                 items: instruments,
                 label: NSLocalizedString("company_label", comment: "Company name"),
                 value: $insName,
@@ -77,13 +78,13 @@ struct AddViewContent: View {
                 setFocus: {
                     focused = .ins
                 },
-                focusNext: {
+                selectItem: { _ in
                     focused = .kpi
                 },
                 isFocused: focused == .ins
             )
             .focused($focused, equals: .ins)
-            SuggestionInputField(
+            SuggestionInputField<KpiItem>(
                 items: kpis,
                 label: NSLocalizedString("kpi_label", comment: "KPI name"),
                 value: $kpiName,
@@ -97,14 +98,16 @@ struct AddViewContent: View {
                 setFocus: {
                     focused = .kpi
                 },
-                focusNext: {
+                selectItem: { kpiItem in
                     focused = .kpiValue
+                    selectedKpi = kpiItem as! KpiItem
                 },
                 isFocused: focused == .kpi
             )
             .focused($focused, equals: .kpi)
             ValueInputField(
                 label: NSLocalizedString("kpi_below_threshold_label", comment: "Trigger when KPI below value"),
+                type: selectedKpi?.type,
                 value: $kpiValue,
                 isAbove: $isAbove,
                 onSubmit: addAlarm,
@@ -138,14 +141,14 @@ struct AddViewContent: View {
     }
 }
 
-struct SuggestionInputField: View {
-    var items: [Item]
+struct SuggestionInputField<T : Item>: View {
+    var items: [T]
     var label: String
     @Binding var value: String
     var onInputChange: (String) -> Void
     var onSubmit: () -> Void
     var setFocus: () -> Void
-    var focusNext: () -> Void
+    var selectItem: (Item) -> Void
     @State var showSuggestions = true
     var isFocused: Bool
 
@@ -176,7 +179,7 @@ struct SuggestionInputField: View {
                     .onTapGesture {
                         onInputChange(item.name)
                         showSuggestions = false
-                        focusNext()
+                        selectItem(item)
                     }
                 }
                 .padding(.horizontal, 12)
@@ -188,6 +191,7 @@ struct SuggestionInputField: View {
 
 struct ValueInputField: View {
     var label: String
+    var type: KpiType? = KpiType.fa
     @Binding var value: String
     @Binding var isAbove: Bool
     var onSubmit: () -> Void

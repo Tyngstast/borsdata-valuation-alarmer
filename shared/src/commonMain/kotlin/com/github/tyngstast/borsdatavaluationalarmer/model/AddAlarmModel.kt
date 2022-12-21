@@ -38,9 +38,10 @@ class AddAlarmModel(
             .take(3)
             .map {
                 KpiItem(
-                    it.kpidId,
-                    if (appLanguage == AppLanguage.SV || it.nameEn == null) it.name else it.nameEn,
-                    FluentKpi.stringValues.contains(it.name)
+                    id = it.kpidId,
+                    name = if (appLanguage == AppLanguage.SV || it.nameEn == null) it.name else it.nameEn,
+                    fluent = FluentKpi.stringValues.contains(it.name),
+                    type = KpiType.fromString(it.type)
                 )
             }
     }
@@ -60,4 +61,4 @@ class AddAlarmModel(
 
 open class Item(val id: Long, val name: String)
 class InsItem(id: Long, name: String, val yahooId: String) : Item(id, name)
-class KpiItem(id: Long, name: String, val fluent: Boolean) : Item(id, name)
+class KpiItem(id: Long, name: String, val fluent: Boolean, val type: KpiType) : Item(id, name)

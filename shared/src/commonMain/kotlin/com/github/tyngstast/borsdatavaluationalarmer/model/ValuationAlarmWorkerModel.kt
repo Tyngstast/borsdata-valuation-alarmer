@@ -106,7 +106,7 @@ class ValuationAlarmWorkerModel(
         val price: Double = try {
             yahooClient.getLatestPrice(yahooId)
         } catch (e: Throwable) {
-            log.e { "Failed to get price from yahoo, fall back to pre-calcuated from BD. Error: ${e.message}" }
+            log.e { "Failed to get price from yahoo, fall back to pre-calculated from BD. Error: ${e.message}" }
             return borsdataClient.getLatestValue(insId, kpiId)
         }
 

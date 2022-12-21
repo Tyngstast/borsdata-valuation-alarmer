@@ -50,8 +50,8 @@ SELECT * FROM Kpi
 WHERE nameEn LIKE ('%' || :name || '%');
 
 insertKpi:
-INSERT INTO Kpi(id, kpidId, name, nameEn, format)
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO Kpi(id, kpidId, name, nameEn, format, type)
+VALUES (?, ?, ?, ?, ?, ?);
 
 deleteAllKpis:
 DELETE FROM Kpi;

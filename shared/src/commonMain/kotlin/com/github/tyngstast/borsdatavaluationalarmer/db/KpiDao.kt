@@ -1,6 +1,7 @@
 package com.github.tyngstast.borsdatavaluationalarmer.db
 
 import com.github.tyngstast.borsdatavaluationalarmer.client.KpiDto
+import com.github.tyngstast.borsdatavaluationalarmer.model.KpiType
 import com.github.tyngstast.db.Kpi
 import com.squareup.sqldelight.db.SqlDriver
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,7 +33,9 @@ class KpiDao(
                     kpidId = it.kpiId,
                     name = it.nameSv,
                     nameEn = it.nameEn,
-                    format = it.format
+                    format = it.format,
+                    // We only insert TA types manually for now
+                    type = KpiType.FA.name
                 )
             }
         }
